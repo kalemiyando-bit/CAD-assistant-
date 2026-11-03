@@ -21,4 +21,4 @@ timeoutMs = 20000
 
 [nix]
 channel = "stable-25_05"
-packages = ["freefont_ttf", "freetype", "libGL", "libGLU", "opencascade-occt", "swig", "expat"]
+packages = ["expat", "freefont_ttf", "freetype", "libGL", "libGLU", "opencascade-occt", "swig"]

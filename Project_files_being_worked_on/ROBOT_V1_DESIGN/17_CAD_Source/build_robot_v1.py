@@ -67,7 +67,7 @@ GEAR_MODULE = 2.0
 GEAR_PA_DEG = 20.0
 GEAR_FACE = 20.0
 GEAR_TEETH = (18, 36, 54)
-GEAR_CENTER_X = (0.0, 54.0, 126.0)
+GEAR_CENTER_X = (0.0, 54.0, 144.0)
 PI = math.pi
 
 
@@ -233,10 +233,10 @@ def make_passive_wheel() -> cq.Solid:
 
 
 def make_front_enclosure_panel() -> cq.Shape:
-    panel = box(2.0, 270.0, 235.0)
+    panel = box(2.0, 270.0, 190.0)
     # Clearance slots for the pair of loader arms as they sweep through the panel.
     for y in (-100.0, 100.0):
-        panel = panel.cut(box(4.0, 52.0, 180.0).translate((0, y, 37.5)))
+        panel = panel.cut(box(4.0, 52.0, 150.0).translate((0, y, 35.0)))
     return panel
 
 
@@ -382,6 +382,31 @@ def cylinder_between(
     return cq.Solid.makeCylinder(radius, delta.Length, a, delta.normalized())
 
 
+def align_local_z(
+    shape: cq.Shape,
+    start: tuple[float, float, float],
+    end: tuple[float, float, float],
+    local_start_z: float = 0.0,
+) -> cq.Shape:
+    dx, dy, dz = (end[i] - start[i] for i in range(3))
+    length = math.sqrt(dx * dx + dy * dy + dz * dz)
+    if length <= 1e-9:
+        raise ValueError("Alignment points must be distinct.")
+    ux, uy, uz = dx / length, dy / length, dz / length
+    axis = (-uy, ux, 0.0)
+    axis_length = math.sqrt(axis[0] * axis[0] + axis[1] * axis[1])
+    angle = math.degrees(math.acos(max(-1.0, min(1.0, uz))))
+    if axis_length <= 1e-9:
+        axis = (1.0, 0.0, 0.0)
+    moved = shape.rotate((0, 0, 0), axis, angle)
+    offset = (
+        start[0] - local_start_z * ux,
+        start[1] - local_start_z * uy,
+        start[2] - local_start_z * uz,
+    )
+    return moved.translate(v(*offset))
+
+
 def build_parts() -> None:
     # Primary structure.
     register(
@@ -497,14 +522,14 @@ def build_parts() -> None:
         )
     register(
         "Gearbox_Side_Plate_Front",
-        make_gearbox_plate((63.0, -9.0, -63.0)),
+        make_gearbox_plate((-72.0, -18.0, 72.0)),
         "GearTrain",
         "6061-T6 aluminium plate, 4 mm (recommendation)",
         note="Bearing holes are conceptual; select bearings and add tolerances.",
     )
     register(
         "Gearbox_Side_Plate_Rear",
-        make_gearbox_plate((-63.0, 9.0, 63.0)),
+        make_gearbox_plate((72.0, 18.0, -72.0)),
         "GearTrain",
         "6061-T6 aluminium plate, 4 mm (recommendation)",
     )
@@ -537,8 +562,8 @@ def build_parts() -> None:
 
     # Enclosure, power, and purchased electronic envelopes.
     register("Enclosure_Floor_720x270x2", box(720, 270, 2), "Power", "5052-H32 aluminium sheet")
-    register("Enclosure_Side_Panel_720x235x2", box(720, 2, 235), "Power", "5052-H32 aluminium sheet")
-    register("Enclosure_Rear_Panel_270x235x2", box(2, 270, 235), "Power", "5052-H32 aluminium sheet")
+    register("Enclosure_Side_Panel_720x190x2", box(720, 2, 190), "Power", "5052-H32 aluminium sheet")
+    register("Enclosure_Rear_Panel_270x190x2", box(2, 270, 190), "Power", "5052-H32 aluminium sheet")
     register("Enclosure_Front_Panel_Loader_Slots", make_front_enclosure_panel(), "Power", "5052-H32 aluminium sheet")
     register("Enclosure_Top_Cover_720x270x2", box(720, 270, 2), "Power", "5052-H32 aluminium sheet")
     register(
@@ -607,8 +632,8 @@ def build_parts() -> None:
     register("Tray_Short_Lip_400x40x3", make_tray_lip(400, 40), "Tray", "5052-H32 aluminium sheet")
     register("Tray_NonSlip_Mat_580x380x2", box(580, 380, 2), "Tray", "Oil-resistant elastomer sheet")
     register(
-        "Tray_Support_Post_20x20x440",
-        tube_z(440, 20, 2),
+        "Tray_Support_Post_20x20x480",
+        tube_z(480, 20, 2),
         "Tray",
         "6061-T6 aluminium extrusion",
     )
@@ -709,8 +734,7 @@ def build_assembly_instances() -> None:
         add_y_axis_part(f"{tag}_Wheel_Hub", "Mobility", "Drive_Wheel_Hub_OD30", (x_out, y_wheel, WHEEL_CZ))
         # Gear train center positions are dimensioned from the output wheel axis.
         sign = x_direction
-        x_positions = (x_out - sign * 126.0, x_out - sign * 72.0, x_out)
-        relative_plate_positions = (sign * 63.0, -sign * 9.0, -sign * 63.0)
+        x_positions = (x_out - sign * 144.0, x_out - sign * 90.0, x_out)
         plate_part = "Gearbox_Side_Plate_Front" if x_direction > 0 else "Gearbox_Side_Plate_Rear"
         x_mid = (x_positions[0] + x_positions[2]) / 2
         for plate_y in (y_sign * 142.0, y_sign * 174.0):
@@ -727,7 +751,14 @@ def build_assembly_instances() -> None:
         add_y_axis_part(f"{tag}_Pinion_Shaft", "GearTrain", "Pinion_Shaft_D10", (x_positions[0], gear_y, WHEEL_CZ))
         add_y_axis_part(f"{tag}_Idler_Shaft", "GearTrain", "Idler_Shaft_D12", (x_positions[1], gear_y, WHEEL_CZ))
         add_y_axis_part(f"{tag}_Output_Shaft", "GearTrain", "Wheel_Output_Shaft_D15", (x_out, y_sign * 174.0, WHEEL_CZ))
-        add_y_axis_part(f"{tag}_Drive_Motor", "Mobility", "Drive_Gearmotor_24V_230RPM_Envelope", (x_positions[0], y_sign * 224.0, WHEEL_CZ))
+        place(
+            f"{tag}_Drive_Motor",
+            "Mobility",
+            PARTS["Drive_Gearmotor_24V_230RPM_Envelope"],
+            (x_positions[0], y_sign * 224.0, WHEEL_CZ),
+            (1, 0, 0),
+            90.0 * y_sign,
+        )
         # Gear guard sits outside the gear plane; not shown as a detailed formed cover.
         place(f"{tag}_Gearbox_Guard", "GearTrain", PARTS["Gearbox_Guard_Panel"], (x_mid, y_sign * 185.0, WHEEL_CZ))
         place(f"{tag}_Steering_Bearing", "Mobility", PARTS["Steering_Bearing_Envelope"], (x_out, y_wheel, 115.0))
@@ -743,8 +774,13 @@ def build_assembly_instances() -> None:
     place("Enclosure_Floor", "Power", PARTS["Enclosure_Floor_720x270x2"], (0, 0, 64.0))
     for y in (-135.0, 135.0):
         place("Enclosure_Side_Panel", "Power", PARTS["Enclosure_Side_Panel_720x190x2"], (0, y, 160.0))
-    for x in (-359.0, 359.0):
-        place("Enclosure_End_Panel", "Power", PARTS["Enclosure_End_Panel_270x190x2"], (x, 0, 160.0))
+    place("Enclosure_Rear_Panel", "Power", PARTS["Enclosure_Rear_Panel_270x190x2"], (-359.0, 0, 160.0))
+    place(
+        "Enclosure_Front_Panel",
+        "Power",
+        PARTS["Enclosure_Front_Panel_Loader_Slots"],
+        (359.0, 0, 160.0),
+    )
     place("Battery_Pack_Envelope", "Power", PARTS["Battery_24V_15Ah_Envelope"], (-110, 0, 132.0))
     place("Battery_Hold_Down", "Power", PARTS["Battery_Hold_Down_Bar"], (-110, 0, 199.0))
     place("Electronics_Tray", "Power", PARTS["Electronics_Mounting_Tray"], (180, 0, 67.0))
@@ -752,7 +788,7 @@ def build_assembly_instances() -> None:
     place("Motor_Controller", "Power", PARTS["Motor_Controller_Envelope"], (160, 58, 92.0))
     place("Compute_Board", "Power", PARTS["Compute_Board_Envelope"], (260, 0, 92.0))
     place("Power_Distribution", "Power", PARTS["Power_Distribution_Box_Envelope"], (-290, 0, 95.0))
-    # A removable cover is kept in the exploded configuration and as a separate part file.
+    place("Enclosure_Top_Cover", "Power", PARTS["Enclosure_Top_Cover_720x270x2"], (0, 0, 256.0))
 
     # Tray supports and carrying tray.
     post = PARTS["Tray_Support_Post_20x20x480"]
@@ -761,14 +797,14 @@ def build_assembly_instances() -> None:
             place("Tray_Support_Post", "Tray", post, (x, y, (260.0 + 740.0) / 2))
             place("Tray_Corner_Bracket", "Tray", PARTS["Tray_Corner_Bracket"], (x, y, 250.0))
     place("Tray_Floor", "Tray", PARTS["Tray_Floor_600x400x3"], (0, 0, TRAY_FLOOR_Z + 1.5))
-    for x in (-TRAY_L / 2 + 1.5, TRAY_L / 2 - 1.5):
-        place("Tray_Long_Lip", "Tray", PARTS["Tray_Long_Lip_600x40x3"], (x, 0, TRAY_FLOOR_Z + 3 + TRAY_LIP_H / 2))
     for y in (-TRAY_W / 2 + 1.5, TRAY_W / 2 - 1.5):
+        place("Tray_Long_Lip", "Tray", PARTS["Tray_Long_Lip_600x40x3"], (0, y, TRAY_FLOOR_Z + 3 + TRAY_LIP_H / 2))
+    for x in (-TRAY_L / 2 + 1.5, TRAY_L / 2 - 1.5):
         place(
             "Tray_Short_Lip",
             "Tray",
             PARTS["Tray_Short_Lip_400x40x3"].rotate((0, 0, 0), (0, 0, 1), 90),
-            (0, y, TRAY_FLOOR_Z + 3 + TRAY_LIP_H / 2),
+            (x, 0, TRAY_FLOOR_Z + 3 + TRAY_LIP_H / 2),
         )
     place("Tray_NonSlip_Mat", "Tray", PARTS["Tray_NonSlip_Mat_580x380x2"], (0, 0, TRAY_FLOOR_Z + 4.0))
 
@@ -819,9 +855,29 @@ def build_assembly_instances() -> None:
         0.0,
         LOADER_PIVOT[2] + 180 * math.sin(math.radians(theta)),
     )
-    b = (tip_x - 120.0, 0.0, tip_z)
-    actuator_body = cylinder_between(a, b, 12.0)
-    place("Bucket_Tilt_Actuator_Body_Envelope", "Shovel", actuator_body, (0, 0, 0))
+    b_nominal = (tip_x - 120.0, 0.0, tip_z)
+    delta = tuple(b_nominal[i] - a[i] for i in range(3))
+    actuator_length = math.sqrt(sum(component * component for component in delta))
+    actuator_direction = tuple(component / actuator_length for component in delta)
+    # The envelope has a 315 mm eye-to-eye retracted length and 150 mm stroke.
+    b = tuple(a[i] + actuator_direction[i] * 315.0 for i in range(3))
+    actuator = align_local_z(
+        PARTS["Linear_Actuator_24V_150mm_Envelope"], a, b, local_start_z=-90.0
+    )
+    place("Bucket_Tilt_Actuator", "Shovel", actuator, (0, 0, 0))
+    bracket = PARTS["Shovel_Actuator_Bracket"]
+    place(
+        "Bucket_Tilt_Actuator_Arm_Bracket",
+        "Shovel",
+        align_local_z(bracket, a, b),
+        (0, 0, 0),
+    )
+    place(
+        "Bucket_Tilt_Actuator_Bucket_Bracket",
+        "Shovel",
+        align_local_z(bracket, b, a),
+        (0, 0, 0),
+    )
     for y in (-55.0, 55.0):
         place("Obstacle_Sensor", "Sensors", PARTS["Obstacle_Sensor_Envelope"], (390.0, y, 150.0))
     place("Line_Sensor_Array", "Sensors", PARTS["Line_Sensor_Array_100x14"], (350.0, 0.0, 9.0))
