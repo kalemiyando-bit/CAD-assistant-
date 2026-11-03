@@ -1,0 +1,30 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "UkflascetPIRvQxlY-S1U"
+uri = "file://attached_assets/robot_box_solidworks_test/solidworks_box_test_downloads.html"
+type = "html"
+title = "SolidWorks Box Format Test"
+description = "Download a 100 × 60 × 40 mm test block as STEP, STL, 3MF, DXF, or a ZIP bundle, with import notes."
+logical_id = "d866a41c-5913-4911-bd8d-64b9ce4cb290"
+content_hash = "sha256:35f3c0d96cccac43f49032e3619fcdd51895116cd49f2031285fc652562d4762"
+size = 37431
+mtime_ms = 1793717615276
+storage_uri = "gcs://replit-rams-assets-riker/rams/assets/repl:b7852408-f9c5-4286-ac49-0715366cbe3f/d866a41c-5913-4911-bd8d-64b9ce4cb290/01c3f780-1b23-484c-87e7-26fbc028362b"
+storage_version_token = "1793717624971486"
+content_type = "text/html"
+
+[[outputs]]
+id = "ZDLZsiVemk4TrkFFGHAv6"
+uri = "file://attached_assets/robot_gear_wheel_shaft_methods_download.html"
+type = "html"
+title = "Gear, Wheel & Shaft CAD Package"
+description = "Download the organized comparison bundle: SolidWorks macro, STEP parts and assembly, STL/3MF meshes, DXF references, and parametric source. Each method folder includes a README."
+logical_id = "4453707d-6d85-42ed-8546-4fe4d345b4aa"
+content_hash = "sha256:9f49f227b2876c1b637a4c77fb2ce3326013c1e971b81082f38ed7ca0e0a7223"
+size = 973766
+mtime_ms = 1793718749796
+storage_uri = "gcs://replit-rams-assets-riker/rams/assets/repl:b7852408-f9c5-4286-ac49-0715366cbe3f/4453707d-6d85-42ed-8546-4fe4d345b4aa/9216e59e-991d-4e70-924b-977950084cae"
+storage_version_token = "1793718808496286"
+content_type = "text/html"

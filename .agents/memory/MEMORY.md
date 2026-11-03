@@ -1,0 +1,2 @@
+- [SolidWorks handoff](solidworks-handoff.md) — user wants importable CAD geometry and documentation to continue the robot design in SolidWorks.
+- [CAD export runtime](cad-export-runtime.md) — CadQuery's OpenCascade bindings may require a compatible Nix system-library setup in this workspace.
