@@ -1191,9 +1191,9 @@ wheels = [
 ]
 
 [[package]]
-name = "repl-nix-workspace"
+name = "robot-v1-cad-export"
 version = "0.1.0"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "cadquery" },
     { name = "ezdxf" },

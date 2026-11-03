@@ -17,6 +17,7 @@ import ezdxf
 
 
 ROOT = Path(__file__).resolve().parents[1]
+STEP_ROOT = ROOT / "18_STEP_Only"
 MM = 1.0
 
 FOLDERS = {
@@ -894,27 +895,14 @@ def build_assembly_instances() -> None:
 def export_parts() -> None:
     for name, shape in PARTS.items():
         subsystem = PART_META[name].subsystem
-        key = {
-            "Chassis": "chassis",
-            "Mobility": "mobility",
-            "GearTrain": "gears",
-            "Power": "power",
-            "Sensors": "sensors",
-            "Loader": "loader",
-            "Winch": "winch",
-            "Shovel": "shovel",
-            "Tray": "tray",
-        }[subsystem]
-        folder = FOLDERS[key] / "Parts"
+        folder = STEP_ROOT / "Parts" / subsystem
         folder.mkdir(parents=True, exist_ok=True)
         cq.exporters.export(shape, str(folder / f"{name}.step"), exportType="STEP")
-        # A mirrored copy in the SolidWorks parts folder keeps all individual solids together.
-        mirror = FOLDERS["parts"] / "STEP_Parts"
-        mirror.mkdir(parents=True, exist_ok=True)
-        cq.exporters.export(shape, str(mirror / f"{name}.step"), exportType="STEP")
 
 
 def export_assemblies() -> None:
+    assembly_folder = STEP_ROOT / "Assemblies"
+    assembly_folder.mkdir(parents=True, exist_ok=True)
     colors = {
         "Chassis": cq.Color(0.55, 0.60, 0.64),
         "Mobility": cq.Color(0.15, 0.19, 0.22),
@@ -930,7 +918,7 @@ def export_assemblies() -> None:
     for shape, name, subsystem in INSTANCES:
         overall.add(shape, name=name, color=colors.get(subsystem))
     overall.save(
-        str(FOLDERS["assemblies"] / "RobotV1_Overall_Assembly.step"),
+        str(assembly_folder / "RobotV1_Overall_Assembly.step"),
         exportType="STEP",
         tolerance=0.05,
         angularTolerance=0.08,
@@ -939,7 +927,7 @@ def export_assemblies() -> None:
         assembly = cq.Assembly(name=f"RobotV1_{subsystem}")
         for shape, name in items:
             assembly.add(shape, name=name)
-        target = FOLDERS["assemblies"] / f"RobotV1_{subsystem}_Assembly.step"
+        target = assembly_folder / f"RobotV1_{subsystem}_Assembly.step"
         assembly.save(str(target), exportType="STEP", tolerance=0.05, angularTolerance=0.08)
 
     # Exploded STEP: subsystem groups are displaced only for communication, not assembly.
@@ -959,7 +947,7 @@ def export_assemblies() -> None:
         dx, dy, dz = offsets[subsystem]
         exploded.add(shape.translate(v(dx, dy, dz)), name=name)
     exploded.save(
-        str(FOLDERS["assemblies"] / "RobotV1_Exploded_Concept.step"),
+        str(assembly_folder / "RobotV1_Exploded_Concept.step"),
         exportType="STEP",
         tolerance=0.05,
         angularTolerance=0.08,
@@ -1129,7 +1117,7 @@ def export_drawings() -> None:
     doc.saveas(drawings / "Loader_Pickup_and_Tray_Positions.dxf")
 
 
-def validate_and_report() -> None:
+def validate_and_report() -> list[str]:
     report = []
     for name, shape in PARTS.items():
         if not shape.isValid():
@@ -1142,25 +1130,18 @@ def validate_and_report() -> None:
             f"{name}: {count} solid(s), {bb.xlen:.2f} x {bb.ylen:.2f} x {bb.zlen:.2f} mm, "
             f"volume {shape.Volume():.1f} mm^3"
         )
-    (FOLDERS["testing"] / "CAD_Geometry_Checks.txt").write_text(
-        "\n".join(report) + "\n",
-        encoding="utf-8",
-    )
+    return report
 
 
 def main() -> None:
-    for folder in [ROOT, *FOLDERS.values()]:
-        folder.mkdir(parents=True, exist_ok=True)
     build_parts()
     build_assembly_instances()
+    validate_and_report()
     export_parts()
     export_assemblies()
-    export_drawings()
-    write_bom()
-    validate_and_report()
     print(f"Unique parts: {len(PARTS)}")
     print(f"Placed instances: {len(INSTANCES)}")
-    print(f"Robot V1 CAD package: {ROOT}")
+    print(f"STEP-only CAD package: {STEP_ROOT}")
 
 
 if __name__ == "__main__":
