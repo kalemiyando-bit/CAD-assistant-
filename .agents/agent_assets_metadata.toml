@@ -28,3 +28,17 @@ mtime_ms = 1793718749796
 storage_uri = "gcs://replit-rams-assets-riker/rams/assets/repl:b7852408-f9c5-4286-ac49-0715366cbe3f/4453707d-6d85-42ed-8546-4fe4d345b4aa/9216e59e-991d-4e70-924b-977950084cae"
 storage_version_token = "1793718808496286"
 content_type = "text/html"
+
+[[outputs]]
+id = "zF7NoHYdQg_X_XaIIlQd1"
+uri = "file://Project_files_being_worked_on/ROBOT_V1_DESIGN/18_STEP_Only/Assemblies/RobotV1_Overall_Assembly.step"
+type = "unspecified"
+title = "Robot V1 Complete Assembly (STEP)"
+description = "Full assembled robot model, not the exploded concept. Units are millimetres."
+logical_id = "104ee017-0944-4dc0-a76f-a999572bcfde"
+content_hash = "sha256:6a0ef1bfb5f1b68f4482d7815be205b5ae7219c8807d49f3b061183f92ced338"
+size = 19213234
+mtime_ms = 1793733431664
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:2238df54-48c4-4fe4-aaff-5f4c99a16dc6/104ee017-0944-4dc0-a76f-a999572bcfde/2e874347-b77c-44e1-90c7-2d92ee0ec853"
+storage_version_token = "1793819040979344"
+content_type = "application/octet-stream"
