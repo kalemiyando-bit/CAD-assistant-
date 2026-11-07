@@ -55,6 +55,13 @@ Before substantial modeling or simulation, smoke-test every required tool path w
 
 Follow the target application's supported format and version. Ask before installing dependencies or invoking paid services. Stop on permission or access errors; do not bypass them.
 
+## Repository and GitHub portability
+
+- Never create, edit, delete, rename, or otherwise change any `.gitignore` file. If a required system file is ignored or untracked, stop and ask the user to resolve it.
+- Keep project-owned source, Skills, references, scripts, tests, required assets, Replit configuration, dependency manifests, and lockfiles tracked so they can be transferred through GitHub.
+- Track declarations and lockfiles, not installed copies such as `node_modules` or runtime caches. A fresh Replit must be able to recreate dependencies from the tracked package files.
+- Before claiming a handoff is portable, check that its required files are tracked and are not excluded by ignore rules.
+
 ## Review and release
 
 Use the independent review Skill and `references/review-report.md`. Recompute reported metrics from source data where practical. Do not tune criteria, omit failed checks, or replace a failed result with a better-looking visualization.

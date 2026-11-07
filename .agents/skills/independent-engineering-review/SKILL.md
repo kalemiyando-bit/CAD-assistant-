@@ -7,6 +7,8 @@ description: Independently checks an engineering design, CAD package, drawing, P
 
 Review the design contract and actual source/deliverables. Do not edit the designer's files. Return findings and change requests to the coordinator.
 
+Do not modify repository ignore rules. In particular, no agent may create, edit, delete, or rename any `.gitignore` file.
+
 ## Independence
 
 - Prefer a reviewer agent that was not the author and has the contract plus deliverables.

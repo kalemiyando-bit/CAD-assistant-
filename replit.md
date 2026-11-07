@@ -19,6 +19,8 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - Shared assignment, design-contract, change-request, and review templates live under `.agents/skills/engineering-design-coordinator/references/`.
 - The coordinator must ask which software the user is using and the desired research scope when those are not already stated.
 - Agents own separate outputs. A reviewer reports findings and does not silently edit another agent's files.
+- No agent may create, edit, delete, rename, or otherwise change `.gitignore`. Keep required project source, Skills, assets, Replit configuration, dependency manifests, and lockfiles tracked for GitHub transfer; if a required file is ignored or untracked, stop and ask the user.
+- Track dependency manifests and lockfiles, not installed folders such as `node_modules` or temporary caches; dependencies must be reproducible in a fresh Replit.
 - No user-facing design-system interface is in scope until the conversational workflows are proven.
 
 ## Stack

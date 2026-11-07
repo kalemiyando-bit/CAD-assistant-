@@ -129,6 +129,13 @@ An agent review is not a substitute for physical testing or qualified engineerin
 - Before handoff, create a manifest of expected deliverables and their hashes so missing or changed files can be detected.
 - Treat a released package as immutable. If something is missing or wrong afterward, issue a new revision or addendum and preserve the original release.
 
+### Repository integrity and portability
+
+- `.gitignore` is user-controlled. Agents must never create, edit, delete, rename, or otherwise change any `.gitignore` file. If a required file is ignored or cannot be tracked, stop and ask the user to resolve it; do not change ignore rules or use another location to bypass them.
+- Keep project-owned files needed to reproduce the system in GitHub: source, engineering Skills and references, scripts and tests, required project assets, Replit configuration, dependency declarations, and lockfiles.
+- Track dependency manifests and lockfiles (such as `package.json` with `pnpm-lock.yaml`, and `pyproject.toml` with `uv.lock` or a required `requirements.txt`). Do not commit installed dependency folders, caches, or disposable build output; a fresh Replit should recreate those from the tracked declarations and locks.
+- Before a handoff or portability claim, verify required paths are tracked and not ignored. If a required file exists only in the current Replit runtime, report it as a portability blocker rather than claiming the project is transferable.
+
 ## 10. Replit implementation direction
 
 - Store repeatable procedures as project Skills, with separate skills for intake/orchestration, mechanical CAD, 2D drafting, PCB work, and validation as each workflow is developed.
