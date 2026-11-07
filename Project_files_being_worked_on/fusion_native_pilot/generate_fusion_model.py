@@ -26,7 +26,7 @@ if SCRIPT_DIR not in sys.path:
 from fusion_model_spec import safe_file_stem, validate_model_spec
 
 
-SCRIPT_VERSION = "1.0.0"
+SCRIPT_VERSION = "1.0.1"
 
 
 def _unique_base(output_dir: str, stem: str) -> str:
@@ -261,8 +261,12 @@ def run(context):
         if not design:
             raise RuntimeError("Fusion did not create an active design document.")
 
+        document = app.activeDocument
+        if not document:
+            raise RuntimeError("Fusion did not create an active document.")
+        document.name = spec["design_name"]
+
         root = design.rootComponent
-        root.name = spec["design_name"]
         component_reports = []
 
         for index, component_spec in enumerate(spec["components"], start=1):
