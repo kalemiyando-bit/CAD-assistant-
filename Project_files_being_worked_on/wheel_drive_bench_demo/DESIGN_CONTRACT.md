@@ -1,7 +1,7 @@
 # Wheel Drive Bench Demonstrator — Design Contract
 
-**Revision:** A0 — draft; Gate A is still open  
-**Status:** Intake and component research only. No geometry, PCB, or firmware is approved for manufacture or physical use.
+**Revision:** A0 — preliminary concept; Gate A is still open
+**Status:** An exploratory envelope model specification has been prepared. No dimensions, interfaces, component, geometry, PCB, or firmware is approved for manufacture, assembly, or powered use.
 
 ## Purpose and operating context
 
@@ -11,7 +11,7 @@
 - **Operating environment:** Bench demonstration only. No vehicle, passenger, or specified payload use.
 - **Target software:** Autodesk Fusion on Windows; exact version unknown. User is willing to learn to run a Fusion script if needed.
 - **Agent-accessible tools:** Replit cannot run the Autodesk Fusion API. Native Fusion model creation must be run and inspected in the user's Fusion installation.
-- **Research scope:** Brief engineering-facts research is allowed, focused on component datasheets. Do not search for similar products or use them as design templates.
+- **Research scope:** User sources only. No additional external research was performed for this concept.
 
 ## User requirements
 
@@ -42,7 +42,7 @@ An electrical brake through an H-bridge is not a mechanical parking brake and do
 | PCB and schematic | Editable Fusion Electronics project if a reliable workflow is established | Do not promise a native board file until Fusion Electronics can open and validate it |
 | Firmware | Source code plus pin map and upload instructions | Exact controller board remains to be selected |
 
-The current Fusion pilot only creates box and cylinder components, and its native archive path has not yet been executed in the user's Fusion. A wheel with a bore, shaft interfaces, bearing seats, and a usable assembly may require extending that pilot.
+The Fusion pilot now supports boxes, cylinders, annular cylinders, centered-bore plates, and axis-aligned component placement. The updated path has not yet been executed in the user's Fusion. The concept specification uses assumed envelope dimensions and does not define joints, fits, retention, loads, or a verified motor coupling.
 
 Autodesk's current documentation lists Fusion Electronics native files as `.fsch`, `.fbrd`, and `.flbr`, and EAGLE-compatible files as `.sch`, `.brd`, and `.lbr`. The Fusion Electronics API is currently preview/read-only for design changes; it can inspect designs and export EAGLE 9.6.2-compatible files, but it cannot create or edit board content through that public API. Therefore, native PCB creation must be performed in the Fusion Electronics UI unless a compatible import route is verified. The 2D drawing creation path also remains unverified.
 
@@ -50,12 +50,14 @@ Autodesk's current documentation lists Fusion Electronics native files as `.fsch
 
 | ID | Open item | Why it matters | Status |
 |---|---|---|---|
-| O-01 | Are the controls physical pedals/switches, button gestures, or both? | Determines PCB inputs and firmware | Asked |
-| O-02 | What does one tap, double tap, hold, brake, handbrake, and stop each do? | Determines safe control state machine | Asked |
+| O-01 | Are the controls physical pedals/switches, button gestures, or both? | Determines PCB inputs and firmware | Button gestures stated; exact physical inputs unresolved |
+| O-02 | What does one tap, double tap, hold, brake, handbrake, and stop each do? | Determines safe control state machine | Partially described; exact mapping unresolved |
 | O-03 | Is the Mabuchi motor candidate acceptable and obtainable, or should another small motor be selected? | Determines shaft mount, motor driver, speed, and torque | Candidate only |
-| O-04 | Wheel dimensions, shaft diameter, bearing size/spacing, and coupling dimensions | Required to model interfaces without inventing fits | Not specified |
+| O-04 | Wheel dimensions, shaft diameter, bearing size/spacing, and coupling dimensions | Required to model interfaces without inventing fits | Not user-specified; concept placeholders only |
 | O-05 | Motor supply and controller power source | Required for component ratings and PCB power design | Not specified |
-| O-06 | Exact Fusion version and whether the user can run the supplied script | Required to create and validate native Fusion files | Version unknown; user is willing to learn |
+| O-06 | Exact Fusion version and whether the user can run the supplied script | Required to create and validate native Fusion files | Fusion on Windows; version unknown; user is willing to learn |
+| O-07 | Drawing output format | Required to prepare editable/readable part drawings | Not confirmed |
+| O-08 | EDA software and version | Required to prepare an editable PCB project | Not specified |
 
 ## Verification and safety boundary
 

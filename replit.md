@@ -39,6 +39,8 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - `DESIGN_AGENT_SYSTEM_CHARTER.md` — system principles, gates, and proposed output conventions
 - `Project_files_being_worked_on/ROBOT_V1_DESIGN/` — preliminary robot design brief and CadQuery source used as a future mechanical pilot
 - `.agents/skills/engineering-design-coordinator/scripts/release_manifest.py` — standard-library release file/hash manifest tool
+- `Project_files_being_worked_on/fusion_native_pilot/` — Fusion scripts and the tested-outside-Fusion model-spec validator
+- `Project_files_being_worked_on/wheel_drive_bench_demo/` — preliminary wheel-drive concept, assumptions, and model specification
 
 ## Architecture decisions
 

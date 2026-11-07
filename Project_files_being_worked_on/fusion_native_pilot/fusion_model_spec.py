@@ -17,7 +17,8 @@ MAX_COMPONENTS = 50
 MAX_NAME_LENGTH = 80
 MAX_DIMENSION_MM = 10_000.0
 MAX_ORIGIN_MM = 100_000.0
-SUPPORTED_TYPES = {"box", "cylinder"}
+SUPPORTED_TYPES = {"box", "cylinder", "annular_cylinder", "plate_with_bore"}
+SUPPORTED_AXES = {"x", "y", "z"}
 
 
 class SpecValidationError(ValueError):
@@ -44,6 +45,40 @@ def safe_file_stem(value: str) -> str:
     return slug[:80].strip("-") or "fusion-design"
 
 
+def expected_component_extents_mm(component: dict[str, Any]) -> list[float]:
+    """Return principal-axis extents after the component's X/Y/Z axis alignment."""
+    dimensions = component["dimensions_mm"]
+    component_type = component["type"]
+    if component_type in {"box", "plate_with_bore"}:
+        local_extents = [
+            dimensions["length"],
+            dimensions["width"],
+            dimensions["height"],
+        ]
+    elif component_type == "cylinder":
+        local_extents = [
+            dimensions["diameter"],
+            dimensions["diameter"],
+            dimensions["height"],
+        ]
+    elif component_type == "annular_cylinder":
+        outer_diameter = dimensions["outer_diameter"]
+        local_extents = [outer_diameter, outer_diameter, dimensions["height"]]
+    else:
+        raise SpecValidationError(
+            f"Cannot calculate extents for unsupported type: {component_type!r}."
+        )
+
+    axis = component.get("axis", "z")
+    if axis == "x":
+        return [local_extents[2], local_extents[1], local_extents[0]]
+    if axis == "y":
+        return [local_extents[0], local_extents[2], local_extents[1]]
+    if axis == "z":
+        return local_extents
+    raise SpecValidationError(f"Unsupported component axis: {axis!r}.")
+
+
 def validate_model_spec(payload: Any) -> dict[str, Any]:
     """Validate and normalize a version-1, millimetre-based Fusion model spec."""
     if not isinstance(payload, dict):
@@ -68,6 +103,26 @@ def validate_model_spec(payload: Any) -> dict[str, Any]:
         raise SpecValidationError(
             "coordinate_system must be 'right-handed-z-up'."
         )
+
+    design_status = payload.get("design_status", "PRELIMINARY_CONCEPT")
+    if (
+        not isinstance(design_status, str)
+        or not design_status.strip()
+        or len(design_status) > 40
+    ):
+        raise SpecValidationError(
+            "design_status must be a non-empty string of at most 40 characters."
+        )
+    design_status = design_status.strip()
+
+    assumptions = payload.get("assumptions", [])
+    if not isinstance(assumptions, list) or any(
+        not isinstance(item, str) or not item.strip() for item in assumptions
+    ):
+        raise SpecValidationError("assumptions must be an array of non-empty strings.")
+    if len(assumptions) > 50:
+        raise SpecValidationError("At most 50 design assumptions are supported.")
+    assumptions = [item.strip() for item in assumptions]
 
     components = payload.get("components")
     if not isinstance(components, list) or not components:
@@ -100,10 +155,16 @@ def validate_model_spec(payload: Any) -> dict[str, Any]:
         used_names.add(name.casefold())
 
         component_type = component.get("type")
-        if component_type not in SUPPORTED_TYPES:
+        if not isinstance(component_type, str) or component_type not in SUPPORTED_TYPES:
             allowed = ", ".join(sorted(SUPPORTED_TYPES))
             raise SpecValidationError(
                 f"{prefix}.type must be one of: {allowed}."
+            )
+
+        axis = component.get("axis", "z")
+        if not isinstance(axis, str) or axis not in SUPPORTED_AXES:
+            raise SpecValidationError(
+                f"{prefix}.axis must be one of: {', '.join(sorted(SUPPORTED_AXES))}."
             )
 
         origin = component.get("origin_mm")
@@ -124,11 +185,12 @@ def validate_model_spec(payload: Any) -> dict[str, Any]:
         if not isinstance(dimensions, dict):
             raise SpecValidationError(f"{prefix}.dimensions_mm must be an object.")
 
-        required_dimensions = (
-            ("length", "width", "height")
-            if component_type == "box"
-            else ("diameter", "height")
-        )
+        required_dimensions = {
+            "box": ("length", "width", "height"),
+            "cylinder": ("diameter", "height"),
+            "annular_cylinder": ("outer_diameter", "inner_diameter", "height"),
+            "plate_with_bore": ("length", "width", "height", "bore_diameter"),
+        }[component_type]
         normalized_dimensions: dict[str, float] = {}
         for key in required_dimensions:
             value = _number(
@@ -142,10 +204,30 @@ def validate_model_spec(payload: Any) -> dict[str, Any]:
                 )
             normalized_dimensions[key] = value
 
+        if (
+            component_type == "annular_cylinder"
+            and normalized_dimensions["inner_diameter"]
+            >= normalized_dimensions["outer_diameter"]
+        ):
+            raise SpecValidationError(
+                f"{prefix}.dimensions_mm.inner_diameter must be smaller than "
+                "outer_diameter."
+            )
+        if component_type == "plate_with_bore" and normalized_dimensions[
+            "bore_diameter"
+        ] >= min(
+            normalized_dimensions["length"], normalized_dimensions["width"]
+        ):
+            raise SpecValidationError(
+                f"{prefix}.dimensions_mm.bore_diameter must be smaller than both "
+                "plate dimensions."
+            )
+
         normalized_components.append(
             {
                 "name": name,
                 "type": component_type,
+                "axis": axis,
                 "origin_mm": origin_values,
                 "dimensions_mm": normalized_dimensions,
             }
@@ -154,6 +236,8 @@ def validate_model_spec(payload: Any) -> dict[str, Any]:
     return {
         "schema_version": SCHEMA_VERSION,
         "design_name": design_name,
+        "design_status": design_status,
+        "assumptions": assumptions,
         "units": "mm",
         "coordinate_system": "right-handed-z-up",
         "components": normalized_components,

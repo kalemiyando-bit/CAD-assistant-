@@ -14,9 +14,15 @@ before substantial design work.
 ## Fusion-native pilot
 
 `Project_files_being_worked_on/fusion_native_pilot/` contains a validated model
-specification, a Fusion API generator for simple native box/cylinder features,
-and a separate STEP-import-to-F3D workflow. Both Fusion scripts must be run
-inside Autodesk Fusion. See its README for setup, limitations, and checks.
+specification, a Fusion API generator for simple native box, cylinder, annular,
+and bored-plate features, and a separate STEP-import-to-F3D workflow. Both
+Fusion scripts must be run inside Autodesk Fusion. See its README for setup,
+limitations, and checks.
+
+`Project_files_being_worked_on/wheel_drive_bench_demo/` contains the current
+preliminary wheel-drive concept, its assumptions, and a model specification.
+It is exploratory geometry only; dimensions, interfaces, powered operation, and
+electrical controls remain unapproved.
 
 ## Local validation
 

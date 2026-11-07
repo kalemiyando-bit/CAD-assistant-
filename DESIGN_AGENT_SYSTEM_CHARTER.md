@@ -157,6 +157,6 @@ The pilot succeeds when the workflow can:
 - Identify limitations and failed checks instead of overstating confidence
 - Demonstrate that smoke tests, independent review, source-based audits, and deterministic checks catch issues
 
-The first Fusion pilot now includes a validated JSON model specification, an in-Fusion native sketch/extrude generator for boxes and cylinders, and a STEP-to-F3D archive path with explicit feature-history limitations. Local tests cover only schema validation and Python syntax; the actual Fusion API smoke test remains outstanding.
+The first Fusion pilot includes a validated JSON model specification, an in-Fusion native sketch/extrude generator for boxes, cylinders, annular cylinders, and centered-bore plates, plus a STEP-to-F3D archive path with explicit feature-history limitations. Local tests cover schema validation and Python syntax; the actual Fusion API smoke test remains outstanding.
 
 After the Fusion pilot is run and reviewed in Autodesk Fusion, extend the workflow to 2D drawings and PCB drafts. Add other design disciplines only as concrete needs arise.

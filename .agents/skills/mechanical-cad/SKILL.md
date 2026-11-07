@@ -32,7 +32,7 @@ Follow `.agents/skills/engineering-design-coordinator/SKILL.md` for intake, targ
 ### Conversational Fusion model generation pilot
 
 - The first system implementation is conversational and Skill-driven; do not add a user-facing UI before repeated design tasks prove it useful.
-- For supported simple solids, prepare a version-1 JSON model specification using `Project_files_being_worked_on/fusion_native_pilot/README.md` and validate it with `fusion_model_spec.py`. The current schema supports millimetre, right-handed Z-up boxes and cylinders only.
+- For supported simple solids, prepare a version-1 JSON model specification using `Project_files_being_worked_on/fusion_native_pilot/README.md` and validate it with `fusion_model_spec.py`. The current schema supports millimetre, right-handed Z-up boxes, cylinders, annular cylinders, and centered-bore plates; components may align to global X, Y, or Z.
 - Run `generate_fusion_model.py` inside Autodesk Fusion to create native sketches, driving dimensions, user parameters, extrusion features, and an `.f3d` archive. The Replit environment cannot run the Fusion API.
 - For external CAD geometry that cannot be recreated with the supported native features, use `convert_step_to_fusion_archive.py` inside Fusion. Label the result as imported B-rep geometry without recovered feature history.
 - Review the generated report and the actual Fusion design. A local schema or syntax check does not count as a Fusion execution or engineering validation.

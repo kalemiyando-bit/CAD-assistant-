@@ -18,24 +18,35 @@ Autodesk Fusion runs the supplied script and creates the native design.
 
 ## Run the native model generator
 
-1. Copy this folder to a location where Fusion can access it.
-2. In Fusion, open **Tools → Scripts and Add-Ins** and add this folder as a
-   script location.
+1. Copy this entire folder to a location where Fusion can access it. Keep each
+   named script folder inside `fusion_native_pilot`; the entry points load their
+   shared implementation and validator from this parent folder.
+2. In Fusion, open **Tools → Scripts and Add-Ins**, choose **Add Script from
+   device**, and select the `generate_fusion_model/` child folder (not the
+   `fusion_native_pilot/` parent).
 3. Run **Generate Fusion Model from JSON**.
-4. Select `example_model_spec.json`, then choose an output folder.
+4. Select `example_model_spec.json` or the wheel demo's
+   `preliminary_wheel_drive_spec.json`, then choose an output folder.
 5. Open the resulting `.f3d` file in Fusion and inspect the component, sketch,
    driving dimensions, user parameters, and extrusion in the timeline.
 6. Review the adjacent `-report.json`; it records dimensions, checks, and
    SHA-256 for the archive.
 
 The model generator currently supports right-handed, Z-up millimetre models
-made from box and cylinder base features. It deliberately rejects unsupported
-features rather than silently approximating them.
+made from boxes, cylinders, annular cylinders, and centered-bore plates.
+Components can be aligned to global X, Y, or Z. The supported geometry remains
+limited to simple extruded profiles; unsupported features are rejected rather
+than silently approximated. Component placement is by translation and axis
+alignment only; joints, materials, clearances, and interference checks are not
+generated. X/Y-oriented parts, annular profiles, and bored plates need a Fusion
+smoke test before they can be treated as verified.
 
 ## Run the STEP archive handoff
 
-1. In Fusion's **Scripts and Add-Ins**, run **Import STEP to Fusion Archive**.
-2. Select a STEP file and an output folder.
+1. In Fusion's **Scripts and Add-Ins**, choose **Add Script from device** and
+   select the `convert_step_to_fusion_archive/` child folder.
+2. Run **Import STEP to Fusion Archive**, then select a STEP file and output
+   folder.
 3. Open the resulting `.f3d` file and review the source units, coordinate frame,
    body count, and critical dimensions against the design contract.
 
@@ -55,7 +66,8 @@ python -m py_compile Project_files_being_worked_on/fusion_native_pilot/fusion_mo
 These checks validate the JSON contract and Python syntax only. Autodesk Fusion
 is not installed in the Replit environment, so execution of the Fusion API
 scripts and inspection of the resulting `.f3d` remain blocked until they are run
-inside the user's Fusion installation.
+inside the user's Fusion installation. The X/Y axis placement and annular/bored
+profiles also require a first Fusion smoke test before being treated as verified.
 
 ## Engineering limits
 
