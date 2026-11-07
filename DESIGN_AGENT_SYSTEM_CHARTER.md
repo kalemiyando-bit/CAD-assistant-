@@ -1,6 +1,6 @@
 # Engineering Design Agent System Charter
 
-**Status:** Draft for discussion  
+**Status:** Conversational workflow foundation implemented; Fusion pilot awaiting execution in Autodesk Fusion  
 **Purpose:** Define how AI agents help turn a user's design brief and references into reviewable engineering deliverables.
 
 ## 1. Mission
@@ -157,4 +157,6 @@ The pilot succeeds when the workflow can:
 - Identify limitations and failed checks instead of overstating confidence
 - Demonstrate that smoke tests, independent review, source-based audits, and deterministic checks catch issues
 
-After the mechanical pilot, extend the workflow to 2D drawings and PCB drafts. Add other design disciplines only as concrete needs arise.
+The first Fusion pilot now includes a validated JSON model specification, an in-Fusion native sketch/extrude generator for boxes and cylinders, and a STEP-to-F3D archive path with explicit feature-history limitations. Local tests cover only schema validation and Python syntax; the actual Fusion API smoke test remains outstanding.
+
+After the Fusion pilot is run and reviewed in Autodesk Fusion, extend the workflow to 2D drawings and PCB drafts. Add other design disciplines only as concrete needs arise.
