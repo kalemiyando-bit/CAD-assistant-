@@ -1,3 +1,4 @@
 - [SolidWorks handoff](solidworks-handoff.md) — user wants importable CAD geometry and documentation to continue the robot design in SolidWorks.
 - [CAD export runtime](cad-export-runtime.md) — CadQuery's OpenCascade bindings may require a compatible Nix system-library setup in this workspace.
 - [Design research policy](design-research-policy.md) — ask each time how broad external research should be; engineering rigor applies in every mode.
+- [Design assistant scope](design-assistant-scope.md) — support the user's own engineering work across CAD software, and ask which software they use.
