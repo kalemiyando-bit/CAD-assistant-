@@ -2,3 +2,4 @@
 - [CAD export runtime](cad-export-runtime.md) — CadQuery's OpenCascade bindings may require a compatible Nix system-library setup in this workspace.
 - [Design research policy](design-research-policy.md) — ask each time how broad external research should be; engineering rigor applies in every mode.
 - [Design assistant scope](design-assistant-scope.md) — support the user's own engineering work across CAD software, and ask which software they use.
+- [Agent review boundaries](agent-review-boundaries.md) — independent reviewers stay read-only and route findings through change requests.
