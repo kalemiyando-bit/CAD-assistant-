@@ -68,7 +68,7 @@ Depending on scope, the coordinator may assign:
 - **Discipline designer:** develops the mechanical, drafting, or PCB work and records decisions and assumptions.
 - **Independent reviewer:** checks the proposed result against the design contract and reports findings without silently changing requirements.
 - **Deterministic validator:** runs CAD-kernel, geometry, dimensional, electrical-rule, design-rule, or file-integrity checks where tools are available.
-- **Documentation role:** prepares the component list, dimension schedule, calculation notes, and SolidWorks or EDA handoff instructions.
+- **Documentation role:** prepares the component list, dimension schedule, calculation notes, and target CAD/EDA handoff instructions.
 
 These are task roles, not a requirement to launch a permanent agent swarm. A small task may use fewer roles, but independent review and automated checks should be used where practical.
 
@@ -102,7 +102,8 @@ Deliver the requested files with a concise manifest, units, revision, coordinate
 
 These are proposed defaults to refine with the user:
 
-- **3D mechanical parts and assemblies:** STEP for neutral solid geometry. For robot geometry, use millimetres and the agreed model axes: global Z vertical, X chassis length, and Y chassis width. STEP does not preserve a native SolidWorks feature tree.
+- **3D mechanical parts and assemblies:** STEP for neutral solid geometry. For robot geometry, use millimetres and the agreed model axes: global Z vertical, X chassis length, and Y chassis width. STEP does not preserve the source CAD application's parametric feature history.
+- **Autodesk Fusion handoff:** When Fusion is the target and Fusion itself or its API is available, prefer a native `.f3d` design archive; use `.f3z` for Fusion assembly archives where appropriate. Autodesk's export API must run inside Fusion. If geometry is generated outside Fusion, use STEP as the neutral handoff or provide a Fusion script for the user to run; importing STEP and saving as `.f3d` does not recreate the original parametric feature history.
 - **2D engineering drawings:** PDF for readable sheets and DXF for editable 2D geometry. STEP describes 3D geometry; it is not a dimensioned 2D drawing sheet.
 - **Circuit-board drafts:** an editable native EDA project, fabrication outputs such as Gerber and drill files when requested, and a STEP board/mechanical model when needed for enclosure fit.
 
@@ -152,7 +153,7 @@ The pilot succeeds when the workflow can:
 - Capture requirements and research scope without losing the user's intent
 - Ask which design software the user uses and adapt the handoff to its real capabilities
 - Keep dimensions, coordinate systems, and assumptions consistent
-- Produce importable STEP geometry and a useful SolidWorks handoff
+- Produce a useful Fusion handoff, preferring native archives where Fusion can create them and using STEP as a verified fallback
 - Identify limitations and failed checks instead of overstating confidence
 - Demonstrate that smoke tests, independent review, source-based audits, and deterministic checks catch issues
 

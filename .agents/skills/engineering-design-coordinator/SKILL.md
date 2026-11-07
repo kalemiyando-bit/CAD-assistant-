@@ -51,7 +51,7 @@ When a separate subagent/reviewer cannot be used, perform a distinct review pass
 
 ## Tool readiness and software handoff
 
-Before substantial modeling or simulation, smoke-test every required tool path with a small, non-destructive known example. Check the actual exported/imported result, not just a successful command exit. If the target application is unavailable, say so and offer a compatible file, script/macro, or user-run instructions instead. Never imply that Replit can operate the user's local SolidWorks, AutoCAD, or EDA installation without a working connection.
+Before substantial modeling or simulation, smoke-test every required tool path with a small, non-destructive known example. Check the actual exported/imported result, not just a successful command exit. If the target application is unavailable, say so and offer a compatible file, script/macro, or user-run instructions instead. Never imply that Replit can operate the user's local Fusion, SolidWorks, AutoCAD, or EDA installation without a working connection.
 
 Follow the target application's supported format and version. Ask before installing dependencies or invoking paid services. Stop on permission or access errors; do not bypass them.
 

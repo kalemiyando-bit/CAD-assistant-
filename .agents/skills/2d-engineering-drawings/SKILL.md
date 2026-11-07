@@ -1,6 +1,6 @@
 ---
 name: 2d-engineering-drawings
-description: Produces or reviews dimensioned 2D engineering drawings and CAD layouts from a design contract or 3D model. Use for AutoCAD, SolidWorks drawings, DXF, PDF, and related drafting tasks.
+description: Produces or reviews dimensioned 2D engineering drawings and CAD layouts from a design contract or 3D model. Use for Autodesk Fusion, AutoCAD, SolidWorks drawings, DXF, PDF, and related drafting tasks.
 ---
 
 # 2D Engineering Drawings

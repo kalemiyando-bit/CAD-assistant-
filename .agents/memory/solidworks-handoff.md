@@ -1,12 +1,12 @@
 ---
-name: SolidWorks handoff
-description: The user's preferred CAD workflow for the robot design.
+name: CAD handoff targets
+description: The user's planned primary CAD tool and neutral/native handoff preferences.
 ---
 
-The user plans to continue designing the robot in SolidWorks and wants CAD geometry that can be imported and edited there.
-For robot CAD deliverables, provide STEP files only; do not include other exported file formats.
-The robot's main coordinate frame must use global Z for vertical, X for chassis length, and Y for chassis width. The user means the model coordinate frame, not the camera view, when asking for Z-up.
+Autodesk Fusion is the user's planned primary CAD target. Continue asking which software is intended for each design task because the system must still support other tools.
+For Fusion-targeted work, prefer native `.f3d` design archives and `.f3z` assembly archives when they can be created or exported through Fusion. STEP remains a neutral exchange format; importing STEP and saving it as `.f3d` does not recreate the original parametric feature history.
+For robot geometry, use millimetres and global Z vertical, X chassis length, and Y chassis width. These are model coordinates, not camera orientation.
 
-**Why:** The user stated they intend to import generated files into their SolidWorks software and continue modifying them.
+**Why:** The user is planning to change the system's primary CAD software to Autodesk Fusion while retaining support for other CAD tools.
 
-**How to apply:** Export separate part STEP files and coordinated assembly STEP files only. Keep the robot's actual model coordinates Z-up; don't treat a camera rotation as changing the main axes. Model dimensions in millimetres, and explain that STEP does not preserve a native SolidWorks feature tree.
+**How to apply:** Ask for the target software and version for every design. If Fusion is selected, use native Fusion archives only when Fusion or its API can actually create and verify them; otherwise provide STEP and explain the feature-history limitation.

@@ -18,6 +18,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - Use `independent-engineering-review` for a separate, read-only review.
 - Shared assignment, design-contract, change-request, and review templates live under `.agents/skills/engineering-design-coordinator/references/`.
 - The coordinator must ask which software the user is using and the desired research scope when those are not already stated.
+- Autodesk Fusion is the planned primary CAD target, but continue asking which software is intended for each design task.
 - Agents own separate outputs. A reviewer reports findings and does not silently edit another agent's files.
 - No agent may create, edit, delete, rename, or otherwise change `.gitignore`. Keep required project source, Skills, assets, Replit configuration, dependency manifests, and lockfiles tracked for GitHub transfer; if a required file is ignored or untracked, stop and ask the user.
 - Track dependency manifests and lockfiles, not installed folders such as `node_modules` or temporary caches; dependencies must be reproducible in a fresh Replit.
@@ -44,24 +45,24 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - The first version is conversational and Skill-driven; do not build a user-facing UI before validating the workflow.
 - Ask for the target software and version per design task; do not claim direct access to desktop CAD/EDA software unless it is actually connected.
 - Use bounded specialist roles, single-writer ownership, formal change requests, independent review, and deterministic checks where available.
-- STEP is for 3D neutral geometry; dimensioned 2D drawings and circuit-board deliverables need their own formats.
+- Prefer native Fusion `.f3d`/`.f3z` output when Fusion is the target and the design can be created or exported through Fusion. STEP is the neutral 3D fallback; imported STEP does not restore the original feature timeline. Dimensioned 2D drawings and circuit-board deliverables need their own formats.
 - A release manifest detects missing, empty, or changed files; it does not prove engineering correctness.
 
 ## Product
 
-The assistant helps the user develop their own engineering designs across SolidWorks, AutoCAD, and other CAD/EDA tools. It asks which software is being used, follows the research scope chosen for that task, and distinguishes verified information from assumptions and unvalidated design proposals.
+The assistant helps the user develop their own engineering designs across Autodesk Fusion, SolidWorks, AutoCAD, and other CAD/EDA tools. Fusion is the planned primary CAD target, but the assistant asks which software is being used for each task, follows the selected research scope, and distinguishes verified information from assumptions and unvalidated design proposals.
 
 ## User preferences
 
 - Ask which design software the user is using for each task; ask for version/OS when relevant.
 - Ask each time how broad external research should be. Engineering rigor applies regardless of research scope.
 - The user is building an engineering-support system, not seeking to copy a product's appearance.
-- For robot 3D CAD handoffs, use STEP and keep the model coordinates Z-up, X length, and Y width.
+- For robot 3D CAD handoffs, prefer native Fusion archives when Fusion is the target and can produce them; use STEP for neutral exchange or when requested. Keep robot model coordinates Z-up, X length, and Y width.
 
 ## Gotchas
 
 - The Robot V1 geometry is preliminary; packaging envelopes and approximate gear geometry are not manufacturing validation.
-- A STEP file carries neutral 3D geometry but does not preserve a native SolidWorks feature tree.
+- A STEP file carries neutral 3D geometry but does not preserve the source CAD application's parametric feature history.
 - The default system Python currently cannot import CadQuery or ezdxf. Check the project environment before running the CAD generator; do not assume these tools are available or install packages without following package-management guidance.
 - An AI or simulation “pass” is not proof of safe operation; retain failed checks and unverified values in the handoff.
 
