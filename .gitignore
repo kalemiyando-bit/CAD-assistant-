@@ -16,6 +16,11 @@ out-tsc
 
 # dependencies
 node_modules
+.pythonlibs/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
 
 # IDEs and editors
 /.idea
@@ -53,3 +58,6 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Large exported STEP CAD deliverables
+/Project_files_being_worked_on/ROBOT_V1_DESIGN/18_STEP_Only/
