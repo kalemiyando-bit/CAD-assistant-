@@ -18,14 +18,16 @@ class ShaftDrawingTests(unittest.TestCase):
 
     def test_dxf_is_mm_and_contains_both_views_and_annotations(self) -> None:
         diameter, length = load_shaft_dimensions()
-        dxf_text = build_drawing(diameter, length).dxf.render()
+        dxf_text = build_drawing(diameter, length).render_r12_dxf()
         lines = dxf_text.splitlines()
         self.assertEqual(len(lines) % 2, 0)
         pairs = list(zip(lines[::2], lines[1::2]))
         self.assertEqual(pairs[-1], ("0", "EOF"))
+        self.assertIn(("1", "AC1009"), pairs)
 
         units_index = pairs.index(("9", "$INSUNITS"))
         self.assertEqual(pairs[units_index + 1], ("70", "4"))
+        self.assertNotIn(("2", "TABLES"), pairs)
 
         for label in (
             "SIDE VIEW",

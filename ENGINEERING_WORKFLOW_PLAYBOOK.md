@@ -53,10 +53,15 @@ useful; unsupported production claims are not.
 - The script reads and validates the shaft component from
   `preliminary_wheel_drive_spec.json`. It reuses the project's standard-library
   `DxfWriter` in `wheel_drive_bench_demo/generate_preliminary_dxf.py` and writes:
-  - `shaft_2d_test/shaft_6x46_A0.dxf` — editable millimetre DXF, with side and
-    end views, dimensions, notes, and a sheet frame.
+  - `shaft_2d_test/shaft_6x46_A0_R12_retry.dxf` — minimal R12 ASCII DXF in
+    millimetres, with side and end views, dimensions, notes, and a sheet frame.
   - `shaft_2d_test/shaft_6x46_A0_preview.html` — self-contained SVG preview with
     a DXF download link.
+- The original AC1015 attempt (`shaft_6x46_A0.dxf`) failed to insert in Fusion
+  2026 with the generic message “DXF file failed to insert.” It is retained for
+  comparison only. The generator now offers a simpler R12 retry with all
+  entities on layer 0; this is a compatibility attempt, not a verified Fusion
+  import.
 - The dimension labels in the DXF are ordinary 2D geometry/text, not
   associative Fusion dimensions. The sheet imports as sketch geometry; it does
   not become a native Fusion drawing sheet.
@@ -70,13 +75,14 @@ python -m unittest discover -s Project_files_being_worked_on/wheel_drive_bench_d
 ```
 
 The current eight tests pass. They check the preliminary concept DXF and the
-shaft generator's source dimensions, millimetre units, views, labels, and
-preview SVG. These checks do **not** test Fusion's DXF importer.
+shaft generator's source dimensions, R12 header, millimetre units, views,
+labels, and preview SVG. These checks do **not** test Fusion's DXF importer.
 
-The remaining application check is for the user to import the DXF in Fusion,
-keep units in millimetres, and inspect view placement, scale, and text. Record
-the Fusion version and any import prompts or missing annotations. Do not reuse
-this import route for other parts until that review is received.
+The remaining application check is for the user to import the R12 retry in
+Fusion, keep units in millimetres, and inspect view placement, scale, and text.
+Record the Fusion version and any import prompts or missing annotations. Do not
+reuse this import route for other parts until that review is received. A local
+DXF parser check is not evidence of target-application importability.
 
 If a future request requires a native Fusion drawing sheet, create it from the
 reviewed 3D design only after the Fusion drawing workflow has itself been

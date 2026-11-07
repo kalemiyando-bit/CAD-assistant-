@@ -47,14 +47,14 @@ content_type = "application/octet-stream"
 id = "NmQU9vnMAwXQ1pFYA4Kij"
 uri = "file://Project_files_being_worked_on/wheel_drive_bench_demo/shaft_2d_test/shaft_6x46_A0_preview.html"
 type = "html"
-title = "Shaft 2D Drawing Preview — A0"
-description = "Preliminary 1:1 millimetre drawing of the 6 × 46 mm test shaft. Open the preview to see the drawing and download its editable DXF for Fusion."
+title = "Shaft Drawing — Fusion R12 Retry"
+description = "The updated preview downloads a simpler R12 ASCII DXF. It has not yet been verified in Fusion 2026."
 logical_id = "93a27490-d63a-41cb-812d-a9c0041442db"
-content_hash = "sha256:883e01a99dc69acafa0207660a13ec5428325dd9e3145451c667c2a02a17654b"
-size = 12678
-mtime_ms = 1794084590883
-storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:a43c77b9-0d73-46e7-b82c-258179bbb12f/93a27490-d63a-41cb-812d-a9c0041442db/c99ef81f-f485-4a7b-9ac5-f7fd9b673a2b"
-storage_version_token = "1794084690660430"
+content_hash = "sha256:6b065d583daba73bcfb01f0270befc2e7b085a0347e0652a09e079bc70aaf333"
+size = 11793
+mtime_ms = 1794085969232
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:a43c77b9-0d73-46e7-b82c-258179bbb12f/93a27490-d63a-41cb-812d-a9c0041442db/0bcf2b5a-3f1f-4bd1-97fc-d231d3cbdf04"
+storage_version_token = "1794086008537682"
 content_type = "text/html"
 
 [[outputs]]

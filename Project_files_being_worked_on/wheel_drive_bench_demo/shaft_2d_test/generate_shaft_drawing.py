@@ -145,6 +145,41 @@ class ShaftDrawing:
   {''.join(self.svg)}
 </svg>"""
 
+    def render_r12_dxf(self) -> str:
+        """Write a minimal R12 DXF with only header and model-space entities."""
+        lines = [
+            "0",
+            "SECTION",
+            "2",
+            "HEADER",
+            "9",
+            "$ACADVER",
+            "1",
+            "AC1009",
+            "9",
+            "$INSUNITS",
+            "70",
+            "4",
+            "9",
+            "$MEASUREMENT",
+            "70",
+            "1",
+            "0",
+            "ENDSEC",
+            "0",
+            "SECTION",
+            "2",
+            "ENTITIES",
+        ]
+        entity_values = self.dxf.entities
+        for index in range(0, len(entity_values), 2):
+            code, value = entity_values[index : index + 2]
+            # Put every entity on the default layer so the minimal R12 file
+            # does not depend on a layer table.
+            lines.extend((code, "0" if code == "8" else value))
+        lines.extend(("0", "ENDSEC", "0", "EOF"))
+        return "\n".join(lines) + "\n"
+
 
 def load_shaft_dimensions() -> tuple[float, float]:
     source = PROJECT_DIR / "preliminary_wheel_drive_spec.json"
@@ -242,10 +277,10 @@ def build_drawing(diameter_mm: float, length_mm: float) -> ShaftDrawing:
 def main() -> None:
     diameter_mm, length_mm = load_shaft_dimensions()
     drawing = build_drawing(diameter_mm, length_mm)
-    dxf_text = drawing.dxf.render()
+    dxf_text = drawing.render_r12_dxf()
     svg_text = drawing.render_svg()
 
-    dxf_path = HERE / "shaft_6x46_A0.dxf"
+    dxf_path = HERE / "shaft_6x46_A0_R12_retry.dxf"
     html_path = HERE / "shaft_6x46_A0_preview.html"
     dxf_path.write_text(dxf_text, encoding="ascii")
 
@@ -274,8 +309,8 @@ def main() -> None:
   <main>
     <div class="notice">
       <strong>PRELIMINARY — WORKFLOW TEST — NOT FOR MANUFACTURE</strong>
-      <a class="download" href="{dxf_download}" download="shaft_6x46_A0.dxf">
-        Download editable DXF for Fusion
+      <a class="download" href="{dxf_download}" download="shaft_6x46_A0_R12_retry.dxf">
+        Download R12 DXF retry for Fusion
       </a>
     </div>
     <section class="sheet" aria-label="Dimensioned shaft drawing">
@@ -283,7 +318,7 @@ def main() -> None:
     </section>
     <p>
       Provisional test geometry: diameter {diameter_mm:g} mm × length
-      {length_mm:g} mm. This is a neutral DXF drawing sheet; its annotations
+      {length_mm:g} mm. This R12 ASCII DXF is an import retry; its annotations
       are drawn geometry, not associative Fusion dimensions.
     </p>
   </main>
