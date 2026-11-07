@@ -11,6 +11,9 @@ The coordinator records the design contract, software/version, research scope,
 deliverables, requirements, interfaces, assumptions, and verification gates
 before substantial design work.
 
+For the concrete 2D, Fusion 3D, and PCB implementation paths—and their current
+verification status—see `ENGINEERING_WORKFLOW_PLAYBOOK.md`.
+
 ## Fusion-native pilot
 
 `Project_files_being_worked_on/fusion_native_pilot/` contains a validated model

@@ -56,7 +56,7 @@ Autodesk's current documentation lists Fusion Electronics native files as `.fsch
 | O-04 | Wheel dimensions, shaft diameter, bearing size/spacing, and coupling dimensions | Required to model interfaces without inventing fits | Not user-specified; concept placeholders only |
 | O-05 | Motor supply and controller power source | Required for component ratings and PCB power design | Not specified |
 | O-06 | Exact Fusion version and whether the user can run the supplied script | Required to create and validate native Fusion files | Fusion on Windows; version unknown; user is willing to learn |
-| O-07 | Drawing output format | Required to prepare editable/readable part drawings | Not confirmed |
+| O-07 | Drawing output format | Required to prepare editable/readable part drawings | DXF selected for the first editable import test; final per-part and native Fusion drawing formats remain open |
 | O-08 | EDA software and version | Required to prepare an editable PCB project | Not specified |
 
 ## Verification and safety boundary

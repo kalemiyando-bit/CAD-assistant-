@@ -14,6 +14,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 ## Agent system
 
 - Start a new engineering-design request with `.agents/skills/engineering-design-coordinator/SKILL.md`.
+- Read `ENGINEERING_WORKFLOW_PLAYBOOK.md` for project-specific generation paths and which CAD/EDA checks have or have not passed.
 - Use the relevant discipline Skill: `mechanical-cad`, `2d-engineering-drawings`, or `pcb-design`.
 - Use `independent-engineering-review` for a separate, read-only review.
 - Shared assignment, design-contract, change-request, and review templates live under `.agents/skills/engineering-design-coordinator/references/`.
@@ -41,6 +42,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - `.agents/skills/engineering-design-coordinator/scripts/release_manifest.py` — standard-library release file/hash manifest tool
 - `Project_files_being_worked_on/fusion_native_pilot/` — Fusion scripts and the tested-outside-Fusion model-spec validator
 - `Project_files_being_worked_on/wheel_drive_bench_demo/` — preliminary wheel-drive concept, assumptions, and model specification
+- `ENGINEERING_WORKFLOW_PLAYBOOK.md` — reproducible 2D/3D/PCB handoff paths and evidence status
 
 ## Architecture decisions
 

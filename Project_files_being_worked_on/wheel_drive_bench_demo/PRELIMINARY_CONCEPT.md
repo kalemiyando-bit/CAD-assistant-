@@ -46,7 +46,12 @@ The recorded user intent is: tap/toggle to run in a direction at the current spe
 
 The Replit environment cannot run Autodesk Fusion. The Fusion script, `.f3d` export, second-session reopen, clearances, and fit have **not** been run or verified here. The generated design will remain a preliminary native CAD handoff, not an engineering release.
 
-The checks completed so far are recorded in `REVIEW_A0.md`. That is a non-independent review by the creator, not an independent engineering approval. `PRELIMINARY-MANIFEST.json` checks package file integrity only.
+An initial shaft-only DXF workflow test was added later under `shaft_2d_test/`.
+It has not been imported into Fusion and is not a released per-part drawing set.
+The checks recorded in `REVIEW_A0.md` are the original non-independent review
+by the creator; that report predates the shaft drawing. It is not an independent
+engineering approval. `PRELIMINARY-MANIFEST.json` checks package file integrity
+only.
 
 ## Next engineering inputs
 

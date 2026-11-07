@@ -56,3 +56,17 @@ mtime_ms = 1794084590883
 storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:a43c77b9-0d73-46e7-b82c-258179bbb12f/93a27490-d63a-41cb-812d-a9c0041442db/c99ef81f-f485-4a7b-9ac5-f7fd9b673a2b"
 storage_version_token = "1794084690660430"
 content_type = "text/html"
+
+[[outputs]]
+id = "yS9sVoflSC4afkfriaIpj"
+uri = "file://ENGINEERING_WORKFLOW_PLAYBOOK.md"
+type = "text"
+title = "Engineering Workflow Playbook"
+description = "Project guide to the exact 2D DXF, Fusion 3D, assembly, safety/control, and PCB methods, including scripts, checks, and what has not yet been verified."
+logical_id = "54630d7b-c99c-42de-bb36-72efca3f4161"
+content_hash = "sha256:ca1e81b97a76d60a46b9668fad339d9c16db8224139607b90c310c6ba021bb31"
+size = 9165
+mtime_ms = 1794084960432
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:a43c77b9-0d73-46e7-b82c-258179bbb12f/54630d7b-c99c-42de-bb36-72efca3f4161/f3a1ae24-1c12-45b9-8e47-e542eac763f1"
+storage_version_token = "1794085003878170"
+content_type = "text/markdown"

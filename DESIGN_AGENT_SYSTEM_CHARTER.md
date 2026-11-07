@@ -146,6 +146,11 @@ An agent review is not a substitute for physical testing or qualified engineerin
 
 ## 11. Pilot and success criteria
 
+For the project's concrete implementation paths and current verification
+evidence, use `ENGINEERING_WORKFLOW_PLAYBOOK.md` alongside the relevant
+discipline Skills. The playbook distinguishes local checks from actual Fusion
+or EDA application checks.
+
 The existing Robot V1 brief and CAD source are a candidate mechanical pilot, not a correctness baseline: parts of that model are preliminary packaging envelopes and require engineering validation.
 
 The pilot succeeds when the workflow can:
