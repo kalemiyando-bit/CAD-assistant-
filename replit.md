@@ -42,7 +42,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 
 ## Architecture decisions
 
-- The first version is conversational and Skill-driven; do not build a user-facing UI before validating the workflow.
+- This is an agent-support system for the user and other Replit agents to help build CAD designs, not a web app or standalone Python app. Keep it conversational and Skill-driven; Python may be used for helper scripts, but not as the product. Do not build user-facing UI before validating the workflow.
 - Ask for the target software and version per design task; do not claim direct access to desktop CAD/EDA software unless it is actually connected.
 - Use bounded specialist roles, single-writer ownership, formal change requests, independent review, and deterministic checks where available.
 - Prefer native Fusion `.f3d`/`.f3z` output when Fusion is the target and the design can be created or exported through Fusion. STEP is the neutral 3D fallback; imported STEP does not restore the original feature timeline. Dimensioned 2D drawings and circuit-board deliverables need their own formats.
