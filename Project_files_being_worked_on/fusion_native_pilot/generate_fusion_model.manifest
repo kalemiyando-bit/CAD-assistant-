@@ -1,0 +1,10 @@
+{
+  "autodeskProduct": "Fusion360",
+  "type": "script",
+  "author": "CAD Assistant",
+  "description": "Generate a native Fusion design from a validated JSON model specification.",
+  "version": "1.0.1",
+  "runOnStartup": false,
+  "supportedOS": "windows|mac",
+  "editEnabled": true
+}
