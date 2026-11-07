@@ -9,6 +9,8 @@ The system is a conversational, Replit-first workflow that uses Replit's Agent e
 
 Ask which software the user is using for each design task, and ask for its version or operating system when compatibility or instructions depend on them. Make clear whether the agent can operate that software directly or can only provide compatible files, scripts, or instructions.
 
+For early system testing, the user wants to describe a design conversationally, receive a clearly labeled preliminary draft, and continue developing it in Fusion. Do not block these tests on manufacturing-release completeness; keep assumptions and unverified limits explicit.
+
 **Why:** The user emphasized that CAD Assistant exists to help them and other Replit agents build CAD designs; a conventional web app or standalone Python app is not the product. Autodesk Fusion is planned as the primary CAD target, with support for other tools.
 
 **How to apply:** Include a software-selection question in every design intake. Keep software-specific handoffs and tool-capability checks separate from the core, platform-neutral design brief.
