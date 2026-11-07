@@ -3,8 +3,10 @@ name: Design research policy
 description: Research preferences for original or novel design work.
 ---
 
-In original-design mode, prioritize research into engineering facts such as material properties, standards, physical constraints, and safety considerations. Do not search for similar products or use existing designs as visual templates unless the user asks for that research.
+Ask the user for the desired research scope for each design project; searches may be allowed even for novel concepts. Offer distinct scopes such as similar-product/prior-art research, engineering-facts-only research, user-supplied sources only, or no external research.
 
-**Why:** The user sometimes develops novel concepts and prefers engineering-fact research over searching for similar designs.
+Engineering rigor is required in every mode. Separate sourced facts from creative choices, calculations, assumptions, and unverified claims. Do not present a design as validated merely because research was performed.
 
-**How to apply:** Ask or follow the selected research mode for each project. Keep technical evidence separate from creative design choices, cite factual sources, and ask before expanding into prior-art or similar-product searches.
+**Why:** The user wants flexibility about searches and prefers to choose each time, while maintaining engineering correctness.
+
+**How to apply:** Before researching, confirm the allowed scope when it is not already stated. Cite technical claims and follow the selected scope; do not treat a request for an original concept as an automatic ban on all searches.
