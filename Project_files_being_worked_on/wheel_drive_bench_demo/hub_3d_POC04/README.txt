@@ -23,9 +23,10 @@ have been created. Do not treat this JSON as a checked Fusion model.
 When the part set is ready for that verification pass:
 
 1. In Autodesk Fusion on Windows, open Tools → Scripts and Add-Ins.
-2. Select the existing `generate_fusion_model` script (version 1.2.0) and click
+2. Select the existing `generate_fusion_model` script (version 1.3.0) and click
    Run; do not add or install a duplicate copy.
-3. Select `hub_POC04_model_spec.json` and choose an output folder.
+3. Select `hub_POC04_model_spec.json`; the add-in saves to its configured
+   default output folder.
 4. Inspect one component, millimetres, 30 mm OD, 6 mm nominal bore, 8 mm width,
    +Y axis, base face centered at the origin, and the editable sketch/extrusion.
 5. Reopen the resulting `.f3d` archive before recording the archive-open check

@@ -121,7 +121,11 @@ If a future request requires a native Fusion drawing sheet, create it from the
 reviewed 3D design only after the Fusion drawing workflow has itself been
 smoke-tested. Do not describe the current DXF as a native drawing.
 
-## 3D mechanical handoff — shaft capability user-confirmed; exact checks pending
+## 3D mechanical handoff — multi-spec generator updated; Fusion checks pending
+
+For the wheel-drive user's current Fusion setup and the three available
+part-level specifications, see
+`Project_files_being_worked_on/wheel_drive_bench_demo/GENERATE_EXISTING_DESIGNS.md`.
 
 ### Simple native Fusion geometry
 
@@ -142,8 +146,10 @@ smoke-tested. Do not describe the current DXF as a native drawing.
 4. Run the existing Fusion script **inside Autodesk Fusion**:
    `Project_files_being_worked_on/fusion_native_pilot/generate_fusion_model/`.
    In Fusion, add that child folder through **Tools → Scripts and Add-Ins**,
-   choose **Generate Fusion Model from JSON**, select the one-part JSON, and
-   choose an output folder.
+   choose **Generate Fusion Model from JSON**, and select one or more one-part
+   JSON specifications. Each selected specification creates a separate design
+   and `.f3d` archive. The script saves to its configured default output folder,
+   creating it if needed; it does not show an output-folder prompt.
 5. Inspect the generated `.f3d` and adjacent report in Fusion. Check units,
    component count, axis orientation, critical dimensions, sketches, parameters,
    and extrusions. Reopen the archive in another Fusion session before claiming
@@ -151,20 +157,27 @@ smoke-tested. Do not describe the current DXF as a native drawing.
 
 ### Proven versus pending
 
-- The local schema suite currently has 18 passing tests:
+- The focused local model-spec and batch-selection suites currently have 27
+  passing tests:
 
   ```sh
-  python -m unittest discover -s Project_files_being_worked_on/fusion_native_pilot/tests -v
+  python -m unittest discover -s Project_files_being_worked_on/fusion_native_pilot/tests -p 'test_fusion*.py' -v
   ```
 
-- Those tests validate JSON normalization and rejection cases. They do **not**
-  execute the Autodesk Fusion API.
+- These tests validate JSON normalization/rejection and multi-file selection
+  helpers. They do **not** execute the Autodesk Fusion API.
 - The user now reports that the shaft example tests passed and both 2D and 3D
   outputs can be created. The earlier note that Fusion execution was pending is
   superseded for that reported capability, but the exact Fusion-side checks have
   not yet been recorded. Confirm whether the generator ran inside Fusion, the
   `.f3d` opened, and the shaft's units, dimensions, and +Y axis were inspected
   before marking those specific checks complete.
+- The user deleted their prior local add-in and asked to start from a fresh
+  installation. The current project package is version 1.3.0; the user has not
+  yet reported installing or running this version in Fusion.
+- Batch selection in Fusion and automatic creation/use of the configured local
+  output directory are not yet confirmed in the desktop application. The output
+  location is set in `generate_fusion_model.py`.
 - Y-axis placement for the other supported features and annular/bored geometry
   still need their own Fusion smoke tests.
 - The model generator's success report is not proof of fit, strength, safety, or
@@ -218,8 +231,8 @@ The existing candidate is not evidence that the motor is suitable.
 | Area | Locally checked | Still pending |
 |---|---|---|
 | Shaft 2D test | DXF/HTML generated; eight project drawing tests pass | User's Fusion import, scale, and annotation review |
-| Simple 3D model | JSON schema suite passes; generator and report path are documented | Run generator inside Fusion; inspect and reopen `.f3d` |
-| Assembly | A seven-envelope preliminary spec exists | Real part interfaces, joints, clearances, fits, and assembly review |
+| Simple 3D model | 27 focused local tests pass; one/many JSON generation is implemented | Fresh v1.3.0 install, batch run, output-folder creation, Fusion inspection, and archive reopen |
+| Assembly | A seven-envelope preliminary spec exists; generator can create multiple placed components from one spec | Import/link reviewed part archives, define joints and interfaces, and verify the Fusion assembly/archive workflow |
 | PCB/control | Requirements and candidate parts are documented | EDA choice, selected parts, schematic, board, firmware, and checks |
 | Safety | High candidate rim-speed concern is documented | Guard, speed limit, stop/control requirements, and powered-test procedure |
 

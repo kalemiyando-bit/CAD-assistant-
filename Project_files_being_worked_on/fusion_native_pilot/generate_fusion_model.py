@@ -37,10 +37,14 @@ from fusion_model_spec import (
     safe_file_stem,
     validate_model_spec,
 )
-from fusion_spec_batch import normalize_selected_spec_paths
+from fusion_spec_batch import ensure_output_folder, normalize_selected_spec_paths
 
 
-SCRIPT_VERSION = "1.2.0"
+SCRIPT_VERSION = "1.3.0"
+DEFAULT_OUTPUT_FOLDER = (
+    r"C:\Users\mweny\Documents\3D_DESIGNS\FUSION_26\CAD_Assistant"
+    r"\wheel_drive_bench_demo\GENERATED"
+)
 
 
 def _unique_base(output_dir: str, stem: str) -> str:
@@ -484,12 +488,14 @@ def _select_specs(ui) -> list[str]:
     )
 
 
-def _select_output_folder(ui):
-    dialog = ui.createFolderDialog()
-    dialog.title = "Choose a folder for the Fusion archive and report"
-    if dialog.showDialog() != adsk.core.DialogResults.DialogOK:
-        return None
-    return dialog.folder
+def _prepare_output_folder() -> str:
+    try:
+        return ensure_output_folder(DEFAULT_OUTPUT_FOLDER)
+    except OSError as error:
+        raise RuntimeError(
+            f"Could not prepare the configured Fusion output folder "
+            f"{DEFAULT_OUTPUT_FOLDER}: {error}"
+        ) from error
 
 
 def _generate_one_spec(app, spec_path: str, output_dir: str) -> dict:
@@ -632,9 +638,7 @@ def run(context):
         spec_paths = _select_specs(ui)
         if not spec_paths:
             return
-        output_dir = _select_output_folder(ui)
-        if not output_dir:
-            return
+        output_dir = _prepare_output_folder()
 
         successes = []
         failures = []

@@ -29,15 +29,17 @@ and creates the native design.
    `fusion_native_pilot/` parent).
 3. Run **Generate Fusion Model from JSON**.
 4. In the file picker, select one JSON model specification or multi-select
-   several JSON files, then choose one output folder. Selecting one file keeps
-   the original one-at-a-time workflow.
-5. The add-in creates a separate Fusion design, `.f3d` archive, and adjacent
+   several JSON files. Selecting one file keeps the one-at-a-time workflow.
+5. The add-in creates the configured output folder if needed; it does not ask
+   for an output location on each run. The folder is set by
+   `DEFAULT_OUTPUT_FOLDER` in `generate_fusion_model.py`.
+6. The add-in creates a separate Fusion design, `.f3d` archive, and adjacent
    `-report.json` for each selected specification. A single specification with
    several components still creates one combined design. If one specification
    fails, the add-in continues with the rest and reports each result.
-6. Open each resulting `.f3d` file in Fusion and inspect the component, sketch,
+7. Open each resulting `.f3d` file in Fusion and inspect the component, sketch,
    driving dimensions, user parameters, and extrusion in the timeline.
-7. Review each adjacent `-report.json`; it records dimensions, checks, and
+8. Review each adjacent `-report.json`; it records dimensions, checks, and
    SHA-256 for the archive.
 
 The shaft test spec creates one provisional straight cylinder: Ø6 mm × 46 mm,
@@ -74,7 +76,7 @@ From the workspace root:
 
 ```sh
 python -m unittest discover -s Project_files_being_worked_on/fusion_native_pilot/tests -v
-python -m py_compile Project_files_being_worked_on/fusion_native_pilot/fusion_model_spec.py Project_files_being_worked_on/fusion_native_pilot/generate_fusion_model.py Project_files_being_worked_on/fusion_native_pilot/convert_step_to_fusion_archive.py
+python -m py_compile Project_files_being_worked_on/fusion_native_pilot/fusion_model_spec.py Project_files_being_worked_on/fusion_native_pilot/fusion_spec_batch.py Project_files_being_worked_on/fusion_native_pilot/generate_fusion_model.py Project_files_being_worked_on/fusion_native_pilot/convert_step_to_fusion_archive.py
 ```
 
 These checks validate the JSON contract and Python syntax only. Autodesk Fusion
@@ -84,9 +86,10 @@ record the Fusion version or whether the resulting `.f3d` was opened and its
 dimensions and axis inspected. X/Y-oriented variants and annular/bored profiles
 still need their own Fusion smoke tests before being treated as verified.
 
-Version 1.2.0 adds multi-selection of JSON model specifications in the existing
-`generate_fusion_model` script. It does not require a separate add-in for each
-part; update the existing script package once to use the batch feature.
+Version 1.3.0 adds multi-selection of JSON model specifications and a fixed,
+automatically created output folder to the existing `generate_fusion_model`
+script. It does not require a separate add-in for each part; update this script
+package once to use the current workflow.
 
 ## Engineering limits
 

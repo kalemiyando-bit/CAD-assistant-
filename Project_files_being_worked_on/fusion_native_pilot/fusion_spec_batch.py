@@ -34,3 +34,16 @@ def normalize_selected_spec_paths(
         seen.add(identity)
         normalized.append(path)
     return normalized
+
+
+def ensure_output_folder(path: str) -> str:
+    """Create the configured output directory and return its normalized path."""
+    if not path or not path.strip():
+        raise ValueError("An output folder path must be configured.")
+    normalized_path = os.path.normpath(path)
+    os.makedirs(normalized_path, exist_ok=True)
+    if not os.path.isdir(normalized_path):
+        raise NotADirectoryError(
+            f"The configured output path is not a directory: {normalized_path}"
+        )
+    return normalized_path
