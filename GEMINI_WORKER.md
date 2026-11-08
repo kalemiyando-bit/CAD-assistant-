@@ -14,13 +14,44 @@ CAD scripts, or manufacturing-ready designs.
 
 ## Current verification status
 
-The local dry run and focused mocked API-contract checks pass. A live request to
-Gemini 3.6 Flash using only the primary key returned a `draft_ready` specification
-for the provisional Ø6 × 46 mm shaft test: the expected +Y axis, origin, exact
-dimensions, and both dimension-source entries passed the local validator. This
-is one simple-cylinder test, not evidence that every supported shape or repeated
-generation is reliable. The validated result is a preliminary model spec; it
-has not been run in Fusion.
+The local dry run and focused mocked API-contract checks pass. On 2026-11-08,
+one bounded live request was made sequentially for each previously untested
+shape, using `gemini-3.6-flash`, low thinking, the primary `GEMINI_API_KEY` slot
+only, and no automatic retries. Secondary key slots were unset for these
+invocations. All three returned `draft_ready`; each passed the worker's local
+output checks and `validate_model_spec`, returned the requested dimensions
+exactly, and contained one source entry for every required dimension:
+
+| Shape | Synthetic dimensions requested and returned (mm) | Result |
+| --- | --- | --- |
+| Box | length 32, width 18, height 7 | `draft_ready`; local validation passed; exact dimension match |
+| Annular cylinder | outer diameter 24, inner diameter 8, height 15 | `draft_ready`; local validation passed; exact dimension match |
+| Plate with centered bore | length 50, width 30, height 6, bore diameter 10 | `draft_ready`; local validation passed; exact dimension match |
+
+Returned `dimension_basis` entries (field paths and basis values; notes are
+quoted verbatim):
+
+- Box: `components[0].dimensions_mm.length` (`user_brief`, “Specified in the
+  user brief.”); `components[0].dimensions_mm.width` (`user_brief`, “Specified
+  in the user brief.”); `components[0].dimensions_mm.height` (`user_brief`,
+  “Specified in the user brief.”).
+- Annular cylinder: `components[0].dimensions_mm.outer_diameter`
+  (`user_brief`, “Outer diameter of 24 mm specified in user brief.”);
+  `components[0].dimensions_mm.inner_diameter` (`user_brief`, “Inner diameter
+  of 8 mm specified in user brief.”); `components[0].dimensions_mm.height`
+  (`user_brief`, “Height of 15 mm specified in user brief.”).
+- Plate with centered bore: `components[0].dimensions_mm.length`
+  (`user_brief`, “Specified as length 50 mm in the user brief.”);
+  `components[0].dimensions_mm.width` (`user_brief`, “Specified as width 30
+  mm in the user brief.”); `components[0].dimensions_mm.height`
+  (`user_brief`, “Specified as height (thickness) 6 mm in the user brief.”);
+  `components[0].dimensions_mm.bore_diameter` (`user_brief`, “Specified as
+  centered bore diameter 10 mm in the user brief.”).
+
+No quota or provider-capacity error occurred. Together with the earlier
+single-cylinder live check, this covers one response for each supported shape;
+it does not establish repeatability. These are preliminary model-spec checks
+only, not Fusion import, geometry, engineering, or manufacturing validation.
 
 Earlier attempts with Gemini 3.8 Flash returned HTTP 503 or timed out. Before the
 dimension-provenance schema was strengthened, Gemini 3.6 Flash and 3.1 Flash-Lite
