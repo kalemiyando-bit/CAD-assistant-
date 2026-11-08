@@ -15,7 +15,7 @@ project; do not create a new script entry for each part.
 
 ## Part specifications
 
-These are the four current, separate part specifications:
+These are the seven current, separate part specifications:
 
 1. Shaft POC-02:
    `shaft_3d_POC02/wheel_drive_shaft_POC02_model_spec.json`
@@ -25,6 +25,12 @@ These are the four current, separate part specifications:
    `hub_3d_POC04/hub_POC04_model_spec.json`
 4. Bearing envelope POC-05:
    `bearing_3d_POC05/bearing_POC05_model_spec.json`
+5. Bearing support POC-06:
+   `bearing_support_3d_POC06/bearing_support_POC06_model_spec.json`
+6. Coupling envelope POC-07:
+   `coupling_3d_POC07/coupling_POC07_model_spec.json`
+7. Motor candidate envelope POC-08:
+   `motor_3d_POC08/motor_POC08_model_spec.json`
 
 Copy the JSON files to a folder accessible to Fusion. Run **Generate Fusion
 Model from JSON**, then select one specification or multi-select several. One
@@ -38,9 +44,9 @@ individual-part run. It is a seven-component exploratory concept, not a
 reviewed assembly. The older `shaft_2d_test/shaft_6x46_A0_model_spec.json` is
 also not the current shaft handoff.
 
-The remaining preliminary concept envelopes are the bearing support, coupling,
-and candidate motor. The bearing and motor are purchased-part representations,
-not custom component designs.
+All seven mechanical envelopes in the A0 concept now have individual model
+specifications. The bearing, coupling, and motor are simplified purchased-part
+or candidate envelopes, not custom component designs.
 
 ## Output folder
 
@@ -56,7 +62,12 @@ once, then refresh the existing script package in Fusion.
 
 ## Progress and verification status
 
-- Local focused model-spec and batch-selection tests: **27 passed**.
+- Local focused model-spec and batch-selection tests: **28 passed**.
+- All seven individual model specifications validated locally as one-component
+  designs with the expected principal extents.
+- The part-level manifests for POC-04 through POC-08 were generated and verified.
+- Combined review record:
+  `Project_files_being_worked_on/wheel_drive_bench_demo/REVIEW_POC02-08_LOCAL.md`.
 - Python syntax checks: **passed**.
 - Script and manifest versions agree at **1.3.0**.
 - The configured output path matches the user-provided location.
@@ -65,8 +76,9 @@ once, then refresh the existing script package in Fusion.
   version, but has deleted that add-in. The fresh 1.3.0 install, multi-file
   selection, and fixed output-folder behavior have not yet been confirmed in
   Fusion.
-- Keep generated dimensions preliminary. The user asked to defer combined
-  design verification until all planned parts are created.
+- Keep generated dimensions preliminary. Local schema checks are complete;
+  Fusion geometry inspection, archive reopen, fit, and interface verification
+  remain pending in the user's combined desktop review.
 
 ## Future assembly capability
 

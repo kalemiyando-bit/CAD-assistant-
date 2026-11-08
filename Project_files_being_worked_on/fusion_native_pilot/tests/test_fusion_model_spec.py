@@ -76,6 +76,74 @@ class FusionModelSpecTests(unittest.TestCase):
             shaft["dimensions_mm"], {"diameter": 6.0, "height": 46.0}
         )
 
+    def test_current_wheel_drive_part_specs_are_valid(self):
+        wheel_drive_dir = PILOT_DIR.parent / "wheel_drive_bench_demo"
+        expected_parts = [
+            (
+                "shaft_3d_POC02/wheel_drive_shaft_POC02_model_spec.json",
+                "cylinder",
+                {"diameter": 6.0, "height": 46.0},
+                [6.0, 46.0, 6.0],
+            ),
+            (
+                "wheel_rim_3d_POC03/wheel_rim_POC03_model_spec.json",
+                "annular_cylinder",
+                {"outer_diameter": 80.0, "inner_diameter": 6.0, "height": 24.0},
+                [80.0, 24.0, 80.0],
+            ),
+            (
+                "hub_3d_POC04/hub_POC04_model_spec.json",
+                "annular_cylinder",
+                {"outer_diameter": 30.0, "inner_diameter": 6.0, "height": 8.0},
+                [30.0, 8.0, 30.0],
+            ),
+            (
+                "bearing_3d_POC05/bearing_POC05_model_spec.json",
+                "annular_cylinder",
+                {"outer_diameter": 12.0, "inner_diameter": 6.0, "height": 4.0},
+                [12.0, 4.0, 12.0],
+            ),
+            (
+                "bearing_support_3d_POC06/bearing_support_POC06_model_spec.json",
+                "plate_with_bore",
+                {
+                    "length": 30.0,
+                    "width": 30.0,
+                    "height": 4.0,
+                    "bore_diameter": 12.0,
+                },
+                [30.0, 4.0, 30.0],
+            ),
+            (
+                "coupling_3d_POC07/coupling_POC07_model_spec.json",
+                "cylinder",
+                {"diameter": 10.0, "height": 10.0},
+                [10.0, 10.0, 10.0],
+            ),
+            (
+                "motor_3d_POC08/motor_POC08_model_spec.json",
+                "box",
+                {"length": 20.4, "width": 15.4, "height": 25.1},
+                [20.4, 25.1, 15.4],
+            ),
+        ]
+
+        for relative_path, expected_type, expected_dimensions, expected_extents in expected_parts:
+            with self.subTest(part=relative_path):
+                payload = json.loads(
+                    (wheel_drive_dir / relative_path).read_text(encoding="utf-8")
+                )
+                normalized = validate_model_spec(payload)
+                self.assertEqual(normalized["design_status"], "PRELIMINARY_CONCEPT")
+                self.assertEqual(len(normalized["components"]), 1)
+                component = normalized["components"][0]
+                self.assertEqual(component["type"], expected_type)
+                self.assertEqual(component["axis"], "y")
+                self.assertEqual(component["dimensions_mm"], expected_dimensions)
+                self.assertEqual(
+                    expected_component_extents_mm(component), expected_extents
+                )
+
     def test_axis_alignment_maps_local_dimensions_to_world_axes(self):
         support = {
             "type": "plate_with_bore",

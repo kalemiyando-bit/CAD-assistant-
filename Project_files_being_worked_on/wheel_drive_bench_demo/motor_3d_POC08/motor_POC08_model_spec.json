@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "design_name": "Wheel Drive Bench Demonstrator - FF-130 Motor Candidate Envelope POC-08",
+  "design_status": "PRELIMINARY_CONCEPT",
+  "units": "mm",
+  "coordinate_system": "right-handed-z-up",
+  "assumptions": [
+    "This is a simplified body envelope for an unselected motor candidate, not a complete motor model or approval of the candidate.",
+    "The 20.4 mm by 15.4 mm by 25.1 mm body dimensions are carried forward from the parent project contract's Mabuchi FF-130SH-14230 candidate entry.",
+    "The 25.1 mm body length is oriented along global +Y; the 20.4 mm and 15.4 mm section dimensions lie along global X and Z respectively.",
+    "The box omits the motor shaft, terminals, mounting details, internal features, and manufacturing geometry.",
+    "Per the user's direction, verification is deferred until all planned parts have been created."
+  ],
+  "components": [
+    {
+      "name": "FF-130 Motor Candidate Envelope",
+      "type": "box",
+      "axis": "y",
+      "origin_mm": [0, 0, 0],
+      "dimensions_mm": {
+        "length": 20.4,
+        "width": 15.4,
+        "height": 25.1
+      }
+    }
+  ]
+}

@@ -17,7 +17,8 @@ The dimensions are carried forward from the preliminary A0 concept and are
 assumptions. They do not specify bearing type, load/speed rating, tolerance,
 fit, lubrication, or sealing.
 
-Per the user's direction, include this specification in the combined
-verification after all planned parts have been created. Use the existing
+This specification passed local schema validation with the full seven-part
+set. Per the user's direction, include it in the combined Fusion verification
+after all planned parts have been created. Use the existing
 `generate_fusion_model` 1.3.0 script; it saves to the configured default
 output folder without asking for a folder on each run.

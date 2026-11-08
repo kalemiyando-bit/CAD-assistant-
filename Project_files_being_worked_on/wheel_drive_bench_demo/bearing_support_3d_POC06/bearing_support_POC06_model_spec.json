@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "design_name": "Wheel Drive Bench Demonstrator - Bearing Support POC-06",
+  "design_status": "PRELIMINARY_CONCEPT",
+  "units": "mm",
+  "coordinate_system": "right-handed-z-up",
+  "assumptions": [
+    "This is one simple bearing-support plate placeholder for a bench-only proof of concept; it is not approved for manufacture, assembly, or powered testing.",
+    "Plate dimensions of 30 mm by 30 mm by 4 mm and a centered 12 mm bore are carried forward from the parent exploratory concept.",
+    "The centered 12 mm bore is not a specified bearing fit and provides no retention feature.",
+    "The plate has no fastener holes, mounting slots, shoulder, material, load rating, or attachment interface.",
+    "Plate thickness is along global +Y in a right-handed Z-up coordinate system."
+  ],
+  "components": [
+    {
+      "name": "Bearing Support Plate Placeholder",
+      "type": "plate_with_bore",
+      "axis": "y",
+      "origin_mm": [0, 0, 0],
+      "dimensions_mm": {
+        "length": 30,
+        "width": 30,
+        "height": 4,
+        "bore_diameter": 12
+      }
+    }
+  ]
+}

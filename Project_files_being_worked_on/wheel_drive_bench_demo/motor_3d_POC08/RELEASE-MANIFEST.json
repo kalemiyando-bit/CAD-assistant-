@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-11-08T17:54:05.273537+00:00",
+  "files": [
+    {
+      "path": "DESIGN_CONTRACT.md",
+      "sha256": "d626b8e611c51c10f091df623a69421667df48a35ee7b225ee4efd068c816f2a",
+      "size_bytes": 4140
+    },
+    {
+      "path": "README.txt",
+      "sha256": "f29bdb59f0c8b85611019b24d2ae4087ab91b05be06d86623af9a3065f14bbb1",
+      "size_bytes": 677
+    },
+    {
+      "path": "motor_POC08_model_spec.json",
+      "sha256": "cff4d850a05462a112eb22019f721797ee8f0553d9843795dd0a9127171640a5",
+      "size_bytes": 1144
+    }
+  ],
+  "schema_version": 1
+}

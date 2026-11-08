@@ -56,4 +56,6 @@
 - [x] Target software and available tool path recorded.
 - [x] One-part architecture recorded; no assembly or drawing included.
 - [x] Model specification prepared.
-- [ ] Model-spec validation, Fusion generation, archive inspection, and manifest — deferred until the planned part set is ready for combined verification.
+- [x] Local model-spec validation — passed in the combined seven-part specification test.
+- [ ] Fusion generation and archive inspection — pending the user's combined Fusion verification.
+- [x] Part-level file manifest generated and verified.

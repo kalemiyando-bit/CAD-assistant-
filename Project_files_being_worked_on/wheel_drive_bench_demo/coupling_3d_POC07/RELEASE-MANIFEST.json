@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-11-08T17:54:04.839059+00:00",
+  "files": [
+    {
+      "path": "DESIGN_CONTRACT.md",
+      "sha256": "2d92bfe7f0e0106e60c053184048f3fc5e2ddbd0a1aa962def79b54dc1cc23d7",
+      "size_bytes": 3611
+    },
+    {
+      "path": "README.txt",
+      "sha256": "ab4b1e06e24997e2c58bb05cbcc33b07c70c945291744479bf2708fa48169ef3",
+      "size_bytes": 620
+    },
+    {
+      "path": "coupling_POC07_model_spec.json",
+      "sha256": "4d8c2bfb4d19dfc7dddc3de2e43aa4fff02ac1dea67c8c93dcadba526892efa9",
+      "size_bytes": 1035
+    }
+  ],
+  "schema_version": 1
+}

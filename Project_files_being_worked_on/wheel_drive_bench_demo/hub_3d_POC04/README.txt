@@ -17,8 +17,10 @@ PRELIMINARY GEOMETRY
 
 VERIFICATION TIMING
 
-Per the user's direction, verify the planned parts together after all of them
-have been created. Do not treat this JSON as a checked Fusion model.
+The JSON passed local schema validation as part of the combined seven-part
+specification check. Per the user's direction, Fusion generation and inspection
+will happen together after the planned parts have been created. Do not treat
+this JSON as a checked Fusion model.
 
 When the part set is ready for that verification pass:
 

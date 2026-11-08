@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "design_name": "Wheel Drive Bench Demonstrator - Coupling Envelope POC-07",
+  "design_status": "PRELIMINARY_CONCEPT",
+  "units": "mm",
+  "coordinate_system": "right-handed-z-up",
+  "assumptions": [
+    "This is a cylindrical packaging envelope only, not a functional or selected shaft coupling.",
+    "The 10 mm diameter and 10 mm axial length are carried forward from the parent exploratory concept and are not approved interfaces.",
+    "No shaft bores, keys, clamps, fasteners, retention, material, torque rating, or speed rating are defined.",
+    "The envelope axis is global +Y in a right-handed Z-up coordinate system; the base-face center is at the origin.",
+    "Per the user's direction, verification is deferred until all planned parts have been created."
+  ],
+  "components": [
+    {
+      "name": "Coupling Envelope Placeholder",
+      "type": "cylinder",
+      "axis": "y",
+      "origin_mm": [0, 0, 0],
+      "dimensions_mm": {
+        "diameter": 10,
+        "height": 10
+      }
+    }
+  ]
+}

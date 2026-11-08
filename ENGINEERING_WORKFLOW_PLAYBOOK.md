@@ -126,6 +126,8 @@ smoke-tested. Do not describe the current DXF as a native drawing.
 For the wheel-drive user's current Fusion setup and the three available
 part-level specifications, see
 `Project_files_being_worked_on/wheel_drive_bench_demo/GENERATE_EXISTING_DESIGNS.md`.
+The combined local review for POC-02 through POC-08 is recorded in
+`Project_files_being_worked_on/wheel_drive_bench_demo/REVIEW_POC02-08_LOCAL.md`.
 
 ### Simple native Fusion geometry
 
@@ -157,7 +159,7 @@ part-level specifications, see
 
 ### Proven versus pending
 
-- The focused local model-spec and batch-selection suites currently have 27
+- The focused local model-spec and batch-selection suites currently have 28
   passing tests:
 
   ```sh
@@ -231,7 +233,7 @@ The existing candidate is not evidence that the motor is suitable.
 | Area | Locally checked | Still pending |
 |---|---|---|
 | Shaft 2D test | DXF/HTML generated; eight project drawing tests pass | User's Fusion import, scale, and annotation review |
-| Simple 3D model | 27 focused local tests pass; one/many JSON generation is implemented | Fresh v1.3.0 install, batch run, output-folder creation, Fusion inspection, and archive reopen |
+| Simple 3D model | 28 focused local tests pass; all seven wheel-drive part specs validate locally; one/many JSON generation is implemented | Fresh v1.3.0 install, batch run, output-folder creation, Fusion inspection, and archive reopen |
 | Assembly | A seven-envelope preliminary spec exists; generator can create multiple placed components from one spec | Import/link reviewed part archives, define joints and interfaces, and verify the Fusion assembly/archive workflow |
 | PCB/control | Requirements and candidate parts are documented | EDA choice, selected parts, schematic, board, firmware, and checks |
 | Safety | High candidate rim-speed concern is documented | Guard, speed limit, stop/control requirements, and powered-test procedure |

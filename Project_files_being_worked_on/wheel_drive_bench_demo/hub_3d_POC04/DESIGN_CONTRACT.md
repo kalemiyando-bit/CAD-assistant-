@@ -57,6 +57,6 @@
 - [x] Target software and available tool path recorded.
 - [x] One-part architecture and provisional envelope recorded.
 - [x] Model specification prepared.
-- [ ] Local model-spec validation — deferred by user until all planned parts are created.
-- [ ] Fusion generation, inspection, and archive reopen — deferred by user until all planned parts are created.
-- [ ] Combined review and release manifest — deferred until the planned part set is ready for verification.
+- [x] Local model-spec validation — passed in the combined seven-part specification test.
+- [ ] Fusion generation, inspection, and archive reopen — pending the user's combined Fusion verification.
+- [x] Part-level file manifest generated and verified.

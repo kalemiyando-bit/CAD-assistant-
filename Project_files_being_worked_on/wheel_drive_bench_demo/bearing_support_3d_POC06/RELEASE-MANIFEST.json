@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-11-08T17:54:04.414166+00:00",
+  "files": [
+    {
+      "path": "DESIGN_CONTRACT.md",
+      "sha256": "649920663ffedfb1a883b67965676e09817992f7514b483ff7dc68f484d2ca00",
+      "size_bytes": 4137
+    },
+    {
+      "path": "README.txt",
+      "sha256": "e436bc41c8065f19c2c13802927afae2ef830b3c721e1a0cbdaa64cb1080590c",
+      "size_bytes": 791
+    },
+    {
+      "path": "bearing_support_POC06_model_spec.json",
+      "sha256": "416034c571085285d5b31777ceb7c0de1c9f54a2db462251cb064509d628dc83",
+      "size_bytes": 1110
+    }
+  ],
+  "schema_version": 1
+}
