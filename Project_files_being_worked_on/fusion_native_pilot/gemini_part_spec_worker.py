@@ -22,10 +22,10 @@ from fusion_model_spec import SpecValidationError, validate_model_spec
 
 
 DEFAULT_MODEL = "gemini-3.8-flash"
-MAX_OUTPUT_TOKENS = 4096
+MAX_OUTPUT_TOKENS = 1024
 MAX_BRIEF_CHARS = 8_000
 MAX_ASSUMPTIONS = 50
-API_TIMEOUT_SECONDS = 60
+API_TIMEOUT_SECONDS = 180
 SUPPORTED_COMPONENT_TYPES = (
     "box",
     "cylinder",
@@ -534,6 +534,7 @@ def _call_gemini(
         "model": model,
         "prompt_tokens": usage_metadata.get("promptTokenCount"),
         "output_tokens": usage_metadata.get("candidatesTokenCount"),
+        "thinking_tokens": usage_metadata.get("thoughtsTokenCount"),
         "total_tokens": usage_metadata.get("totalTokenCount"),
     }
     return generated, usage
@@ -625,7 +626,22 @@ def main() -> int:
             )
 
         generated, usage = _call_gemini(request_data, args.model, api_key)
-        result = _validate_output(generated)
+        try:
+            result = _validate_output(generated)
+        except WorkerError as exc:
+            print(
+                json.dumps(
+                    {
+                        "status": "invalid_response",
+                        "error": str(exc),
+                        "usage": usage,
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                file=sys.stderr,
+            )
+            return 2
         result["usage"] = usage
 
         if args.output and result["status"] == "draft_ready":

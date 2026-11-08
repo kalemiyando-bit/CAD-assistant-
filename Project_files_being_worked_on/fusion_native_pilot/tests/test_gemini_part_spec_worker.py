@@ -109,6 +109,7 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
             "usageMetadata": {
                 "promptTokenCount": 30,
                 "candidatesTokenCount": 50,
+                "thoughtsTokenCount": 7,
                 "totalTokenCount": 80,
             },
         }
@@ -179,7 +180,9 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
                 variant["properties"]["dimensions_mm"],
             )
         self.assertEqual(captured["timeout"], worker.API_TIMEOUT_SECONDS)
+        self.assertEqual(config["maxOutputTokens"], 1024)
         self.assertEqual(usage["total_tokens"], 80)
+        self.assertEqual(usage["thinking_tokens"], 7)
         self.assertEqual(worker._validate_output(result)["status"], "draft_ready")
 
 

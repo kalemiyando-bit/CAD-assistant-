@@ -1,6 +1,6 @@
 # AI Compute Supplement for CAD Assistant
 
-**Status:** The user approved direct Gemini API use with their own key in Replit Secrets. A local CLI worker drafts a single-component Fusion v1 model specification from an explicitly supplied brief and validates it with the existing Python validator. It makes no public billable endpoint and has no UI. The no-cost dry run and focused mocked API-contract checks pass. Live generation is not yet verified: one provider response was rejected by local dimension validation; the latest request reported that Gemini REST does not accept `additionalProperties` in its response schema. That unsupported field has been removed from the provider schema while local validation remains strict. No valid model-spec file or Fusion output was produced.
+**Status:** The user approved direct Gemini API use with their own key in Replit Secrets. A local CLI worker drafts a single-component Fusion v1 model specification from an explicitly supplied brief and validates it with the existing Python validator. It makes no public billable endpoint and has no UI. The no-cost dry run and focused mocked API-contract checks pass. Live generation is not yet verified: one provider response failed local dimension validation, and after fixing the REST schema, two requests timed out (at 60 and 180 seconds). Timeouts returned no usage metadata and may not prove the provider did no work. No valid model-spec file or Fusion output was produced.
 
 The system supports the user's broader engineering design work; the shaft is only a workflow test example. Do not design only for shafts.
 
@@ -66,4 +66,4 @@ The Gemini call is now automated through the local CLI, but the overall process 
 - Should the next integration step map a validated model spec into both the existing 2D and Fusion paths? The current worker only returns the Fusion v1 spec.
 - Which exact shaft-example tests passed, and did the 3D path run in Fusion and produce an archive that was opened and checked? Record the Fusion version and checks before updating the detailed evidence status.
 
-The current project has a `GEMINI_API_KEY` secret configured. Never request or print its value in chat, logs, or source files. A further live API request is needed to verify the corrected schema; it should be limited to a single small, clearly identified request and only made when approved by the user.
+The current project has a `GEMINI_API_KEY` secret configured. Never request or print its value in chat, logs, or source files. Google applies RPM, input TPM, and RPD quotas per project; active limits vary by model and usage tier and must be checked in Google AI Studio. Check the project's actual usage there before retrying after a timeout.

@@ -16,12 +16,13 @@ CAD scripts, or manufacturing-ready designs.
 
 The local dry run and focused mocked API-contract checks pass. Live generation
 is still unverified: one provider response was rejected by the worker's
-exact-dimension check, and the latest request reported that Gemini REST does not
-accept `additionalProperties` in its response schema. That field has been
-removed from the provider schema; the worker still validates exact dimensions
-locally. No valid model-spec file or Fusion output has been produced by Gemini
-yet. Keep diagnosis focused; do not run the unrelated CAD test suites for this
-issue.
+exact-dimension check, and two later requests timed out (at 60 and 180 seconds).
+The provider schema has since been corrected to omit the unsupported
+`additionalProperties` field; the worker still validates exact dimensions
+locally. Timeouts returned no usage metadata and may not prove the provider did
+no work. No valid model-spec file or Fusion output has been produced by Gemini
+yet. Check project usage in AI Studio before retrying; do not run unrelated CAD
+test suites for this issue.
 
 ## Security and cost boundaries
 
@@ -33,10 +34,16 @@ issue.
 - Only the three fields below are sent to Google: `design_name`,
   `design_brief`, and `approved_assumptions`. The worker does not read other
   project files, skills, or secrets.
-- Each invocation makes at most one Google request, with a 60-second timeout,
-  no automatic retries, and a 4,096-token output cap. It reports token usage
+- Each invocation makes at most one Google request, with a 180-second timeout,
+  no automatic retries, and a 1,024-token output cap. It reports input, output,
+  thinking, and total token usage
   when Google returns it. Google bills these API calls separately from Replit
   Agent usage.
+- Gemini rate limits are project-level and can include requests per minute,
+  input tokens per minute, and requests per day. They vary by model and usage
+  tier; check the active project limits in [Google AI Studio](https://aistudio.google.com/rate-limit?timeRange=last-28-days).
+  To keep this workflow conservative, run one worker at a time and review each
+  result before starting another request.
 - The worker never executes model-generated code. A valid result is only a
   preliminary geometry specification, not evidence of fit, strength, safety,
   or manufacturing readiness.
