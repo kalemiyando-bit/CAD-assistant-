@@ -1,13 +1,13 @@
 # Wheel Drive Bench Demonstrator — Design Contract
 
-**Revision:** A0 — preliminary concept; Gate A is still open
+**Revision:** A0 / POC-01 intake update — preliminary concept; full-system Gate A is still open
 **Status:** An exploratory envelope model specification has been prepared. No dimensions, interfaces, component, geometry, PCB, or firmware is approved for manufacture, assembly, or powered use.
 
 ## Purpose and operating context
 
-- **Intended function:** A small, direct-drive wheel assembly for demonstrating forward/reverse motor control on a bench.
-- **User-described assembly:** Car-style wheel/rim, shaft supported by a bearing, shaft coupled to a DC motor, and no external gears.
-- **Control intent:** Car-like accelerator, brake, and handbrake behavior, with a separate stop control allowed. Exact controls and gesture mapping remain unresolved.
+- **Intended function:** A simple, bench-only, direct-drive wheel module for demonstrating speed increase, decrease, and measurement with a small brushed DC motor; not a vehicle.
+- **User-described assembly:** Wheel and hub on a wheel-side shaft supported by a bearing/support, coupled to a motor-side shaft and motor. No external gear reduction. The motor's integrated shaft may serve as the motor-side shaft.
+- **Control intent:** GAS and BRAKE buttons; one tap changes the speed target by one level, while holding gradually raises or lowers the target. BRAKE can reduce the target to zero. Include a separate handbrake/emergency-stop control and wheel-speed measurement. No reverse.
 - **Operating environment:** Bench demonstration only. No vehicle, passenger, or specified payload use.
 - **Target software:** Autodesk Fusion on Windows; exact version unknown. User is willing to learn to run a Fusion script if needed.
 - **Agent-accessible tools:** Replit cannot run the Autodesk Fusion API. Native Fusion model creation must be run and inspected in the user's Fusion installation.
@@ -17,11 +17,33 @@
 
 | ID | Requirement | Source | Status/type | Verification |
 |---|---|---|---|---|
-| R-01 | Build one simple wheel-drive assembly with a wheel/rim, shaft, bearing support, and motor coupling. | User conversation | User-provided; interfaces open | Review model against approved assembly contract |
-| R-02 | Use a small brushed DC motor; no external gear reduction. | User conversation | User-provided; exact motor open | Confirm selected motor and inspect assembly |
-| R-03 | Provide a simple 2D drawing for each designed mechanical part. | User conversation | User-provided | Check drawing set against final model revision |
-| R-04 | Provide a PCB and code for forward/reverse and car-like controls. | User conversation | User-provided; control mapping open | Schematic/PCB checks and firmware behavior review |
-| R-05 | Prefer native Fusion formats where they can be created and checked; otherwise use compatible exchange formats. | User conversation | User-provided | Open/re-import files in the target application |
+| R-01 | Develop a simple bench-only wheel-drive proof of concept, one part at a time; create the assembly after the individual parts are reviewed. | User conversation | User-provided | Review each part, then the assembled interfaces |
+| R-02 | Use a small brushed DC motor with no external gear reduction. | User conversation | User-provided; exact motor and interfaces open | Confirm the selected motor and inspect the assembly |
+| R-03 | Provide editable CAD handoffs for individual mechanical parts; begin with a single-part 2D model-building profile, then its 3D counterpart. | User conversation and project workflow | User-provided goal; staged format is a reversible workflow choice | Inspect the profile and 3D part in Fusion |
+| R-04 | Use GAS and BRAKE buttons: taps change one speed level, holds ramp speed up or down; braking can reach zero. Include a separate handbrake/emergency stop. | User conversation | User-provided behavior; implementation and stop dynamics unresolved | Review the control state machine and test with selected hardware |
+| R-05 | Measure wheel speed; do not implement reverse. | User conversation | User-provided | Confirm speed feedback and verify reverse is absent |
+| R-06 | Use simple, sensible preliminary dimensions where specifications are absent, and label them as assumptions for this proof of concept. | User conversation | User-authorized preliminary design discretion; no dimensions approved | Review and replace assumptions as components are selected |
+| R-07 | Provide a PCB and code for the simple speed-control behavior after mechanical/electrical requirements are established. | User conversation | User-provided long-term goal; deferred | Schematic/PCB checks and firmware behavior review |
+| R-08 | Prefer native Fusion formats where they can be created and checked; otherwise use compatible exchange formats. | User conversation | User-provided | Open/re-import files in the target application |
+
+## Preliminary control targets proposed for POC-01
+
+The user authorized sensible preliminary choices but has not supplied motor or
+controller specifications. The following are assumptions, not confirmed
+performance or safety ratings:
+
+- Maximum commanded wheel speed: 300 rpm.
+- One tap changes the target by 25 rpm (12 increments from zero to the cap).
+- Holding a button ramps the target at 30 rpm/s, upward for GAS and downward for
+  BRAKE, with BRAKE reaching zero.
+- Measure and display wheel rpm.
+- Treat the handbrake/emergency-stop input as a latched drive-disable request
+  until the selected controller's stopping behavior is reviewed.
+- At the placeholder 80 mm wheel diameter, 300 rpm is approximately 1.26 m/s
+  rim speed (calculated, not measured). This is not a safe operating limit.
+
+The simple shaft-profile deliverable and these control targets are recorded in
+`shaft_2d_test/POC01/wheel_drive_bench_demonstrator_poc_brief.txt`.
 
 ## Preliminary component research
 
@@ -50,13 +72,13 @@ Autodesk's current documentation lists Fusion Electronics native files as `.fsch
 
 | ID | Open item | Why it matters | Status |
 |---|---|---|---|
-| O-01 | Are the controls physical pedals/switches, button gestures, or both? | Determines PCB inputs and firmware | Button gestures stated; exact physical inputs unresolved |
-| O-02 | What does one tap, double tap, hold, brake, handbrake, and stop each do? | Determines safe control state machine | Partially described; exact mapping unresolved |
+| O-01 | Which physical button, sensor, display, and controller parts will be used? | Determines interfaces and electrical behavior | GAS/BRAKE and a separate handbrake/emergency input are requested; hardware is unselected |
+| O-02 | What latching and braking/coasting behavior does the emergency control require? | Determines safe control state machine and stop response | Drive-disable request is proposed; actual stopping behavior remains unresolved |
 | O-03 | Is the Mabuchi motor candidate acceptable and obtainable, or should another small motor be selected? | Determines shaft mount, motor driver, speed, and torque | Candidate only |
-| O-04 | Wheel dimensions, shaft diameter, bearing size/spacing, and coupling dimensions | Required to model interfaces without inventing fits | Not user-specified; concept placeholders only |
+| O-04 | Wheel dimensions, shaft interfaces, bearing size/spacing, and coupling dimensions | Required to model interfaces and fit | User authorized sensible POC assumptions; current A0 values remain placeholders |
 | O-05 | Motor supply and controller power source | Required for component ratings and PCB power design | Not specified |
 | O-06 | Exact Fusion version and whether the user can run the supplied script | Required to create and validate native Fusion files | Fusion on Windows; version unknown; user is willing to learn |
-| O-07 | Drawing output format | Required to prepare editable/readable part drawings | DXF selected for the first editable import test; final per-part and native Fusion drawing formats remain open |
+| O-07 | Drawing output format | Required to prepare editable/readable part drawings | R12 DXF model-building profile is used for the first part; final documentation and native Fusion drawing formats remain open |
 | O-08 | EDA software and version | Required to prepare an editable PCB project | Not specified |
 
 ## Verification and safety boundary
@@ -64,5 +86,6 @@ Autodesk's current documentation lists Fusion Electronics native files as `.fsch
 - Run the local Fusion model-spec tests before preparing a model specification.
 - A Fusion-native archive can only be claimed after the script is run in Fusion and the resulting design is opened and inspected there.
 - Do not treat a successful schema check or script generation as proof of native-file validity, fit, electrical safety, or motor performance.
-- Keep the first physical test on a guarded bench with a current-limited supply. No vehicle-use, load capacity, parking-hold, or manufacturing-readiness claim is authorized.
+- Do not recommend powered testing until a physical wheel guard, a current-limited test procedure, a speed limit, and verified stop behavior are defined for the selected hardware.
+- Keep any later test on a guarded bench with a current-limited supply. No vehicle-use, load capacity, parking-hold, or manufacturing-readiness claim is authorized.
 - Record unavailable checks as blocked or not run; keep all selected values, calculations, assumptions, and sourced facts distinct.
