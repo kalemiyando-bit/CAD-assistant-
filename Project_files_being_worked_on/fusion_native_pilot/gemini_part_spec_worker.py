@@ -21,7 +21,7 @@ from urllib.request import Request, urlopen
 from fusion_model_spec import SpecValidationError, validate_model_spec
 
 
-DEFAULT_MODEL = "gemini-3.8-flash"
+DEFAULT_MODEL = "gemini-3.6-flash"
 DEFAULT_THINKING_LEVEL = "low"
 THINKING_LEVELS = ("low", "medium", "high")
 MAX_OUTPUT_TOKENS = 2_048

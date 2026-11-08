@@ -71,6 +71,9 @@ def ready_response() -> dict:
 
 
 class GeminiPartSpecWorkerTests(unittest.TestCase):
+    def test_default_model_is_the_live_validated_candidate(self) -> None:
+        self.assertEqual(worker.DEFAULT_MODEL, "gemini-3.6-flash")
+
     def test_provider_error_details_are_kept_and_api_key_is_redacted(self) -> None:
         body = json.dumps(
             {

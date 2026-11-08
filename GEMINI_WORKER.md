@@ -14,20 +14,24 @@ CAD scripts, or manufacturing-ready designs.
 
 ## Current verification status
 
-The local dry run and focused mocked API-contract checks pass. The primary key
-was accepted by `models.list` (HTTP 200), and Gemini 3.8 Flash appeared in the
-catalog. No model has yet produced a spec that passes the local validator:
-Gemini 3.8 Flash returned HTTP 503 or timed out; Gemini 3.6 Flash and 3.1
-Flash-Lite returned candidates but omitted required dimension provenance;
-Gemini 4 Argon returned HTTP 429 quota errors. Google documents Gemini 3.6 Flash
-as stable and production-ready, but it is not yet proven for this worker's full
-contract. Gemini 3.7 Flash is deprecated and automatically routes to 3.8 Flash,
-so it is not an independent fallback.
+The local dry run and focused mocked API-contract checks pass. A live request to
+Gemini 3.6 Flash using only the primary key returned a `draft_ready` specification
+for the provisional Ø6 × 46 mm shaft test: the expected +Y axis, origin, exact
+dimensions, and both dimension-source entries passed the local validator. This
+is one simple-cylinder test, not evidence that every supported shape or repeated
+generation is reliable. The validated result is a preliminary model spec; it
+has not been run in Fusion.
 
-The worker uses low thinking and a bounded 2,048-token output budget. The
-structured schema now enumerates allowed dimension paths, and the local
-validator rejects missing, duplicate, or unexpected provenance entries. No
-valid model-spec file or Fusion output has been produced by Gemini yet.
+Earlier attempts with Gemini 3.8 Flash returned HTTP 503 or timed out. Before the
+dimension-provenance schema was strengthened, Gemini 3.6 Flash and 3.1 Flash-Lite
+omitted required provenance; Gemini 4 Argon returned HTTP 429 quota errors.
+Gemini 3.7 Flash is deprecated and automatically routes to 3.8 Flash, so it is
+not an independent fallback.
+
+The worker now defaults to `gemini-3.6-flash`, with low thinking and a bounded
+2,048-token output budget. The structured schema enumerates allowed dimension
+paths, and the local validator rejects missing, duplicate, or unexpected
+provenance entries.
 
 The user shared this Free-tier quota snapshot for Gemini 3.8 Flash on
 2026-11-08: limits of 5 RPM, 250,000 input TPM, and 20 RPD; 28-day peak use of
@@ -104,13 +108,13 @@ part cannot be represented by one supported primitive, it returns
 `unsupported`. A ready model spec is normalized by
 `fusion_model_spec.validate_model_spec` before it is written.
 
-The default model is `gemini-3.8-flash`; set `GEMINI_MODEL` or pass `--model` to
+The default model is `gemini-3.6-flash`; set `GEMINI_MODEL` or pass `--model` to
 select another Google-enabled model. The default thinking level is `low`; use
 `--thinking-level medium` or `--thinking-level high` when a supported task needs
 more reasoning. Gemini 3.8 does not support `minimal`. A dry run validates input
 and reports what would be sent but does not verify the API key or contact Google.
 
-Gemini 3.8 documentation:
+Gemini 3.8 reference (earlier candidate):
 
 - [Model limits and capabilities](https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash)
 - [Thinking levels and output token limits](https://ai.google.dev/gemini-api/docs/thinking)
