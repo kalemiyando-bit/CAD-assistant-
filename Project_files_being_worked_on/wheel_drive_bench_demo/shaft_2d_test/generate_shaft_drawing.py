@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import html
 import json
 import sys
@@ -274,8 +275,44 @@ def build_drawing(diameter_mm: float, length_mm: float) -> ShaftDrawing:
     return drawing
 
 
-def main() -> None:
+def build_model_sketch(diameter_mm: float) -> ShaftDrawing:
+    """Build only the circular profile used to create the shaft's 3D solid."""
+    drawing = ShaftDrawing()
+    drawing.circle(0, 0, diameter_mm / 2, "OUTLINE")
+    return drawing
+
+
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Generate either a model-building sketch profile or a "
+            "documentation drawing for the preliminary shaft."
+        )
+    )
+    parser.add_argument(
+        "--purpose",
+        required=True,
+        choices=("model-sketch", "documentation"),
+        help=(
+            "Choose model-sketch for profile geometry only, or documentation "
+            "for a full annotated drawing sheet."
+        ),
+    )
+    args = parser.parse_args(argv)
+
     diameter_mm, length_mm = load_shaft_dimensions()
+
+    if args.purpose == "model-sketch":
+        profile = build_model_sketch(diameter_mm)
+        profile_path = HERE / "shaft_6x46_A0_model_profile_R12.dxf"
+        profile_path.write_text(profile.render_r12_dxf(), encoding="ascii")
+        print(f"Wrote {profile_path}")
+        print(
+            f"Model sketch: one Ø{diameter_mm:g} mm circle. "
+            f"Extrude {length_mm:g} mm to make the provisional shaft."
+        )
+        return
+
     drawing = build_drawing(diameter_mm, length_mm)
     dxf_text = drawing.render_r12_dxf()
     svg_text = drawing.render_svg()

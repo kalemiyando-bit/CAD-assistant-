@@ -84,3 +84,17 @@ mtime_ms = 1794130742000
 storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:cd53aa10-c965-49a8-92bb-6547e5364a96/a0077381-acf0-4ba6-b3bb-53b6ab37018d/60933b7a-1ed5-40bb-8c54-1fa04bdf3926"
 storage_version_token = "1794131139051628"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "9szUxAKoVqh27PKJi23o4"
+uri = "file://Project_files_being_worked_on/wheel_drive_bench_demo/shaft_2d_test/shaft_6x46_A0_model_profile_R12.dxf"
+type = "unspecified"
+title = "Optional model-only shaft sketch DXF"
+description = "A single Ø6 mm circle in millimetres, with no border, dimensions, notes, or title block. Use only if the shaft's 2D input is intended to build 3D geometry; Fusion import still needs user verification."
+logical_id = "5ac86c80-c923-45e0-83e5-8f1123cde973"
+content_hash = "sha256:1ea4454351bdb3e96f78244f3de2e0ac74338ddd09d525207ffe3801b7c518d4"
+size = 154
+mtime_ms = 1794132035123
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:cd53aa10-c965-49a8-92bb-6547e5364a96/5ac86c80-c923-45e0-83e5-8f1123cde973/6fe995a4-2703-45c5-9f75-c82455d193f3"
+storage_version_token = "1794132087846850"
+content_type = "application/octet-stream"

@@ -29,13 +29,17 @@ useful; unsupported production claims are not.
    For a new design task, confirm the target CAD/EDA software and version when
    they affect the handoff. Do not imply Replit can operate a desktop program
    unless an actual connection exists.
-3. Record requirements, deliverables, coordinate frame, units, known interfaces,
+3. For any 2D deliverable, ask whether it is a model-building sketch, a
+   documentation drawing, or both. If both, make separate outputs. Model
+   sketches contain only the profiles/construction geometry needed for 3D work;
+   documentation sheets contain dimensions and title-block details.
+4. Record requirements, deliverables, coordinate frame, units, known interfaces,
    open questions, and research scope in the contract. Current wheel-drive
    research scope is **user sources only**; do not broaden it without asking.
-4. Use one current source for dimensions. In the wheel-drive pilot that source is
+5. Use one current source for dimensions. In the wheel-drive pilot that source is
    `Project_files_being_worked_on/wheel_drive_bench_demo/preliminary_wheel_drive_spec.json`.
    Keep assumptions visible and do not turn them into approved dimensions.
-5. Give each shared output one writer. Reviewers report findings without
+6. Give each shared output one writer. Reviewers report findings without
    silently editing specialist-owned deliverables.
 
 ## 2D drawing handoff — current first test
@@ -44,27 +48,38 @@ useful; unsupported production claims are not.
 
 - The single-part example is the plain drive-shaft envelope from the A0 concept:
   diameter 6 mm, length 46 mm, axis +Y. Both dimensions are provisional.
-- Run:
+- Choose the output purpose before running the generator. The CLI requires an
+  explicit choice:
 
   ```sh
-  python Project_files_being_worked_on/wheel_drive_bench_demo/shaft_2d_test/generate_shaft_drawing.py
+  python Project_files_being_worked_on/wheel_drive_bench_demo/shaft_2d_test/generate_shaft_drawing.py --purpose model-sketch
+  python Project_files_being_worked_on/wheel_drive_bench_demo/shaft_2d_test/generate_shaft_drawing.py --purpose documentation
   ```
 
 - The script reads and validates the shaft component from
   `preliminary_wheel_drive_spec.json`. It reuses the project's standard-library
-  `DxfWriter` in `wheel_drive_bench_demo/generate_preliminary_dxf.py` and writes:
+  `DxfWriter` in `wheel_drive_bench_demo/generate_preliminary_dxf.py`.
+  `--purpose model-sketch` writes
+  `shaft_2d_test/shaft_6x46_A0_model_profile_R12.dxf`, containing only a Ø6 mm
+  circle profile. The separate dimension schedule gives a provisional 46 mm
+  extrusion length; for a +Y shaft axis, sketch on XZ and extrude in +Y.
+  `--purpose documentation` writes:
   - `shaft_2d_test/shaft_6x46_A0_R12_retry.dxf` — minimal R12 ASCII DXF in
-    millimetres, with side and end views, dimensions, notes, and a sheet frame.
+    millimetres, with side and end views, dimensions, notes, and sheet details.
   - `shaft_2d_test/shaft_6x46_A0_preview.html` — self-contained SVG preview with
     a DXF download link.
 - The original AC1015 attempt (`shaft_6x46_A0.dxf`) failed to insert in Fusion
   2026 with the generic message “DXF file failed to insert.” It is retained for
-  comparison only. The generator now offers a simpler R12 retry with all
-  entities on layer 0; this is a compatibility attempt, not a verified Fusion
-  import.
-- The dimension labels in the DXF are ordinary 2D geometry/text, not
-  associative Fusion dimensions. The sheet imports as sketch geometry; it does
-  not become a native Fusion drawing sheet.
+  comparison only. The user later confirmed that the R12 documentation retry
+  inserted successfully; the Fusion version for that successful import was not
+  recorded.
+- In the successful import, the user observed that the border, title-block
+  space, and dimension graphics also appeared as sketch geometry. This is
+  expected: DXF annotations are ordinary entities, not associative Fusion
+  dimensions, and an inserted documentation sheet is not a native drawing.
+- Do not use the full documentation sheet as a modeling sketch unless the user
+  explicitly wants its frame and annotations as geometry. Ask the intended
+  purpose first; keep model profiles and documentation sheets separate.
 
 ### Checks and evidence
 
@@ -74,15 +89,15 @@ Run the local drawing tests with:
 python -m unittest discover -s Project_files_being_worked_on/wheel_drive_bench_demo/tests -v
 ```
 
-The current eight tests pass. They check the preliminary concept DXF and the
-shaft generator's source dimensions, R12 header, millimetre units, views,
-labels, and preview SVG. These checks do **not** test Fusion's DXF importer.
+The local suite checks the preliminary concept DXF and the shaft generator's
+source dimensions, R12 header, millimetre units, documentation views/labels, and
+that the model-sketch DXF contains only its profile circle. These checks do
+**not** test Fusion's DXF importer or verify the imported scale and placement.
 
-The remaining application check is for the user to import the R12 retry in
-Fusion, keep units in millimetres, and inspect view placement, scale, and text.
-Record the Fusion version and any import prompts or missing annotations. Do not
-reuse this import route for other parts until that review is received. A local
-DXF parser check is not evidence of target-application importability.
+The documentation DXF's basic import into Fusion is now confirmed by the user.
+The model-sketch DXF still needs an application check for single-profile import,
+scale, and extrusion axis. Record the Fusion version and any import prompts.
+A local DXF parser check is not evidence of target-application importability.
 
 If a future request requires a native Fusion drawing sheet, create it from the
 reviewed 3D design only after the Fusion drawing workflow has itself been
@@ -96,6 +111,9 @@ smoke-tested. Do not describe the current DXF as a native drawing.
    specification. For the first shaft test, make it a **one-component**
    specification; do not submit the seven-part wheel-drive specification when
    the user asked to test one part.
+   The current one-part test spec is
+   `Project_files_being_worked_on/wheel_drive_bench_demo/shaft_2d_test/shaft_6x46_A0_model_spec.json`;
+   it defines a provisional Ø6 mm × 46 mm cylinder aligned to +Y at the origin.
 2. Follow
    `Project_files_being_worked_on/fusion_native_pilot/README.md` and validate
    the JSON with `fusion_model_spec.py`.

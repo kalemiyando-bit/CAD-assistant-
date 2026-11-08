@@ -25,12 +25,20 @@ Autodesk Fusion runs the supplied script and creates the native design.
    device**, and select the `generate_fusion_model/` child folder (not the
    `fusion_native_pilot/` parent).
 3. Run **Generate Fusion Model from JSON**.
-4. Select `example_model_spec.json` or the wheel demo's
-   `preliminary_wheel_drive_spec.json`, then choose an output folder.
+4. Select `example_model_spec.json` or the one-part shaft test spec at
+   `../wheel_drive_bench_demo/shaft_2d_test/shaft_6x46_A0_model_spec.json`,
+   then choose an output folder. For the shaft test, do not select the
+   seven-component `preliminary_wheel_drive_spec.json`.
 5. Open the resulting `.f3d` file in Fusion and inspect the component, sketch,
    driving dimensions, user parameters, and extrusion in the timeline.
 6. Review the adjacent `-report.json`; it records dimensions, checks, and
    SHA-256 for the archive.
+
+The shaft test spec creates one provisional straight cylinder: Ø6 mm × 46 mm,
+aligned with global +Y and based at the origin. It creates a Fusion-native
+sketch, driving dimensions, user parameters, and extrusion, then exports an
+`.f3d` archive. These dimensions are for the workflow test only and are not
+approved for manufacture.
 
 The model generator currently supports right-handed, Z-up millimetre models
 made from boxes, cylinders, annular cylinders, and centered-bore plates.

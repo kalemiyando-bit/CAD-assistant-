@@ -9,7 +9,11 @@ PROJECT_DIR = Path(__file__).resolve().parents[1]
 SHAFT_TEST_DIR = PROJECT_DIR / "shaft_2d_test"
 sys.path.insert(0, str(SHAFT_TEST_DIR))
 
-from generate_shaft_drawing import build_drawing, load_shaft_dimensions
+from generate_shaft_drawing import (
+    build_drawing,
+    build_model_sketch,
+    load_shaft_dimensions,
+)
 
 
 class ShaftDrawingTests(unittest.TestCase):
@@ -47,6 +51,17 @@ class ShaftDrawingTests(unittest.TestCase):
         self.assertIn(">46</text>", svg)
         self.assertIn(">DIA 6</text>", svg)
         self.assertIn("NOT FOR MANUFACTURE", svg)
+
+    def test_model_sketch_has_only_one_profile_circle(self) -> None:
+        diameter, _ = load_shaft_dimensions()
+        dxf_text = build_model_sketch(diameter).render_r12_dxf()
+
+        self.assertEqual(dxf_text.count("\nCIRCLE\n"), 1)
+        self.assertNotIn("\nLINE\n", dxf_text)
+        self.assertNotIn("\nTEXT\n", dxf_text)
+        self.assertNotIn("SIDE VIEW", dxf_text)
+        self.assertNotIn("DIA 6", dxf_text)
+        self.assertNotIn("NOT FOR MANUFACTURE", dxf_text)
 
 
 if __name__ == "__main__":

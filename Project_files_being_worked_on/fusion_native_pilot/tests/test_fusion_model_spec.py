@@ -54,6 +54,28 @@ class FusionModelSpecTests(unittest.TestCase):
         wheel = normalized["components"][0]
         self.assertEqual(expected_component_extents_mm(wheel), [80.0, 24.0, 80.0])
 
+    def test_single_shaft_model_spec_is_valid_and_one_component(self):
+        shaft_spec_path = (
+            PILOT_DIR.parent
+            / "wheel_drive_bench_demo"
+            / "shaft_2d_test"
+            / "shaft_6x46_A0_model_spec.json"
+        )
+        normalized = validate_model_spec(
+            json.loads(shaft_spec_path.read_text(encoding="utf-8"))
+        )
+
+        self.assertEqual(normalized["design_status"], "PRELIMINARY_CONCEPT")
+        self.assertEqual(len(normalized["components"]), 1)
+        shaft = normalized["components"][0]
+        self.assertEqual(shaft["name"], "Drive Shaft Placeholder")
+        self.assertEqual(shaft["type"], "cylinder")
+        self.assertEqual(shaft["axis"], "y")
+        self.assertEqual(shaft["origin_mm"], [0.0, 0.0, 0.0])
+        self.assertEqual(
+            shaft["dimensions_mm"], {"diameter": 6.0, "height": 46.0}
+        )
+
     def test_axis_alignment_maps_local_dimensions_to_world_axes(self):
         support = {
             "type": "plate_with_bore",
