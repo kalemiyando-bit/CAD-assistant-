@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "design_name": "Fusion Native Pilot Block",
+  "units": "mm",
+  "coordinate_system": "right-handed-z-up",
+  "components": [
+    {
+      "name": "Pilot Block",
+      "type": "box",
+      "origin_mm": [0, 0, 0],
+      "dimensions_mm": {
+        "length": 100,
+        "width": 60,
+        "height": 40
+      }
+    }
+  ]
+}

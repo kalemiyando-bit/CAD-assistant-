@@ -3,3 +3,6 @@
 
 # No need to store the pnpm store twice.
 .local
+
+# Large exported STEP CAD deliverables
+/Project_files_being_worked_on/ROBOT_V1_DESIGN/18_STEP_Only/

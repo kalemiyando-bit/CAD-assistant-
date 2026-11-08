@@ -1,0 +1,70 @@
+WHEEL DRIVE BENCH DEMONSTRATOR
+POC-02 3D-ONLY SHAFT HANDOFF
+
+Status: Preliminary proof of concept. Not approved for manufacture or powered
+testing.
+Date: 2026-11-08
+
+CURRENT USER DIRECTION
+
+- Create 3D designs only for now; do not create 2D drawings or profiles in this
+  phase.
+- Keep the proof of concept very simple.
+- Design individual parts one at a time. Create an assembly only after the
+  individual parts have been reviewed.
+- The user has no final dimensions or component specifications and authorizes
+  sensible preliminary choices. Mark every chosen value as an assumption.
+- Target CAD software is Autodesk Fusion on Windows; exact version is unknown.
+- Research scope is user-supplied sources only. Do not browse for more.
+
+SYSTEM INTENT
+
+A small, bench-only, direct-drive wheel module: a wheel and hub on a wheel-side
+shaft, supported by a bearing/support, coupled to a small brushed DC motor. The
+user describes a motor-side shaft connected through the coupling; whether this
+is a separate part depends on the motor selected. No external gear reduction and
+no reverse are intended. The wheel speed should be measurable.
+
+The requested controls are GAS and BRAKE buttons. A tap changes the speed target
+by one level. Holding GAS raises speed gradually; holding BRAKE lowers it to
+zero. Include a separate handbrake/emergency-stop control.
+
+For this simple proof of concept, the current contract proposes a 300 rpm
+commanded speed cap, 25 rpm per tap, and a 30 rpm/s hold ramp. These are
+preliminary assumptions, not validated controller settings or safe operating
+limits. At the existing 80 mm wheel envelope, 300 rpm corresponds to about
+1.26 m/s rim speed (calculated, not measured).
+
+FIRST 3D PART
+
+- Part: wheel-side shaft.
+- Geometry: one straight cylinder, Ø6 mm × 46 mm.
+- Units: millimetres.
+- Coordinate frame: right-handed Z-up; shaft axis along global +Y; cylinder base
+  center at the origin.
+- These dimensions reuse the A0 workflow envelope because the user authorized a
+  simple preliminary choice. They are not approved fits or interfaces.
+- The Fusion model should contain an editable native sketch and extrusion. Its
+  sketch is an internal feature of the 3D model, not a separate 2D deliverable.
+- The model has no shoulders, keyway, threads, retention feature, selected
+  material, bearing fit, or verified motor/coupling interface.
+
+SAFETY AND VALIDATION
+
+The project notes list a 7,400 rpm no-load speed for an unselected motor
+candidate. With an 80 mm wheel, that gives a calculated rim speed near 31 m/s;
+this is not measured operation and does not prove the candidate is suitable.
+Do not recommend powered testing until a physical guard, current-limited test
+procedure, speed limit, and actual stop behavior are defined for selected
+hardware. The proposed 300 rpm cap is not a safety certification.
+
+Replit cannot run the user's desktop Fusion application. This folder supplies
+the one-part model specification for use with the user's already-installed
+generate_fusion_model 1.1.0 add-in. The add-in source is not duplicated in this
+folder; its shared project source remains in Project_files_being_worked_on/
+fusion_native_pilot. Fusion execution, archive reopening, dimension inspection,
+fit, strength, and manufacturing readiness remain unverified until checked with
+the actual application and components.
+
+The earlier POC-01 DXF is retained as a prior handoff. It is not part of this
+3D-only deliverable.
