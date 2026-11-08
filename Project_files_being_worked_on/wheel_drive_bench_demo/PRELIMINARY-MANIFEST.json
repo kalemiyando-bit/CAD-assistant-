@@ -1,0 +1,26 @@
+{
+  "created_at": "2026-11-07T20:25:34.319265+00:00",
+  "files": [
+    {
+      "path": "DESIGN_CONTRACT.md",
+      "sha256": "62127193a635a889f24bd29a68a2311b3150c8555c2bef54268b554a93cebacf",
+      "size_bytes": 7480
+    },
+    {
+      "path": "PRELIMINARY_CONCEPT.md",
+      "sha256": "2912f5b7a17fff983b68468c8a0a99300e521743adde5129c19100eb3dff1760",
+      "size_bytes": 4955
+    },
+    {
+      "path": "REVIEW_A0.md",
+      "sha256": "2eec7c9fb42a159065850f700984861a788dc20625242b58167f94858de41db2",
+      "size_bytes": 4195
+    },
+    {
+      "path": "preliminary_wheel_drive_spec.json",
+      "sha256": "a7b6701e34c3648d72464dc3e9cb5daaaf9a0d79d3fbc63cbdff003ea2daf8af",
+      "size_bytes": 2828
+    }
+  ],
+  "schema_version": 1
+}

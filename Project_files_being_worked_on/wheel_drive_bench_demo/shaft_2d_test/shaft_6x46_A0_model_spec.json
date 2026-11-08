@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "design_name": "Drive Shaft Test A0",
+  "design_status": "PRELIMINARY_CONCEPT",
+  "units": "mm",
+  "coordinate_system": "right-handed-z-up",
+  "assumptions": [
+    "This is a one-part workflow test only and is not for manufacture.",
+    "The shaft is a straight cylindrical envelope; end features, material, tolerance, finish, and retention are unspecified.",
+    "Diameter 6 mm and length 46 mm are provisional A0 concept values, not confirmed component dimensions.",
+    "The model axis is global +Y and the cylinder base center is at the origin."
+  ],
+  "components": [
+    {
+      "name": "Drive Shaft Placeholder",
+      "type": "cylinder",
+      "axis": "y",
+      "origin_mm": [0, 0, 0],
+      "dimensions_mm": {
+        "diameter": 6,
+        "height": 46
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "design_name": "Wheel Drive Bench Demonstrator A0",
+  "design_status": "PRELIMINARY_CONCEPT",
+  "units": "mm",
+  "coordinate_system": "right-handed-z-up",
+  "assumptions": [
+    "This model is an exploratory envelope only and is not approved for manufacture or powered testing.",
+    "The 80 mm wheel, 24 mm width, 30 mm hub, and 8 mm hub projection reuse values from a separate CAD format test only as placeholders.",
+    "The 6 mm shaft, 12 mm outside by 6 mm inside by 4 mm bearing envelope, 30 mm square support plate, and 10 mm coupling envelope are unverified assumptions.",
+    "The Mabuchi FF-130 motor body dimensions are a candidate envelope from the existing design contract; the motor is not selected or approved.",
+    "The motor axis and wheel axis are assumed coaxial along global positive Y; vertical is global positive Z.",
+    "The coupling is shown only as a packaging envelope; motor-shaft and coupling bores are not modeled.",
+    "No tolerances, fits, materials, retention features, loads, motor supply, speed controller, PCB, or firmware are defined."
+  ],
+  "components": [
+    {
+      "name": "Wheel Rim Placeholder",
+      "type": "annular_cylinder",
+      "axis": "y",
+      "origin_mm": [0, 4, 50],
+      "dimensions_mm": {
+        "outer_diameter": 80,
+        "inner_diameter": 6,
+        "height": 24
+      }
+    },
+    {
+      "name": "Wheel Hub Placeholder",
+      "type": "annular_cylinder",
+      "axis": "y",
+      "origin_mm": [0, 28, 50],
+      "dimensions_mm": {
+        "outer_diameter": 30,
+        "inner_diameter": 6,
+        "height": 8
+      }
+    },
+    {
+      "name": "Drive Shaft Placeholder",
+      "type": "cylinder",
+      "axis": "y",
+      "origin_mm": [0, -10, 50],
+      "dimensions_mm": {
+        "diameter": 6,
+        "height": 46
+      }
+    },
+    {
+      "name": "Bearing Envelope Placeholder",
+      "type": "annular_cylinder",
+      "axis": "y",
+      "origin_mm": [0, 0, 50],
+      "dimensions_mm": {
+        "outer_diameter": 12,
+        "inner_diameter": 6,
+        "height": 4
+      }
+    },
+    {
+      "name": "Bearing Support Plate Placeholder",
+      "type": "plate_with_bore",
+      "axis": "y",
+      "origin_mm": [-15, 0, 65],
+      "dimensions_mm": {
+        "length": 30,
+        "width": 30,
+        "height": 4,
+        "bore_diameter": 12
+      }
+    },
+    {
+      "name": "Coupling Envelope Placeholder",
+      "type": "cylinder",
+      "axis": "y",
+      "origin_mm": [0, -10, 50],
+      "dimensions_mm": {
+        "diameter": 10,
+        "height": 10
+      }
+    },
+    {
+      "name": "FF-130 Motor Candidate Envelope",
+      "type": "box",
+      "axis": "y",
+      "origin_mm": [-10.2, -35.1, 57.7],
+      "dimensions_mm": {
+        "length": 20.4,
+        "width": 15.4,
+        "height": 25.1
+      }
+    }
+  ]
+}
