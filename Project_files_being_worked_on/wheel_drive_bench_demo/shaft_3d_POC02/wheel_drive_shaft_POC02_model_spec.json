@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "design_name": "Wheel Drive Bench Demonstrator - Wheel-Side Shaft POC-02",
+  "design_status": "PRELIMINARY_CONCEPT",
+  "units": "mm",
+  "coordinate_system": "right-handed-z-up",
+  "assumptions": [
+    "This is a simple proof-of-concept part and is not approved for manufacture or powered testing.",
+    "The shaft is a straight cylindrical envelope; end features, material, tolerance, finish, retention, and strength are unspecified.",
+    "Diameter 6 mm and length 46 mm reuse the A0 workflow envelope as provisional starting values, not approved interface dimensions.",
+    "The model axis is global +Y and the cylinder base center is at the origin."
+  ],
+  "components": [
+    {
+      "name": "Wheel-Side Shaft Placeholder",
+      "type": "cylinder",
+      "axis": "y",
+      "origin_mm": [0, 0, 0],
+      "dimensions_mm": {
+        "diameter": 6,
+        "height": 46
+      }
+    }
+  ]
+}

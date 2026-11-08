@@ -1,6 +1,6 @@
 # Wheel Drive Bench Demonstrator — Design Contract
 
-**Revision:** A0 / POC-01 intake update — preliminary concept; full-system Gate A is still open
+**Revision:** A0 / POC-02 3D-only handoff — preliminary concept; full-system Gate A is still open
 **Status:** An exploratory envelope model specification has been prepared. No dimensions, interfaces, component, geometry, PCB, or firmware is approved for manufacture, assembly, or powered use.
 
 ## Purpose and operating context
@@ -19,14 +19,14 @@
 |---|---|---|---|---|
 | R-01 | Develop a simple bench-only wheel-drive proof of concept, one part at a time; create the assembly after the individual parts are reviewed. | User conversation | User-provided | Review each part, then the assembled interfaces |
 | R-02 | Use a small brushed DC motor with no external gear reduction. | User conversation | User-provided; exact motor and interfaces open | Confirm the selected motor and inspect the assembly |
-| R-03 | Provide editable CAD handoffs for individual mechanical parts; begin with a single-part 2D model-building profile, then its 3D counterpart. | User conversation and project workflow | User-provided goal; staged format is a reversible workflow choice | Inspect the profile and 3D part in Fusion |
+| R-03 | Provide 3D Fusion handoffs for individual mechanical parts, one at a time; defer 2D drawings and profiles unless requested. | User conversation, 2026-11-08 | User-provided current scope | Open and inspect each generated 3D part in Fusion |
 | R-04 | Use GAS and BRAKE buttons: taps change one speed level, holds ramp speed up or down; braking can reach zero. Include a separate handbrake/emergency stop. | User conversation | User-provided behavior; implementation and stop dynamics unresolved | Review the control state machine and test with selected hardware |
 | R-05 | Measure wheel speed; do not implement reverse. | User conversation | User-provided | Confirm speed feedback and verify reverse is absent |
 | R-06 | Use simple, sensible preliminary dimensions where specifications are absent, and label them as assumptions for this proof of concept. | User conversation | User-authorized preliminary design discretion; no dimensions approved | Review and replace assumptions as components are selected |
 | R-07 | Provide a PCB and code for the simple speed-control behavior after mechanical/electrical requirements are established. | User conversation | User-provided long-term goal; deferred | Schematic/PCB checks and firmware behavior review |
 | R-08 | Prefer native Fusion formats where they can be created and checked; otherwise use compatible exchange formats. | User conversation | User-provided | Open/re-import files in the target application |
 
-## Preliminary control targets proposed for POC-01
+## Current preliminary control targets (unvalidated)
 
 The user authorized sensible preliminary choices but has not supplied motor or
 controller specifications. The following are assumptions, not confirmed
@@ -42,8 +42,9 @@ performance or safety ratings:
 - At the placeholder 80 mm wheel diameter, 300 rpm is approximately 1.26 m/s
   rim speed (calculated, not measured). This is not a safe operating limit.
 
-The simple shaft-profile deliverable and these control targets are recorded in
-`shaft_2d_test/POC01/wheel_drive_bench_demonstrator_poc_brief.txt`.
+The earlier POC-01 DXF is retained as a prior handoff, not an active deliverable.
+The current 3D-only shaft handoff is recorded in
+`shaft_3d_POC02/wheel_drive_shaft_POC02_brief.txt`.
 
 ## Preliminary component research
 
@@ -59,8 +60,8 @@ An electrical brake through an H-bridge is not a mechanical parking brake and do
 
 | Deliverable | Preferred format | Fallback / limitation |
 |---|---|---|
-| Parametric 3D assembly and parts | Fusion `.f3d`/`.f3z` created by Fusion | STEP only if it can be generated and checked; imported STEP does not restore feature history |
-| Individual dimensioned drawings | Fusion drawing if a reliable Fusion workflow is established | Editable DXF and readable PDF |
+| Individual 3D parts and final assembly | Native Fusion `.f3d`/`.f3z` created by Fusion | STEP only if requested and verified; imported STEP does not restore feature history |
+| 2D drawings or profiles | Not requested for the current phase | Revisit only if the user asks |
 | PCB and schematic | Editable Fusion Electronics project if a reliable workflow is established | Do not promise a native board file until Fusion Electronics can open and validate it |
 | Firmware | Source code plus pin map and upload instructions | Exact controller board remains to be selected |
 
@@ -78,7 +79,7 @@ Autodesk's current documentation lists Fusion Electronics native files as `.fsch
 | O-04 | Wheel dimensions, shaft interfaces, bearing size/spacing, and coupling dimensions | Required to model interfaces and fit | User authorized sensible POC assumptions; current A0 values remain placeholders |
 | O-05 | Motor supply and controller power source | Required for component ratings and PCB power design | Not specified |
 | O-06 | Exact Fusion version and whether the user can run the supplied script | Required to create and validate native Fusion files | Fusion on Windows; version unknown; user is willing to learn |
-| O-07 | Drawing output format | Required to prepare editable/readable part drawings | R12 DXF model-building profile is used for the first part; final documentation and native Fusion drawing formats remain open |
+| O-07 | 2D drawing output format | Needed only if the user later requests 2D work | No 2D outputs requested for the current phase |
 | O-08 | EDA software and version | Required to prepare an editable PCB project | Not specified |
 
 ## Verification and safety boundary
