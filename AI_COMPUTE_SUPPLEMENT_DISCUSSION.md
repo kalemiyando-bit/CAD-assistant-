@@ -1,6 +1,6 @@
 # AI Compute Supplement for CAD Assistant
 
-**Status:** The user agreed to a Replit-Agent-manager / Gemini-worker process. Replit Agent prepares a focused prompt or task file, the user returns Gemini's work for review, and Replit Agent issues revisions or takes over if Gemini cannot meet the requirements. The user's preferred Gemini API credential is their own key in Replit Secrets if direct API integration is implemented. No key, worker, or interface has been configured or built.
+**Status:** The user approved direct Gemini API use with their own key in Replit Secrets. A local, server-side CLI worker now drafts a single-component Fusion v1 model specification from an explicitly supplied brief and validates it with the existing Python validator. It makes no public billable endpoint and has no UI. No Google generation call has been made during implementation.
 
 The system supports the user's broader engineering design work; the shaft is only a workflow test example. Do not design only for shafts.
 
@@ -31,12 +31,12 @@ References:
 The user approved this operating model:
 
 1. The user and Replit Agent agree on the task, requirements, target CAD software, research scope, assumptions, and intended outputs.
-2. Replit Agent creates a focused prompt or task file for Gemini using only the context needed for that assignment.
-3. Gemini performs the assigned work. The user returns its outputs to Replit Agent.
-4. Replit Agent checks the result against the agreed requirements and prepares a focused follow-up prompt/file when changes are needed.
-5. If Gemini cannot produce an acceptable result, Replit Agent takes over.
+2. Replit Agent prepares a focused JSON brief and invokes the local Gemini worker only for supported single-part Fusion geometry.
+3. Gemini returns a structured draft; the worker validates it against the existing Fusion v1 model-spec validator. It never executes model-generated code.
+4. Replit Agent checks the result against the agreed requirements, presents the draft for user review, and prepares a focused revision request when needed.
+5. If Gemini cannot produce an acceptable result, Replit Agent takes over. Fusion execution and user inspection remain separate steps.
 
-The shaft is a tested workflow example, not the system's design scope. Keep assignments bounded and do not give a model unrestricted project or file access by default. A prompt/file handoff is the agreed workflow; direct Gemini API automation and a user-facing interface have not been built. If direct API integration is later implemented, keep the user's credential in Replit Secrets and server-side only. A passing model response or a file that opens is not evidence of fit, strength, safety, or manufacturing readiness.
+The shaft is a tested workflow example, not the system's design scope. Keep assignments bounded and do not give a model unrestricted project or file access. The local CLI reads only its input JSON, returns a preliminary spec, and does not create a 2D drawing or Fusion archive. A passing model response or a file that opens is not evidence of fit, strength, safety, or manufacturing readiness.
 
 ## Recommended first pilot
 
@@ -51,7 +51,7 @@ This is more useful than a free-form chatbot pilot: it exercises the real brief-
 
 ## Interface and automation scope
 
-The initial agreed workflow is Replit-Agent-led with a prompt/task-file handoff and the user returning Gemini's result. The project charter prioritizes proving this process before building a user-facing interface. Whether to automate the Gemini call directly or add a workbench remains open; do not build either without a specific implementation request.
+The Gemini call is now automated through the local CLI, but the overall process remains Replit-Agent-led and user-reviewed. There is no user-facing interface or public API route. Keep it this way unless repeated real use demonstrates a need for one.
 
 ## Context and test-cost preferences
 
