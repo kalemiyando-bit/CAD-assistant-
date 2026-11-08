@@ -1,9 +1,10 @@
 # Fusion-native pilot
 
 This is the first executable CAD handoff path for the conversational,
-Skill-driven CAD Assistant. It does not use an external API key or a separate
-AI service. The assistant can prepare a validated JSON model specification;
-Autodesk Fusion runs the supplied script and creates the native design.
+Skill-driven CAD Assistant. The Fusion generator itself does not use an external
+API key or AI service. An optional, separate Gemini CLI worker can draft a
+validated JSON model specification; Autodesk Fusion runs the supplied script
+and creates the native design.
 
 ## Included
 
@@ -13,6 +14,8 @@ Autodesk Fusion runs the supplied script and creates the native design.
   imported design as a Fusion `.f3d` archive.
 - `fusion_model_spec.py` — dependency-free schema validation used by the model
   generator and its tests.
+- `gemini_part_spec_worker.py` — optional server-side CLI that sends only an
+  explicitly supplied single-part brief to Gemini and validates the result.
 - `example_model_spec.json` — a 100 × 60 × 40 mm rectangular-block smoke test,
   matching the existing neutral-format test geometry.
 

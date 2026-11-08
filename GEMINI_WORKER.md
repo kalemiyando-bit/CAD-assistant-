@@ -12,6 +12,14 @@ boxes, cylinders, annular cylinders, and plates with a centered bore. It is not
 limited to shafts, but it does not yet produce assemblies, 2D drawings, arbitrary
 CAD scripts, or manufacturing-ready designs.
 
+## Current verification status
+
+The local dry run and a mocked API-contract check pass. Live generation is still
+unverified: a provider response was rejected by the worker's exact-dimension
+check, and the latest request returned HTTP 400 without useful provider detail.
+No valid model-spec file or Fusion output has been produced by Gemini yet. Keep
+diagnosis focused; do not run the unrelated CAD test suites for this issue.
+
 ## Security and cost boundaries
 
 - Run the worker from the trusted Replit project environment. It is a local CLI,

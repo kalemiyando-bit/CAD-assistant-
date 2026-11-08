@@ -8,6 +8,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - `DESIGN_AGENT_SYSTEM_CHARTER.md` holds cross-project engineering principles.
 - `ENGINEERING_WORKFLOW_PLAYBOOK.md` documents existing generation paths and their evidence status.
 - `AI_COMPUTE_SUPPLEMENT_DISCUSSION.md` records the agreed Gemini handoff.
+- `GEMINI_WORKER.md` explains the bounded Gemini CLI workflow and input format.
 - The shaft is a workflow example, not the system's design scope.
 - Replit Agent manages the design task and prepares focused prompts/files for Gemini. The user returns results for review; Replit Agent issues revisions or takes over if Gemini cannot meet the requirements.
 - Avoid broad context reviews and repeated project summaries. Do not run full test suites routinely; for CAD outputs, first check loading in the target application and use focused diagnostics if it fails. Keep contract-required safety/release checks.
@@ -62,7 +63,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - Use bounded specialist roles, single-writer ownership, formal change requests, independent review, and deterministic checks where available.
 - Prefer native Fusion `.f3d`/`.f3z` output when Fusion is the target and the design can be created or exported through Fusion. STEP is the neutral 3D fallback; imported STEP does not restore the original feature history. Dimensioned 2D drawings and circuit-board deliverables need their own formats.
 - A release manifest detects missing, empty, or changed files; it does not prove engineering correctness.
-- If direct Gemini API access is later implemented, use the user's own key from Replit Secrets on the server only; never expose it in browser code, prompts, or Git. See `AI_COMPUTE_SUPPLEMENT_DISCUSSION.md`; no integration is configured yet.
+- Gemini is an optional local CLI worker for preliminary single-part Fusion specs. It reads `GEMINI_API_KEY` from Replit Secrets, has no public route or UI, and must not receive unapproved assumptions or execute generated code. See `GEMINI_WORKER.md`.
 
 ## Product
 

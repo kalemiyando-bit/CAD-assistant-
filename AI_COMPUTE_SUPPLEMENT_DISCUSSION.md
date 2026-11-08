@@ -1,6 +1,6 @@
 # AI Compute Supplement for CAD Assistant
 
-**Status:** The user approved direct Gemini API use with their own key in Replit Secrets. A local, server-side CLI worker now drafts a single-component Fusion v1 model specification from an explicitly supplied brief and validates it with the existing Python validator. It makes no public billable endpoint and has no UI. No Google generation call has been made during implementation.
+**Status:** The user approved direct Gemini API use with their own key in Replit Secrets. A local CLI worker drafts a single-component Fusion v1 model specification from an explicitly supplied brief and validates it with the existing Python validator. It makes no public billable endpoint and has no UI. The no-cost dry run and one focused mocked API-contract test pass. Live generation is not yet verified: one provider response was rejected by local dimension validation, and the latest request returned HTTP 400 without a useful error body. No valid model-spec file or Fusion output was produced.
 
 The system supports the user's broader engineering design work; the shaft is only a workflow test example. Do not design only for shafts.
 
@@ -59,11 +59,11 @@ The Gemini call is now automated through the local CLI, but the overall process 
 - Do not run full test suites routinely. For generated CAD files, first let the user check the output in the target CAD application. If it fails to load/import, use focused diagnostics and tests for that failure. Follow task-specific safety or release checks recorded in the design contract.
 - Keep engineering claims evidence-based even when reducing routine test runs. Successful loading does not establish dimensional correctness, fit, strength, safety, or manufacturing readiness.
 
-## Decisions to make before implementation
+## Remaining pilot decisions and checks
 
-- Should the agreed prompt/file workflow be automated through the Gemini API, or remain user-mediated?
-- Which actual design task should be the first worker assignment? The shaft may be reused as a test case but is not the product scope.
 - What per-task cost ceiling and usage reporting should the pilot have?
+- Which real design task should follow the bounded smoke test? The shaft may be reused as a test case but is not the product scope.
+- Should the next integration step map a validated model spec into both the existing 2D and Fusion paths? The current worker only returns the Fusion v1 spec.
 - Which exact shaft-example tests passed, and did the 3D path run in Fusion and produce an archive that was opened and checked? Record the Fusion version and checks before updating the detailed evidence status.
 
-No key or provider integration has been configured. When implementation is approved, add the user's Gemini credential through the project Secrets flow; never request it in chat or put it in source files.
+The current project has a `GEMINI_API_KEY` secret configured. Never request or print its value in chat, logs, or source files. A real API smoke test uses the user's separate Google API billing and should be limited to a single small, clearly identified request.

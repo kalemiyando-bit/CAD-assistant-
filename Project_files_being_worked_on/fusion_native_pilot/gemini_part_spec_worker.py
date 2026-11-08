@@ -32,6 +32,12 @@ SUPPORTED_COMPONENT_TYPES = (
     "annular_cylinder",
     "plate_with_bore",
 )
+COMPONENT_DIMENSION_KEYS = {
+    "box": ("length", "width", "height"),
+    "cylinder": ("diameter", "height"),
+    "annular_cylinder": ("outer_diameter", "inner_diameter", "height"),
+    "plate_with_bore": ("length", "width", "height", "bore_diameter"),
+}
 
 SYSTEM_INSTRUCTION = """\
 You draft preliminary, single-component model specifications for the existing
@@ -87,30 +93,45 @@ DIMENSION_PROPERTIES = {
     },
 }
 
+def _component_schema(component_type: str) -> dict[str, Any]:
+    dimension_keys = COMPONENT_DIMENSION_KEYS[component_type]
+    return {
+        "type": "object",
+        "properties": {
+            "name": {"type": "string"},
+            "type": {"type": "string", "enum": [component_type]},
+            "axis": {"type": "string", "enum": ["x", "y", "z"]},
+            "origin_mm": {
+                "type": "array",
+                "items": {"type": "number"},
+                "minItems": 3,
+                "maxItems": 3,
+            },
+            "dimensions_mm": {
+                "type": "object",
+                "properties": {
+                    key: DIMENSION_PROPERTIES[key] for key in dimension_keys
+                },
+                "required": list(dimension_keys),
+                "additionalProperties": False,
+            },
+        },
+        "required": ["name", "type", "axis", "origin_mm", "dimensions_mm"],
+        "additionalProperties": False,
+    }
+
+
 COMPONENT_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "name": {"type": "string"},
-        "type": {"type": "string", "enum": list(SUPPORTED_COMPONENT_TYPES)},
-        "axis": {"type": "string", "enum": ["x", "y", "z"]},
-        "origin_mm": {
-            "type": "array",
-            "items": {"type": "number"},
-            "minItems": 3,
-            "maxItems": 3,
-        },
-        "dimensions_mm": {
-            "type": "object",
-            "properties": DIMENSION_PROPERTIES,
-        },
-    },
-    "required": ["name", "type", "axis", "origin_mm", "dimensions_mm"],
+    "anyOf": [
+        _component_schema(component_type)
+        for component_type in SUPPORTED_COMPONENT_TYPES
+    ]
 }
 
 MODEL_SPEC_SCHEMA = {
     "type": "object",
     "properties": {
-        "schema_version": {"type": "integer", "enum": [1]},
+        "schema_version": {"type": "integer"},
         "design_name": {"type": "string"},
         "design_status": {"type": "string", "enum": ["PRELIMINARY_CONCEPT"]},
         "assumptions": {"type": "array", "items": {"type": "string"}},
@@ -172,6 +193,33 @@ OUTPUT_SCHEMA = {
         "model_spec",
     ],
 }
+
+GEMINI_SCHEMA_TYPES = {
+    "array": "ARRAY",
+    "boolean": "BOOLEAN",
+    "integer": "INTEGER",
+    "number": "NUMBER",
+    "object": "OBJECT",
+    "string": "STRING",
+}
+
+
+def _gemini_schema_types(value: Any) -> Any:
+    """Convert JSON Schema type names to the enum values required by Gemini REST."""
+    if isinstance(value, dict):
+        converted = {}
+        for key, item in value.items():
+            if key == "type" and isinstance(item, str):
+                converted[key] = GEMINI_SCHEMA_TYPES.get(item, item)
+            else:
+                converted[key] = _gemini_schema_types(item)
+        return converted
+    if isinstance(value, list):
+        return [_gemini_schema_types(item) for item in value]
+    return value
+
+
+GEMINI_OUTPUT_SCHEMA = _gemini_schema_types(OUTPUT_SCHEMA)
 
 
 class WorkerError(Exception):
@@ -334,24 +382,16 @@ def _validate_output(value: Any) -> dict[str, Any]:
         "dimensions_mm",
     }:
         raise WorkerError("Gemini returned unexpected component fields.")
-    required_dimensions = {
-        "box": {"length", "width", "height"},
-        "cylinder": {"diameter", "height"},
-        "annular_cylinder": {"outer_diameter", "inner_diameter", "height"},
-        "plate_with_bore": {
-            "length",
-            "width",
-            "height",
-            "bore_diameter",
-        },
-    }
     component_type = component.get("type")
-    if not isinstance(component_type, str) or component_type not in required_dimensions:
+    if (
+        not isinstance(component_type, str)
+        or component_type not in COMPONENT_DIMENSION_KEYS
+    ):
         raise WorkerError("Gemini returned an unsupported component type.")
     dimensions = component.get("dimensions_mm")
-    if not isinstance(dimensions, dict) or set(dimensions) != required_dimensions[
-        component_type
-    ]:
+    if not isinstance(dimensions, dict) or set(dimensions) != set(
+        COMPONENT_DIMENSION_KEYS[component_type]
+    ):
         raise WorkerError("Gemini must return exactly the dimensions for its component type.")
     try:
         normalized_spec = validate_model_spec(spec)
@@ -410,9 +450,8 @@ def _call_gemini(
             }
         ],
         "generationConfig": {
-            "responseFormat": {
-                "text": {"mimeType": "APPLICATION_JSON", "schema": OUTPUT_SCHEMA}
-            },
+            "responseMimeType": "application/json",
+            "responseSchema": GEMINI_OUTPUT_SCHEMA,
             "maxOutputTokens": MAX_OUTPUT_TOKENS,
             "temperature": 0.1,
         },
