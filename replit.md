@@ -77,6 +77,7 @@ The assistant helps the user develop their own engineering designs across Autode
 - Ask each time how broad external research should be. Engineering rigor applies regardless of research scope.
 - The user is building an engineering-support system, not seeking to copy a product's appearance.
 - For robot 3D CAD handoffs, prefer native Fusion archives when Fusion is the target and can produce them; use STEP for neutral exchange or when requested. Keep robot model coordinates Z-up, X length, and Y width.
+- Reuse the same Fusion `generate_fusion_model` add-in for this system's designs. It supports one or multiple model-spec JSON files per run; do not create a separate add-in for each part.
 
 ## Gotchas
 

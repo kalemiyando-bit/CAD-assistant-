@@ -37,9 +37,10 @@ from fusion_model_spec import (
     safe_file_stem,
     validate_model_spec,
 )
+from fusion_spec_batch import normalize_selected_spec_paths
 
 
-SCRIPT_VERSION = "1.1.0"
+SCRIPT_VERSION = "1.2.0"
 
 
 def _unique_base(output_dir: str, stem: str) -> str:
@@ -470,14 +471,17 @@ def _check_body(body, component_spec) -> dict:
     }
 
 
-def _select_spec(ui):
+def _select_specs(ui) -> list[str]:
     dialog = ui.createFileDialog()
-    dialog.title = "Select a Fusion model specification"
+    dialog.title = "Select one or more Fusion model specifications"
     dialog.filter = "JSON model specifications (*.json)"
-    dialog.isMultiSelectEnabled = False
+    dialog.isMultiSelectEnabled = True
     if dialog.showOpen() != adsk.core.DialogResults.DialogOK:
-        return None
-    return dialog.filename
+        return []
+    return normalize_selected_spec_paths(
+        getattr(dialog, "filenames", None),
+        getattr(dialog, "filename", None),
+    )
 
 
 def _select_output_folder(ui):
@@ -488,19 +492,9 @@ def _select_output_folder(ui):
     return dialog.folder
 
 
-def run(context):
-    ui = None
+def _generate_one_spec(app, spec_path: str, output_dir: str) -> dict:
+    document = None
     try:
-        app = adsk.core.Application.get()
-        ui = app.userInterface
-
-        spec_path = _select_spec(ui)
-        if not spec_path:
-            return
-        output_dir = _select_output_folder(ui)
-        if not output_dir:
-            return
-
         with open(spec_path, "r", encoding="utf-8") as stream:
             spec = validate_model_spec(json.load(stream))
 
@@ -611,12 +605,68 @@ def run(context):
             json.dump(report, stream, indent=2, sort_keys=True)
             stream.write("\n")
 
-        ui.messageBox(
-            "Fusion model created.\n\n"
-            f"Native archive: {archive_path}\n"
-            f"Generation report: {report_path}\n\n"
-            "Review the feature timeline and report before using the model."
+        return {
+            "source_spec": os.path.basename(spec_path),
+            "design_name": spec["design_name"],
+            "archive_path": archive_path,
+            "report_path": report_path,
+        }
+    except Exception:
+        if document:
+            try:
+                document.close(False)
+            except Exception as close_error:
+                raise RuntimeError(
+                    f"{traceback.format_exc()}\n"
+                    f"Fusion also failed to close the incomplete document: {close_error}"
+                ) from close_error
+        raise
+
+
+def run(context):
+    ui = None
+    try:
+        app = adsk.core.Application.get()
+        ui = app.userInterface
+
+        spec_paths = _select_specs(ui)
+        if not spec_paths:
+            return
+        output_dir = _select_output_folder(ui)
+        if not output_dir:
+            return
+
+        successes = []
+        failures = []
+        for spec_path in spec_paths:
+            try:
+                successes.append(_generate_one_spec(app, spec_path, output_dir))
+            except Exception as error:
+                failures.append(
+                    {"source_spec": os.path.basename(spec_path), "error": str(error)}
+                )
+
+        lines = [
+            f"Finished processing {len(spec_paths)} model specification(s).",
+            f"Created {len(successes)} archive(s); {len(failures)} failed.",
+            f"Output folder: {output_dir}",
+        ]
+        for item in successes[:10]:
+            lines.append(
+                f"Created: {os.path.basename(item['archive_path'])} "
+                f"({os.path.basename(item['source_spec'])})"
+            )
+        if len(successes) > 10:
+            lines.append(f"...and {len(successes) - 10} more archive(s).")
+        for item in failures[:10]:
+            lines.append(f"Failed: {item['source_spec']} — {item['error']}")
+        if len(failures) > 10:
+            lines.append(f"...and {len(failures) - 10} more failure(s).")
+        lines.append(
+            "Each selected JSON creates a separate Fusion design. "
+            "A JSON containing multiple components remains one design."
         )
+        ui.messageBox("\n".join(lines))
     except Exception:
         if ui:
             ui.messageBox(f"Fusion model generation failed:\n\n{traceback.format_exc()}")

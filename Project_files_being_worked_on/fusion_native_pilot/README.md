@@ -28,13 +28,16 @@ and creates the native design.
    device**, and select the `generate_fusion_model/` child folder (not the
    `fusion_native_pilot/` parent).
 3. Run **Generate Fusion Model from JSON**.
-4. Select `example_model_spec.json` or the one-part shaft test spec at
-   `../wheel_drive_bench_demo/shaft_2d_test/shaft_6x46_A0_model_spec.json`,
-   then choose an output folder. For the shaft test, do not select the
-   seven-component `preliminary_wheel_drive_spec.json`.
-5. Open the resulting `.f3d` file in Fusion and inspect the component, sketch,
+4. In the file picker, select one JSON model specification or multi-select
+   several JSON files, then choose one output folder. Selecting one file keeps
+   the original one-at-a-time workflow.
+5. The add-in creates a separate Fusion design, `.f3d` archive, and adjacent
+   `-report.json` for each selected specification. A single specification with
+   several components still creates one combined design. If one specification
+   fails, the add-in continues with the rest and reports each result.
+6. Open each resulting `.f3d` file in Fusion and inspect the component, sketch,
    driving dimensions, user parameters, and extrusion in the timeline.
-6. Review the adjacent `-report.json`; it records dimensions, checks, and
+7. Review each adjacent `-report.json`; it records dimensions, checks, and
    SHA-256 for the archive.
 
 The shaft test spec creates one provisional straight cylinder: Ø6 mm × 46 mm,
@@ -80,6 +83,10 @@ example's tests passed and it can produce a 3D model, but this README does not
 record the Fusion version or whether the resulting `.f3d` was opened and its
 dimensions and axis inspected. X/Y-oriented variants and annular/bored profiles
 still need their own Fusion smoke tests before being treated as verified.
+
+Version 1.2.0 adds multi-selection of JSON model specifications in the existing
+`generate_fusion_model` script. It does not require a separate add-in for each
+part; update the existing script package once to use the batch feature.
 
 ## Engineering limits
 
