@@ -1,45 +1,15 @@
 {
-  "created_at": "2026-11-08T14:49:29.453904+00:00",
+  "created_at": "2026-11-08T15:07:25.356880+00:00",
   "files": [
     {
       "path": "README.txt",
-      "sha256": "0d67e687ff483904aaadc6423cf3b594054fe4e2f3787e6a3f1c714489acb86c",
-      "size_bytes": 1478
-    },
-    {
-      "path": "fusion_native_pilot/fusion_model_spec.py",
-      "sha256": "4704672c6a4447f6f379c5f96880601fc7d14fb75eedc85bfd6244bb3c4c846d",
-      "size_bytes": 9333
-    },
-    {
-      "path": "fusion_native_pilot/generate_fusion_model.py",
-      "sha256": "3352fb476efde5c7bf494db4048c2946570b4b7e35544f95ca926655764ef78f",
-      "size_bytes": 23773
-    },
-    {
-      "path": "fusion_native_pilot/generate_fusion_model/fusion_model_spec.py",
-      "sha256": "64ae6a1180b9b47edbbd78e5737094449d7cdb66a3f6b69bbe8f3b79c07e2ab1",
-      "size_bytes": 794
-    },
-    {
-      "path": "fusion_native_pilot/generate_fusion_model/generate_fusion_model.manifest",
-      "sha256": "9054f99188d125f1b7203fef65b908199934bd9cec6cc72ba9a7469788345f34",
-      "size_bytes": 283
-    },
-    {
-      "path": "fusion_native_pilot/generate_fusion_model/generate_fusion_model.py",
-      "sha256": "d91a94d5df6346198a441f9b478e05ffc08b67b0dd862f99212b3496e5678076",
-      "size_bytes": 774
-    },
-    {
-      "path": "wheel_drive_shaft_POC02_Fusion_bundle.zip",
-      "sha256": "8a1629ef4a7de667cbf011da50fc510f39af18930158f99883fb1787f2de7101",
-      "size_bytes": 13560
+      "sha256": "5d647de9a324741841173ef7181e66e4a64b424be07da0c89d5f0e68a41f4419",
+      "size_bytes": 1665
     },
     {
       "path": "wheel_drive_shaft_POC02_brief.txt",
-      "sha256": "324d9c7ad0bffdb8a2c4134cb0e16ea799ff90a6eb281a47b204901474ec4f12",
-      "size_bytes": 3292
+      "sha256": "c6069b3814dd402830cf0725d48ca240d92b0eaff52765a58f215526def9ad51",
+      "size_bytes": 3450
     },
     {
       "path": "wheel_drive_shaft_POC02_model_spec.json",

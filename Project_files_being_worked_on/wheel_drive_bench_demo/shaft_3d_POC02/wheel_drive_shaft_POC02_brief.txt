@@ -58,11 +58,13 @@ Do not recommend powered testing until a physical guard, current-limited test
 procedure, speed limit, and actual stop behavior are defined for selected
 hardware. The proposed 300 rpm cap is not a safety certification.
 
-Replit cannot run the user's desktop Fusion application. This package supplies
-the one-part model specification and Fusion script needed to create a native
-.f3d in Fusion. Fusion execution, archive reopening, dimension inspection, fit,
-strength, and manufacturing readiness remain unverified until checked with the
-actual application and components.
+Replit cannot run the user's desktop Fusion application. This folder supplies
+the one-part model specification for use with the user's already-installed
+generate_fusion_model 1.1.0 add-in. The add-in source is not duplicated in this
+folder; its shared project source remains in Project_files_being_worked_on/
+fusion_native_pilot. Fusion execution, archive reopening, dimension inspection,
+fit, strength, and manufacturing readiness remain unverified until checked with
+the actual application and components.
 
 The earlier POC-01 DXF is retained as a prior handoff. It is not part of this
 3D-only deliverable.
