@@ -195,6 +195,17 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
 
         self.assertEqual(call.call_count, 1)
 
+    def test_ready_output_requires_exact_dimension_provenance(self) -> None:
+        missing = ready_response()
+        missing["dimension_basis"].pop()
+        with self.assertRaisesRegex(worker.WorkerError, "omitted the source"):
+            worker._validate_output(missing)
+
+        duplicate = ready_response()
+        duplicate["dimension_basis"].append(duplicate["dimension_basis"][0].copy())
+        with self.assertRaisesRegex(worker.WorkerError, "duplicate dimension"):
+            worker._validate_output(duplicate)
+
     def test_uses_gemini_rest_structured_output_fields_and_validates_result(self) -> None:
         generated = ready_response()
         api_response = {
@@ -259,6 +270,11 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
         self.assertEqual(
             config["responseSchema"]["properties"]["questions"]["items"]["type"],
             "STRING",
+        )
+        basis_schema = config["responseSchema"]["properties"]["dimension_basis"]
+        self.assertEqual(
+            set(basis_schema["items"]["properties"]["field"]["enum"]),
+            set(worker.DIMENSION_BASIS_PATHS),
         )
         component_variants = config["responseSchema"]["properties"]["model_spec"][
             "properties"

@@ -14,14 +14,20 @@ CAD scripts, or manufacturing-ready designs.
 
 ## Current verification status
 
-The local dry run and focused mocked API-contract checks pass. The corrected
-structured schema reached candidate generation, but live generation has not yet
-produced a valid spec: Gemini 3.8 Flash returned a high-demand HTTP 503, and a
-second request hit the 1,024-token response cap. Google documents that Gemini 3.7
-Flash is deprecated and automatically routes to 3.8 Flash, so it is not an
-independent fallback. The worker now uses low thinking and a bounded 2,048-token
-output budget for this simple primitive task. No valid model-spec file or Fusion
-output has been produced by Gemini yet.
+The local dry run and focused mocked API-contract checks pass. The primary key
+was accepted by `models.list` (HTTP 200), and Gemini 3.8 Flash appeared in the
+catalog. No model has yet produced a spec that passes the local validator:
+Gemini 3.8 Flash returned HTTP 503 or timed out; Gemini 3.6 Flash and 3.1
+Flash-Lite returned candidates but omitted required dimension provenance;
+Gemini 4 Argon returned HTTP 429 quota errors. Google documents Gemini 3.6 Flash
+as stable and production-ready, but it is not yet proven for this worker's full
+contract. Gemini 3.7 Flash is deprecated and automatically routes to 3.8 Flash,
+so it is not an independent fallback.
+
+The worker uses low thinking and a bounded 2,048-token output budget. The
+structured schema now enumerates allowed dimension paths, and the local
+validator rejects missing, duplicate, or unexpected provenance entries. No
+valid model-spec file or Fusion output has been produced by Gemini yet.
 
 The user shared this Free-tier quota snapshot for Gemini 3.8 Flash on
 2026-11-08: limits of 5 RPM, 250,000 input TPM, and 20 RPD; 28-day peak use of
@@ -43,7 +49,7 @@ Studio page before future API requests.
   `design_brief`, and `approved_assumptions`. The worker does not read other
   project files, skills, or secrets.
 - Each invocation makes at most one Google request, with a 180-second timeout,
-  no automatic retries, and a 1,024-token output cap. It reports input, output,
+  no automatic retries, and a 2,048-token output cap. It reports input, output,
   thinking, and total token usage
   when Google returns it. Google bills these API calls separately from Replit
   Agent usage.

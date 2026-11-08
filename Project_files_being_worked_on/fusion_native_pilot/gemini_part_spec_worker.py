@@ -45,6 +45,12 @@ COMPONENT_DIMENSION_KEYS = {
     "annular_cylinder": ("outer_diameter", "inner_diameter", "height"),
     "plate_with_bore": ("length", "width", "height", "bore_diameter"),
 }
+DIMENSION_BASIS_PATHS = tuple(
+    f"components[0].dimensions_mm.{key}"
+    for key in dict.fromkeys(
+        key for keys in COMPONENT_DIMENSION_KEYS.values() for key in keys
+    )
+)
 
 SYSTEM_INSTRUCTION = """\
 You draft preliminary, single-component model specifications for the existing
@@ -75,10 +81,13 @@ convention as an assumption. If orientation affects an interface or assembly,
 ask instead.
 
 Every draft is PRELIMINARY_CONCEPT. Record all non-user-specified defaults in
-the assumptions array. For every dimension, provide a dimension_basis entry
-with its exact JSON field path, basis (user_brief or approved_assumption), and
-a short note. If a safe draft cannot be made, leave model_spec.components
-empty. Keep summaries and questions concise.
+the assumptions array. For status draft_ready, dimension_basis must contain
+exactly one entry for every dimensions_mm key in the sole component. Use the
+exact path components[0].dimensions_mm.<key>, basis (user_brief or
+approved_assumption), and a short note identifying the source. Do not leave
+dimension_basis empty or summarize multiple dimensions in one entry. If a safe
+draft cannot be made, leave model_spec.components empty. Keep summaries and
+questions concise.
 """
 
 DIMENSION_PROPERTIES = {
@@ -162,6 +171,22 @@ MODEL_SPEC_SCHEMA = {
     ],
 }
 
+DIMENSION_BASIS_ITEM_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "field": {
+            "type": "string",
+            "enum": list(DIMENSION_BASIS_PATHS),
+        },
+        "basis": {
+            "type": "string",
+            "enum": ["user_brief", "approved_assumption"],
+        },
+        "note": {"type": "string"},
+    },
+    "required": ["field", "basis", "note"],
+}
+
 OUTPUT_SCHEMA = {
     "type": "object",
     "properties": {
@@ -174,18 +199,11 @@ OUTPUT_SCHEMA = {
         "unsupported_reason": {"type": "string"},
         "dimension_basis": {
             "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "field": {"type": "string"},
-                    "basis": {
-                        "type": "string",
-                        "enum": ["user_brief", "approved_assumption"],
-                    },
-                    "note": {"type": "string"},
-                },
-                "required": ["field", "basis", "note"],
-            },
+            "description": (
+                "For draft_ready, include one entry per dimension in the sole "
+                "component. Use exact components[0].dimensions_mm.<key> paths."
+            ),
+            "items": DIMENSION_BASIS_ITEM_SCHEMA,
         },
         "model_spec": MODEL_SPEC_SCHEMA,
     },
@@ -416,7 +434,16 @@ def _validate_output(value: Any) -> dict[str, Any]:
         raise WorkerError("The pilot accepts exactly one supported component.")
 
     required_basis = _model_spec_field_paths(normalized_spec)
-    reported_basis = {item["field"] for item in value["dimension_basis"]}
+    basis_fields = [item["field"] for item in value["dimension_basis"]]
+    reported_basis = set(basis_fields)
+    if len(basis_fields) != len(reported_basis):
+        raise WorkerError("Gemini returned duplicate dimension provenance.")
+    unexpected_basis = sorted(reported_basis - required_basis)
+    if unexpected_basis:
+        raise WorkerError(
+            "Gemini returned provenance for unexpected dimensions: "
+            + ", ".join(unexpected_basis)
+        )
     missing_basis = sorted(required_basis - reported_basis)
     if missing_basis:
         raise WorkerError(
