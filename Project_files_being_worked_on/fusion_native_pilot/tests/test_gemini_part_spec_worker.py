@@ -92,7 +92,7 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
             BytesIO(body),
         )
 
-        message, credential_rejected = worker._api_error_message(
+        message, credential_rejected, quota_limited = worker._api_error_message(
             error,
             "test-secret-value",
         )
@@ -101,6 +101,7 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
         self.assertIn("schema rejected", message)
         self.assertNotIn("test-secret-value", message)
         self.assertFalse(credential_rejected)
+        self.assertFalse(quota_limited)
 
     def test_invalid_key_error_is_classified_for_serial_fallback(self) -> None:
         body = json.dumps(
@@ -120,9 +121,39 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
             BytesIO(body),
         )
 
-        _, credential_rejected = worker._api_error_message(error, "fake-key")
+        _, credential_rejected, quota_limited = worker._api_error_message(
+            error,
+            "fake-key",
+        )
 
         self.assertTrue(credential_rejected)
+        self.assertFalse(quota_limited)
+
+    def test_http_429_is_classified_as_a_project_quota_limit(self) -> None:
+        body = json.dumps(
+            {
+                "error": {
+                    "code": 429,
+                    "status": "RESOURCE_EXHAUSTED",
+                    "message": "Quota exceeded.",
+                }
+            }
+        ).encode("utf-8")
+        error = HTTPError(
+            "https://example.invalid",
+            429,
+            "Too Many Requests",
+            {},
+            BytesIO(body),
+        )
+
+        _, credential_rejected, quota_limited = worker._api_error_message(
+            error,
+            "fake-key",
+        )
+
+        self.assertFalse(credential_rejected)
+        self.assertTrue(quota_limited)
 
     def test_configured_keys_keep_order_and_remove_duplicates(self) -> None:
         keys = worker._configured_api_keys(
@@ -172,6 +203,48 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
         self.assertEqual(call.call_count, 2)
         self.assertEqual(result, result_data)
         self.assertEqual(usage["credential_env"], "GEMINI_API_KEY_2")
+
+    def test_project_quota_fallback_tries_keys_in_order_until_success(self) -> None:
+        request_data = {
+            "design_name": "Offline API Contract Test",
+            "design_brief": "A 10 mm diameter cylinder, 20 mm tall.",
+            "approved_assumptions": [],
+        }
+        result_data = ready_response()
+        usage_data = {"model": "gemini-3.6-flash", "total_tokens": 80}
+        api_keys = [
+            ("GEMINI_API_KEY", "fake-primary-key"),
+            ("GEMINI_API_KEY_2", "fake-backup-key-2"),
+            ("GEMINI_API_KEY_3", "fake-backup-key-3"),
+        ]
+        with patch.object(
+            worker,
+            "_call_gemini",
+            side_effect=[
+                worker.GeminiAPIError(
+                    "Gemini API returned HTTP 429: project quota exceeded",
+                    quota_limited=True,
+                ),
+                worker.GeminiAPIError(
+                    "Gemini API returned HTTP 429: project quota exceeded",
+                    quota_limited=True,
+                ),
+                (result_data, usage_data),
+            ],
+        ) as call:
+            result, usage = worker._call_gemini_with_keys(
+                request_data,
+                "gemini-3.6-flash",
+                api_keys,
+            )
+
+        self.assertEqual(call.call_count, 3)
+        self.assertEqual(
+            [entry.args[2] for entry in call.call_args_list],
+            [key for _, key in api_keys],
+        )
+        self.assertEqual(result, result_data)
+        self.assertEqual(usage["credential_env"], "GEMINI_API_KEY_3")
 
     def test_rate_or_provider_errors_do_not_try_another_key(self) -> None:
         with patch.object(

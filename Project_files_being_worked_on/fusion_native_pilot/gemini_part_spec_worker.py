@@ -250,11 +250,18 @@ class WorkerError(Exception):
 
 
 class GeminiAPIError(WorkerError):
-    """An HTTP error from Gemini, with explicit invalid-key classification."""
+    """An HTTP error from Gemini, with credential and quota classification."""
 
-    def __init__(self, message: str, *, credential_rejected: bool = False) -> None:
+    def __init__(
+        self,
+        message: str,
+        *,
+        credential_rejected: bool = False,
+        quota_limited: bool = False,
+    ) -> None:
         super().__init__(message)
         self.credential_rejected = credential_rejected
+        self.quota_limited = quota_limited
 
 
 def _read_request(path: Path | None) -> dict[str, Any]:
@@ -454,7 +461,7 @@ def _validate_output(value: Any) -> dict[str, Any]:
     return value
 
 
-def _api_error_message(exc: HTTPError, api_key: str) -> tuple[str, bool]:
+def _api_error_message(exc: HTTPError, api_key: str) -> tuple[str, bool, bool]:
     body = exc.read(4_000).decode("utf-8", errors="replace")
     message = ""
     provider_status = ""
@@ -490,7 +497,12 @@ def _api_error_message(exc: HTTPError, api_key: str) -> tuple[str, bool]:
     credential_rejected = exc.code in (400, 401, 403) and any(
         marker in searchable_error for marker in rejected_key_markers
     )
-    return f"Gemini API returned HTTP {exc.code}: {message}", credential_rejected
+    quota_limited = exc.code == 429
+    return (
+        f"Gemini API returned HTTP {exc.code}: {message}",
+        credential_rejected,
+        quota_limited,
+    )
 
 
 def _configured_api_keys(
@@ -558,10 +570,14 @@ def _call_gemini(
         with urlopen(request, timeout=API_TIMEOUT_SECONDS) as response:
             response_data = json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
-        message, credential_rejected = _api_error_message(exc, api_key)
+        message, credential_rejected, quota_limited = _api_error_message(
+            exc,
+            api_key,
+        )
         raise GeminiAPIError(
             message,
             credential_rejected=credential_rejected,
+            quota_limited=quota_limited,
         ) from exc
     except URLError as exc:
         raise WorkerError(f"Could not reach the Gemini API: {exc.reason}") from exc
@@ -633,7 +649,7 @@ def _call_gemini_with_keys(
     api_keys: list[tuple[str, str]],
     thinking_level: str = DEFAULT_THINKING_LEVEL,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Call Gemini serially; rotate only when Google explicitly rejects a key."""
+    """Try distinct keys serially after invalid-key or HTTP 429 errors only."""
     if not api_keys:
         raise WorkerError(
             "No Gemini API key is available. Add GEMINI_API_KEY (or "
@@ -649,7 +665,9 @@ def _call_gemini_with_keys(
                 thinking_level,
             )
         except GeminiAPIError as exc:
-            if not exc.credential_rejected or index == len(api_keys) - 1:
+            if not (
+                exc.credential_rejected or exc.quota_limited
+            ) or index == len(api_keys) - 1:
                 raise
             continue
         usage["credential_env"] = environment_name

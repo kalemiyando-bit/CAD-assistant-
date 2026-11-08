@@ -76,18 +76,21 @@ Studio page before future API requests.
   user's Google API quota.
 - `GEMINI_API_KEY`, `GEMINI_API_KEY_2`, and `GEMINI_API_KEY_3` are read from
   Replit Secrets by the Python process. The worker tries them in that order,
-  serially, and only moves to another key when Google explicitly identifies the
-  current key as invalid. It never races keys or retries quota, timeout, or
-  provider-capacity errors. Never put a key in an input file, command argument,
-  output file, or log.
+  serially. The user confirms these keys belong to separate Google projects.
+  Gemini rate limits are project-based, so the worker moves to the next distinct
+  project key after an HTTP 429 quota/rate-limit response, or after an explicit
+  invalid-key response. It makes no parallel requests and never retries the same
+  key. A timeout or HTTP 503 provider-capacity error does not trigger fallback.
+  Never put a key in an input file, command argument, output file, or log.
 - Only the three fields below are sent to Google: `design_name`,
   `design_brief`, and `approved_assumptions`. The worker does not read other
   project files, skills, or secrets.
-- Each invocation makes at most one Google request, with a 180-second timeout,
-  no automatic retries, and a 2,048-token output cap. It reports input, output,
-  thinking, and total token usage
-  when Google returns it. Google bills these API calls separately from Replit
-  Agent usage.
+- Each invocation makes at most one Google request per configured distinct key,
+  sequentially, with a 180-second timeout and a 2,048-token output cap. A
+  fallback request may increase project request usage and is subject to Google's
+  billing rules. The worker reports input, output, thinking, and total token
+  usage when Google returns it. Google bills these API calls separately from
+  Replit Agent usage.
 - Gemini rate limits are project-level and can include requests per minute,
   input tokens per minute, and requests per day. They vary by model and usage
   tier; check the active project limits in [Google AI Studio](https://aistudio.google.com/rate-limit?timeRange=last-28-days).
