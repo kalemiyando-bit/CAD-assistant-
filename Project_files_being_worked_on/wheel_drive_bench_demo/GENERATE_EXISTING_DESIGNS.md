@@ -15,7 +15,7 @@ project; do not create a new script entry for each part.
 
 ## Part specifications
 
-These are the three current, separate part specifications:
+These are the four current, separate part specifications:
 
 1. Shaft POC-02:
    `shaft_3d_POC02/wheel_drive_shaft_POC02_model_spec.json`
@@ -23,6 +23,8 @@ These are the three current, separate part specifications:
    `wheel_rim_3d_POC03/wheel_rim_POC03_model_spec.json`
 3. Hub POC-04:
    `hub_3d_POC04/hub_POC04_model_spec.json`
+4. Bearing envelope POC-05:
+   `bearing_3d_POC05/bearing_POC05_model_spec.json`
 
 Copy the JSON files to a folder accessible to Fusion. Run **Generate Fusion
 Model from JSON**, then select one specification or multi-select several. One
@@ -35,6 +37,10 @@ Do **not** select the parent `preliminary_wheel_drive_spec.json` for this
 individual-part run. It is a seven-component exploratory concept, not a
 reviewed assembly. The older `shaft_2d_test/shaft_6x46_A0_model_spec.json` is
 also not the current shaft handoff.
+
+The remaining preliminary concept envelopes are the bearing support, coupling,
+and candidate motor. The bearing and motor are purchased-part representations,
+not custom component designs.
 
 ## Output folder
 
