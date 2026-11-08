@@ -72,10 +72,11 @@ python -m py_compile Project_files_being_worked_on/fusion_native_pilot/fusion_mo
 ```
 
 These checks validate the JSON contract and Python syntax only. Autodesk Fusion
-is not installed in the Replit environment, so execution of the Fusion API
-scripts and inspection of the resulting `.f3d` remain blocked until they are run
-inside the user's Fusion installation. The X/Y axis placement and annular/bored
-profiles also require a first Fusion smoke test before being treated as verified.
+is not installed in the Replit environment. The user now reports that the shaft
+example's tests passed and it can produce a 3D model, but this README does not
+record the Fusion version or whether the resulting `.f3d` was opened and its
+dimensions and axis inspected. X/Y-oriented variants and annular/bored profiles
+still need their own Fusion smoke tests before being treated as verified.
 
 ## Engineering limits
 

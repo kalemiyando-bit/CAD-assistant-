@@ -43,6 +43,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - `Project_files_being_worked_on/fusion_native_pilot/` — Fusion scripts and the tested-outside-Fusion model-spec validator
 - `Project_files_being_worked_on/wheel_drive_bench_demo/` — preliminary wheel-drive concept, assumptions, and model specification
 - `ENGINEERING_WORKFLOW_PLAYBOOK.md` — reproducible 2D/3D/PCB handoff paths and evidence status
+- `AI_COMPUTE_SUPPLEMENT_DISCUSSION.md` — open discussion of using Gemini alongside Replit Agents, including billing routes and unresolved decisions
 
 ## Architecture decisions
 

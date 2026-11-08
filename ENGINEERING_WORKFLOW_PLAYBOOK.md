@@ -94,16 +94,19 @@ source dimensions, R12 header, millimetre units, documentation views/labels, and
 that the model-sketch DXF contains only its profile circle. These checks do
 **not** test Fusion's DXF importer or verify the imported scale and placement.
 
-The documentation DXF's basic import into Fusion is now confirmed by the user.
-The model-sketch DXF still needs an application check for single-profile import,
-scale, and extrusion axis. Record the Fusion version and any import prompts.
-A local DXF parser check is not evidence of target-application importability.
+The user now reports that the shaft example's tests passed and that it can
+produce both a 2D drawing and a 3D model. The earlier record confirms basic
+import of the documentation DXF into Fusion. The exact checks covered by the
+newer report have not yet been itemized here; confirm whether it included the
+model-sketch DXF's single-profile import, scale, and extrusion-axis checks.
+Record the Fusion version and any import prompts when known. A local DXF parser
+check is not evidence of target-application importability.
 
 If a future request requires a native Fusion drawing sheet, create it from the
 reviewed 3D design only after the Fusion drawing workflow has itself been
 smoke-tested. Do not describe the current DXF as a native drawing.
 
-## 3D mechanical handoff — available path, Fusion execution pending
+## 3D mechanical handoff — shaft capability user-confirmed; exact checks pending
 
 ### Simple native Fusion geometry
 
@@ -141,9 +144,14 @@ smoke-tested. Do not describe the current DXF as a native drawing.
 
 - Those tests validate JSON normalization and rejection cases. They do **not**
   execute the Autodesk Fusion API.
-- No native Fusion output from the wheel-drive pilot has yet been run and
-  inspected in the user's Fusion. Y-axis placement and annular/bored geometry
-  still need a Fusion smoke test.
+- The user now reports that the shaft example tests passed and both 2D and 3D
+  outputs can be created. The earlier note that Fusion execution was pending is
+  superseded for that reported capability, but the exact Fusion-side checks have
+  not yet been recorded. Confirm whether the generator ran inside Fusion, the
+  `.f3d` opened, and the shaft's units, dimensions, and +Y axis were inspected
+  before marking those specific checks complete.
+- Y-axis placement for the other supported features and annular/bored geometry
+  still need their own Fusion smoke tests.
 - The model generator's success report is not proof of fit, strength, safety, or
   manufacturing readiness.
 

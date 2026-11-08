@@ -65,5 +65,8 @@ Fusion drawing-sheet workflow has not been verified in this project.
   `fusion_native_pilot/generate_fusion_model/` through **Tools → Scripts and
   Add-Ins → Add Script from device**. Run **Generate Fusion Model from JSON**,
   select the shaft model spec, and choose an output folder.
-- Fusion should create a native `.f3d` and a report JSON. This generator has
-  passed local schema tests, but has not yet been executed in the user's Fusion.
+- Fusion should create a native `.f3d` and a report JSON. The user now reports
+  that the shaft example's tests passed and that it can produce a 3D model.
+  This README does not yet record the Fusion version or whether the generated
+  archive was opened and its dimensions and axis inspected; see
+  `ENGINEERING_WORKFLOW_PLAYBOOK.md` for the current evidence status.
