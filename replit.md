@@ -50,8 +50,9 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - This is an agent-support system for the user and other Replit agents to help build CAD designs, not a web app or standalone Python app. Keep it conversational and Skill-driven; Python may be used for helper scripts, but not as the product. Do not build user-facing UI before validating the workflow.
 - Ask for the target software and version per design task; do not claim direct access to desktop CAD/EDA software unless it is actually connected.
 - Use bounded specialist roles, single-writer ownership, formal change requests, independent review, and deterministic checks where available.
-- Prefer native Fusion `.f3d`/`.f3z` output when Fusion is the target and the design can be created or exported through Fusion. STEP is the neutral 3D fallback; imported STEP does not restore the original feature timeline. Dimensioned 2D drawings and circuit-board deliverables need their own formats.
+- Prefer native Fusion `.f3d`/`.f3z` output when Fusion is the target and the design can be created or exported through Fusion. STEP is the neutral 3D fallback; imported STEP does not restore the original feature history. Dimensioned 2D drawings and circuit-board deliverables need their own formats.
 - A release manifest detects missing, empty, or changed files; it does not prove engineering correctness.
+- If adding Gemini API access, use the user's own key from Replit Secrets on the server only; never expose it in browser code or commit it. The proposed first pilot and its open scope are documented in `AI_COMPUTE_SUPPLEMENT_DISCUSSION.md`; no integration is configured yet.
 
 ## Product
 
