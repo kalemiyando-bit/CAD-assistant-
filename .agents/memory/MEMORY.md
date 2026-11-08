@@ -4,3 +4,4 @@
 - [Design research policy](design-research-policy.md) — ask each time how broad external research should be; engineering rigor applies in every mode.
 - [Design assistant scope](design-assistant-scope.md) — support the user's own engineering work across CAD software, and ask which software they use.
 - [Agent review boundaries](agent-review-boundaries.md) — independent reviewers stay read-only and route findings through change requests.
+- [Gemini REST schema quirks](gemini-rest-schema-quirks.md) — direct Gemini structured-output schemas have REST/protobuf constraints that local JSON validation cannot catch.

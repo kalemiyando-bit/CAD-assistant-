@@ -14,11 +14,14 @@ CAD scripts, or manufacturing-ready designs.
 
 ## Current verification status
 
-The local dry run and a mocked API-contract check pass. Live generation is still
-unverified: a provider response was rejected by the worker's exact-dimension
-check, and the latest request returned HTTP 400 without useful provider detail.
-No valid model-spec file or Fusion output has been produced by Gemini yet. Keep
-diagnosis focused; do not run the unrelated CAD test suites for this issue.
+The local dry run and focused mocked API-contract checks pass. Live generation
+is still unverified: one provider response was rejected by the worker's
+exact-dimension check, and the latest request reported that Gemini REST does not
+accept `additionalProperties` in its response schema. That field has been
+removed from the provider schema; the worker still validates exact dimensions
+locally. No valid model-spec file or Fusion output has been produced by Gemini
+yet. Keep diagnosis focused; do not run the unrelated CAD test suites for this
+issue.
 
 ## Security and cost boundaries
 

@@ -113,11 +113,9 @@ def _component_schema(component_type: str) -> dict[str, Any]:
                     key: DIMENSION_PROPERTIES[key] for key in dimension_keys
                 },
                 "required": list(dimension_keys),
-                "additionalProperties": False,
             },
         },
         "required": ["name", "type", "axis", "origin_mm", "dimensions_mm"],
-        "additionalProperties": False,
     }
 
 
@@ -419,10 +417,21 @@ def _api_error_message(exc: HTTPError, api_key: str) -> str:
     message = ""
     try:
         payload = json.loads(body)
-        message = payload.get("error", {}).get("message", "")
+        error = payload.get("error", {})
+        if isinstance(error, dict):
+            message = error.get("message", "")
+            if not message:
+                message = json.dumps(error, ensure_ascii=False)
+        elif isinstance(error, str):
+            message = error
     except (json.JSONDecodeError, AttributeError):
         pass
-    message = str(message).replace(api_key, "[REDACTED]").strip()
+    if not message:
+        message = body.strip()
+    message = str(message).strip()
+    if api_key:
+        message = message.replace(api_key, "[REDACTED]")
+    message = message[:1_000]
     if not message:
         message = "No provider error message was returned."
     return f"Gemini API returned HTTP {exc.code}: {message}"

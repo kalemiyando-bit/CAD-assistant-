@@ -5,7 +5,9 @@ from __future__ import annotations
 import json
 import sys
 import unittest
+from io import BytesIO
 from pathlib import Path
+from urllib.error import HTTPError
 from unittest.mock import patch
 
 
@@ -69,6 +71,30 @@ def ready_response() -> dict:
 
 
 class GeminiPartSpecWorkerTests(unittest.TestCase):
+    def test_provider_error_details_are_kept_and_api_key_is_redacted(self) -> None:
+        body = json.dumps(
+            {
+                "error": {
+                    "code": 400,
+                    "status": "INVALID_ARGUMENT",
+                    "details": [{"message": "schema rejected"}],
+                }
+            }
+        ).encode("utf-8")
+        error = HTTPError(
+            "https://example.invalid",
+            400,
+            "Bad Request",
+            {},
+            BytesIO(body),
+        )
+
+        message = worker._api_error_message(error, "test-secret-value")
+
+        self.assertIn("INVALID_ARGUMENT", message)
+        self.assertIn("schema rejected", message)
+        self.assertNotIn("test-secret-value", message)
+
     def test_uses_gemini_rest_structured_output_fields_and_validates_result(self) -> None:
         generated = ready_response()
         api_response = {
@@ -146,6 +172,12 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
             set(dimensions_by_type["cylinder"]),
             {"diameter", "height"},
         )
+        for variant in component_variants:
+            self.assertNotIn("additionalProperties", variant)
+            self.assertNotIn(
+                "additionalProperties",
+                variant["properties"]["dimensions_mm"],
+            )
         self.assertEqual(captured["timeout"], worker.API_TIMEOUT_SECONDS)
         self.assertEqual(usage["total_tokens"], 80)
         self.assertEqual(worker._validate_output(result)["status"], "draft_ready")
