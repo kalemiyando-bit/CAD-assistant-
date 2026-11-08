@@ -4,6 +4,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 
 ## Start Here
 
+- For every new design request, read `DESIGN_TASK_START_HERE.md` first and follow its focused intake and execution steps.
 - Keep work focused on the user's current design request. Read only its brief/contract, directly relevant files, and matching Skill; do not scan or summarize the whole repository unless asked or necessary.
 - `DESIGN_AGENT_SYSTEM_CHARTER.md` holds cross-project engineering principles.
 - `ENGINEERING_WORKFLOW_PLAYBOOK.md` documents existing generation paths and their evidence status.
@@ -24,6 +25,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 
 ## Agent system
 
+- Use `DESIGN_TASK_START_HERE.md` to begin each new design request without a broad repository review.
 - Start a new engineering-design request with `.agents/skills/engineering-design-coordinator/SKILL.md`.
 - Read `ENGINEERING_WORKFLOW_PLAYBOOK.md` for project-specific generation paths and which CAD/EDA checks have or have not passed.
 - Use the relevant discipline Skill: `mechanical-cad`, `2d-engineering-drawings`, or `pcb-design`.
