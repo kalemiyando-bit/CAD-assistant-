@@ -1,0 +1,26 @@
+{
+  "created_at": "2026-11-08T17:15:40.006223+00:00",
+  "files": [
+    {
+      "path": "DESIGN_CONTRACT.md",
+      "sha256": "b8e0849b32c32d1545dad54a21b455f6cdce949eac70da29cd9f817ff15f470b",
+      "size_bytes": 5764
+    },
+    {
+      "path": "README.txt",
+      "sha256": "1026b79700b5007e52191f518293367301a268e8c6bae0e0d3823c90b84c2079",
+      "size_bytes": 2051
+    },
+    {
+      "path": "REVIEW_POC03.md",
+      "sha256": "d27b07faa77735d47129b7e414b1ef38022a718a6c463a6134462fcccdd3c3e2",
+      "size_bytes": 2707
+    },
+    {
+      "path": "wheel_rim_POC03_model_spec.json",
+      "sha256": "7104d9117ab4a1b9ac6ed648092e43ca884e38e90cb85b7a06d8527402a560d9",
+      "size_bytes": 1143
+    }
+  ],
+  "schema_version": 1
+}
