@@ -14,7 +14,7 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -22,10 +22,17 @@ from fusion_model_spec import SpecValidationError, validate_model_spec
 
 
 DEFAULT_MODEL = "gemini-3.8-flash"
-MAX_OUTPUT_TOKENS = 1024
+DEFAULT_THINKING_LEVEL = "low"
+THINKING_LEVELS = ("low", "medium", "high")
+MAX_OUTPUT_TOKENS = 2_048
 MAX_BRIEF_CHARS = 8_000
 MAX_ASSUMPTIONS = 50
 API_TIMEOUT_SECONDS = 180
+API_KEY_ENV_NAMES = (
+    "GEMINI_API_KEY",
+    "GEMINI_API_KEY_2",
+    "GEMINI_API_KEY_3",
+)
 SUPPORTED_COMPONENT_TYPES = (
     "box",
     "cylinder",
@@ -224,6 +231,14 @@ class WorkerError(Exception):
     """A safe, user-facing worker failure."""
 
 
+class GeminiAPIError(WorkerError):
+    """An HTTP error from Gemini, with explicit invalid-key classification."""
+
+    def __init__(self, message: str, *, credential_rejected: bool = False) -> None:
+        super().__init__(message)
+        self.credential_rejected = credential_rejected
+
+
 def _read_request(path: Path | None) -> dict[str, Any]:
     if path is None:
         if sys.stdin.isatty():
@@ -412,14 +427,16 @@ def _validate_output(value: Any) -> dict[str, Any]:
     return value
 
 
-def _api_error_message(exc: HTTPError, api_key: str) -> str:
+def _api_error_message(exc: HTTPError, api_key: str) -> tuple[str, bool]:
     body = exc.read(4_000).decode("utf-8", errors="replace")
     message = ""
+    provider_status = ""
     try:
         payload = json.loads(body)
         error = payload.get("error", {})
         if isinstance(error, dict):
             message = error.get("message", "")
+            provider_status = error.get("status", "")
             if not message:
                 message = json.dumps(error, ensure_ascii=False)
         elif isinstance(error, str):
@@ -434,11 +451,41 @@ def _api_error_message(exc: HTTPError, api_key: str) -> str:
     message = message[:1_000]
     if not message:
         message = "No provider error message was returned."
-    return f"Gemini API returned HTTP {exc.code}: {message}"
+    searchable_error = f"{provider_status} {message} {body}".lower()
+    rejected_key_markers = (
+        "api_key_invalid",
+        "api key not valid",
+        "api key is invalid",
+        "invalid api key",
+        "api key has expired",
+        "api key expired",
+    )
+    credential_rejected = exc.code in (400, 401, 403) and any(
+        marker in searchable_error for marker in rejected_key_markers
+    )
+    return f"Gemini API returned HTTP {exc.code}: {message}", credential_rejected
+
+
+def _configured_api_keys(
+    environment: Mapping[str, str] | None = None,
+) -> list[tuple[str, str]]:
+    """Return configured Gemini credentials in order, without duplicate values."""
+    source = os.environ if environment is None else environment
+    configured: list[tuple[str, str]] = []
+    seen_values: set[str] = set()
+    for name in API_KEY_ENV_NAMES:
+        value = source.get(name, "").strip()
+        if value and value not in seen_values:
+            configured.append((name, value))
+            seen_values.add(value)
+    return configured
 
 
 def _call_gemini(
-    request_data: dict[str, Any], model: str, api_key: str
+    request_data: dict[str, Any],
+    model: str,
+    api_key: str,
+    thinking_level: str = DEFAULT_THINKING_LEVEL,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     prompt_data = json.dumps(request_data, ensure_ascii=False, separators=(",", ":"))
     payload = {
@@ -463,6 +510,7 @@ def _call_gemini(
             "responseSchema": GEMINI_OUTPUT_SCHEMA,
             "maxOutputTokens": MAX_OUTPUT_TOKENS,
             "temperature": 0.1,
+            "thinkingConfig": {"thinkingLevel": thinking_level},
         },
     }
     url = (
@@ -483,7 +531,11 @@ def _call_gemini(
         with urlopen(request, timeout=API_TIMEOUT_SECONDS) as response:
             response_data = json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
-        raise WorkerError(_api_error_message(exc, api_key)) from exc
+        message, credential_rejected = _api_error_message(exc, api_key)
+        raise GeminiAPIError(
+            message,
+            credential_rejected=credential_rejected,
+        ) from exc
     except URLError as exc:
         raise WorkerError(f"Could not reach the Gemini API: {exc.reason}") from exc
     except TimeoutError as exc:
@@ -493,6 +545,17 @@ def _call_gemini(
 
     if not isinstance(response_data, dict):
         raise WorkerError("Gemini API returned an unexpected response.")
+    usage_metadata = response_data.get("usageMetadata", {})
+    if not isinstance(usage_metadata, dict):
+        usage_metadata = {}
+    usage = {
+        "model": model,
+        "thinking_level": thinking_level,
+        "prompt_tokens": usage_metadata.get("promptTokenCount"),
+        "output_tokens": usage_metadata.get("candidatesTokenCount"),
+        "thinking_tokens": usage_metadata.get("thoughtsTokenCount"),
+        "total_tokens": usage_metadata.get("totalTokenCount"),
+    }
     candidates = response_data.get("candidates")
     if not isinstance(candidates, list) or not candidates:
         feedback = response_data.get("promptFeedback", {})
@@ -506,8 +569,15 @@ def _call_gemini(
         raise WorkerError("Gemini API returned an invalid candidate.")
     finish_reason = candidate.get("finishReason")
     if finish_reason not in (None, "STOP"):
+        usage_summary = []
+        if usage["output_tokens"] is not None:
+            usage_summary.append(f"candidate tokens={usage['output_tokens']}")
+        if usage["thinking_tokens"] is not None:
+            usage_summary.append(f"thinking tokens={usage['thinking_tokens']}")
+        usage_detail = f" ({', '.join(usage_summary)})" if usage_summary else ""
         raise WorkerError(
-            f"Gemini response ended with {finish_reason}; no spec was saved."
+            f"Gemini response ended with {finish_reason} at the "
+            f"{MAX_OUTPUT_TOKENS}-token output limit{usage_detail}; no spec was saved."
         )
     content = candidate.get("content")
     if not isinstance(content, dict):
@@ -527,17 +597,38 @@ def _call_gemini(
     except json.JSONDecodeError as exc:
         raise WorkerError("Gemini's structured response was not valid JSON.") from exc
 
-    usage_metadata = response_data.get("usageMetadata", {})
-    if not isinstance(usage_metadata, dict):
-        usage_metadata = {}
-    usage = {
-        "model": model,
-        "prompt_tokens": usage_metadata.get("promptTokenCount"),
-        "output_tokens": usage_metadata.get("candidatesTokenCount"),
-        "thinking_tokens": usage_metadata.get("thoughtsTokenCount"),
-        "total_tokens": usage_metadata.get("totalTokenCount"),
-    }
     return generated, usage
+
+
+def _call_gemini_with_keys(
+    request_data: dict[str, Any],
+    model: str,
+    api_keys: list[tuple[str, str]],
+    thinking_level: str = DEFAULT_THINKING_LEVEL,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Call Gemini serially; rotate only when Google explicitly rejects a key."""
+    if not api_keys:
+        raise WorkerError(
+            "No Gemini API key is available. Add GEMINI_API_KEY (or "
+            "GEMINI_API_KEY_2 / GEMINI_API_KEY_3) to this Replit project's Secrets."
+        )
+
+    for index, (environment_name, api_key) in enumerate(api_keys):
+        try:
+            generated, usage = _call_gemini(
+                request_data,
+                model,
+                api_key,
+                thinking_level,
+            )
+        except GeminiAPIError as exc:
+            if not exc.credential_rejected or index == len(api_keys) - 1:
+                raise
+            continue
+        usage["credential_env"] = environment_name
+        return generated, usage
+
+    raise WorkerError("Gemini did not accept any configured API key.")
 
 
 def _write_spec(path: Path, spec: dict[str, Any]) -> None:
@@ -576,6 +667,15 @@ def main() -> int:
         help=f"Gemini model ID (default: {DEFAULT_MODEL} or GEMINI_MODEL).",
     )
     parser.add_argument(
+        "--thinking-level",
+        choices=THINKING_LEVELS,
+        default=os.environ.get("GEMINI_THINKING_LEVEL", DEFAULT_THINKING_LEVEL),
+        help=(
+            "Gemini reasoning level for this bounded part task "
+            "(default: low; override with GEMINI_THINKING_LEVEL)."
+        ),
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Validate the input and report request size without calling Google.",
@@ -601,6 +701,7 @@ def main() -> int:
                     {
                         "mode": "dry_run",
                         "model": args.model,
+                        "thinking_level": args.thinking_level,
                         "design_name": request_data["design_name"],
                         "brief_characters": len(request_data["design_brief"]),
                         "approved_assumptions": len(
@@ -618,14 +719,13 @@ def main() -> int:
             )
             return 0
 
-        api_key = os.environ.get("GEMINI_API_KEY", "").strip()
-        if not api_key:
-            raise WorkerError(
-                "GEMINI_API_KEY is not available to this process. Add it to this "
-                "Replit project's Secrets and run the command in the project environment."
-            )
-
-        generated, usage = _call_gemini(request_data, args.model, api_key)
+        api_keys = _configured_api_keys()
+        generated, usage = _call_gemini_with_keys(
+            request_data,
+            args.model,
+            api_keys,
+            args.thinking_level,
+        )
         try:
             result = _validate_output(generated)
         except WorkerError as exc:

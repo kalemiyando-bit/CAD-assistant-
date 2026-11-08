@@ -63,7 +63,7 @@ An engineering design assistant that coordinates AI work across CAD, technical d
 - Use bounded specialist roles, single-writer ownership, formal change requests, independent review, and deterministic checks where available.
 - Prefer native Fusion `.f3d`/`.f3z` output when Fusion is the target and the design can be created or exported through Fusion. STEP is the neutral 3D fallback; imported STEP does not restore the original feature history. Dimensioned 2D drawings and circuit-board deliverables need their own formats.
 - A release manifest detects missing, empty, or changed files; it does not prove engineering correctness.
-- Gemini is an optional local CLI worker for preliminary single-part Fusion specs. It reads `GEMINI_API_KEY` from Replit Secrets, has no public route or UI, and must not receive unapproved assumptions or execute generated code. See `GEMINI_WORKER.md`.
+- Gemini is an optional local CLI worker for preliminary single-part Fusion specs. It reads `GEMINI_API_KEY` and its numbered fallbacks from Replit Secrets, has no public route or UI, and must not receive unapproved assumptions or execute generated code. See `GEMINI_WORKER.md`.
 
 ## Product
 

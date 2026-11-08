@@ -14,15 +14,14 @@ CAD scripts, or manufacturing-ready designs.
 
 ## Current verification status
 
-The local dry run and focused mocked API-contract checks pass. Live generation
-is still unverified: one provider response was rejected by the worker's
-exact-dimension check, three later structured requests timed out, and a minimal
-plain-text probe returned HTTP 503 with Google's high-demand message. The
-provider schema has since been corrected to omit the unsupported
-`additionalProperties` field; the worker still validates exact dimensions
-locally. Timeouts returned no usage metadata and may not prove the provider did
-no work. No valid model-spec file or Fusion output has been produced by Gemini
-yet.
+The local dry run and focused mocked API-contract checks pass. The corrected
+structured schema reached candidate generation, but live generation has not yet
+produced a valid spec: Gemini 3.8 Flash returned a high-demand HTTP 503, and a
+second request hit the 1,024-token response cap. Google documents that Gemini 3.7
+Flash is deprecated and automatically routes to 3.8 Flash, so it is not an
+independent fallback. The worker now uses low thinking and a bounded 2,048-token
+output budget for this simple primitive task. No valid model-spec file or Fusion
+output has been produced by Gemini yet.
 
 The user shared this Free-tier quota snapshot for Gemini 3.8 Flash on
 2026-11-08: limits of 5 RPM, 250,000 input TPM, and 20 RPD; 28-day peak use of
@@ -34,8 +33,12 @@ Studio page before future API requests.
 - Run the worker from the trusted Replit project environment. It is a local CLI,
   not a public HTTP endpoint, so an unauthenticated caller cannot spend the
   user's Google API quota.
-- `GEMINI_API_KEY` is read from Replit Secrets by the Python process. Never put
-  the key in an input file, command argument, output file, or log.
+- `GEMINI_API_KEY`, `GEMINI_API_KEY_2`, and `GEMINI_API_KEY_3` are read from
+  Replit Secrets by the Python process. The worker tries them in that order,
+  serially, and only moves to another key when Google explicitly identifies the
+  current key as invalid. It never races keys or retries quota, timeout, or
+  provider-capacity errors. Never put a key in an input file, command argument,
+  output file, or log.
 - Only the three fields below are sent to Google: `design_name`,
   `design_brief`, and `approved_assumptions`. The worker does not read other
   project files, skills, or secrets.
@@ -96,8 +99,15 @@ part cannot be represented by one supported primitive, it returns
 `fusion_model_spec.validate_model_spec` before it is written.
 
 The default model is `gemini-3.8-flash`; set `GEMINI_MODEL` or pass `--model` to
-select another Google-enabled model. A dry run validates input and reports what
-would be sent but does not verify the API key or contact Google.
+select another Google-enabled model. The default thinking level is `low`; use
+`--thinking-level medium` or `--thinking-level high` when a supported task needs
+more reasoning. Gemini 3.8 does not support `minimal`. A dry run validates input
+and reports what would be sent but does not verify the API key or contact Google.
+
+Gemini 3.8 documentation:
+
+- [Model limits and capabilities](https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash)
+- [Thinking levels and output token limits](https://ai.google.dev/gemini-api/docs/thinking)
 
 ## Handoff
 

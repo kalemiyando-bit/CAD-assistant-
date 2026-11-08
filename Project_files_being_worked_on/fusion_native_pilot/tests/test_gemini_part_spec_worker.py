@@ -89,11 +89,111 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
             BytesIO(body),
         )
 
-        message = worker._api_error_message(error, "test-secret-value")
+        message, credential_rejected = worker._api_error_message(
+            error,
+            "test-secret-value",
+        )
 
         self.assertIn("INVALID_ARGUMENT", message)
         self.assertIn("schema rejected", message)
         self.assertNotIn("test-secret-value", message)
+        self.assertFalse(credential_rejected)
+
+    def test_invalid_key_error_is_classified_for_serial_fallback(self) -> None:
+        body = json.dumps(
+            {
+                "error": {
+                    "code": 403,
+                    "status": "PERMISSION_DENIED",
+                    "message": "API key not valid. Please pass a valid API key.",
+                }
+            }
+        ).encode("utf-8")
+        error = HTTPError(
+            "https://example.invalid",
+            403,
+            "Forbidden",
+            {},
+            BytesIO(body),
+        )
+
+        _, credential_rejected = worker._api_error_message(error, "fake-key")
+
+        self.assertTrue(credential_rejected)
+
+    def test_configured_keys_keep_order_and_remove_duplicates(self) -> None:
+        keys = worker._configured_api_keys(
+            {
+                "GEMINI_API_KEY": " first ",
+                "GEMINI_API_KEY_2": "first",
+                "GEMINI_API_KEY_3": "third",
+            }
+        )
+
+        self.assertEqual(
+            keys,
+            [
+                ("GEMINI_API_KEY", "first"),
+                ("GEMINI_API_KEY_3", "third"),
+            ],
+        )
+
+    def test_key_fallback_is_serial_and_only_on_explicit_rejection(self) -> None:
+        request_data = {
+            "design_name": "Offline API Contract Test",
+            "design_brief": "A 10 mm diameter cylinder, 20 mm tall.",
+            "approved_assumptions": [],
+        }
+        result_data = ready_response()
+        usage_data = {"model": "gemini-3.8-flash", "total_tokens": 80}
+        with patch.object(
+            worker,
+            "_call_gemini",
+            side_effect=[
+                worker.GeminiAPIError(
+                    "Invalid API key",
+                    credential_rejected=True,
+                ),
+                (result_data, usage_data),
+            ],
+        ) as call:
+            result, usage = worker._call_gemini_with_keys(
+                request_data,
+                "gemini-3.8-flash",
+                [
+                    ("GEMINI_API_KEY", "fake-first-key"),
+                    ("GEMINI_API_KEY_2", "fake-second-key"),
+                ],
+            )
+
+        self.assertEqual(call.call_count, 2)
+        self.assertEqual(result, result_data)
+        self.assertEqual(usage["credential_env"], "GEMINI_API_KEY_2")
+
+    def test_rate_or_provider_errors_do_not_try_another_key(self) -> None:
+        with patch.object(
+            worker,
+            "_call_gemini",
+            side_effect=worker.GeminiAPIError(
+                "Gemini API returned HTTP 503: temporarily unavailable",
+                credential_rejected=False,
+            ),
+        ) as call:
+            with self.assertRaisesRegex(worker.GeminiAPIError, "HTTP 503"):
+                worker._call_gemini_with_keys(
+                    {
+                        "design_name": "Offline API Contract Test",
+                        "design_brief": "A 10 mm diameter cylinder, 20 mm tall.",
+                        "approved_assumptions": [],
+                    },
+                    "gemini-3.8-flash",
+                    [
+                        ("GEMINI_API_KEY", "fake-first-key"),
+                        ("GEMINI_API_KEY_2", "fake-second-key"),
+                    ],
+                )
+
+        self.assertEqual(call.call_count, 1)
 
     def test_uses_gemini_rest_structured_output_fields_and_validates_result(self) -> None:
         generated = ready_response()
@@ -137,6 +237,10 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
         config = payload["generationConfig"]
         self.assertEqual(config["responseMimeType"], "application/json")
         self.assertEqual(config["responseSchema"], worker.GEMINI_OUTPUT_SCHEMA)
+        self.assertEqual(
+            config["thinkingConfig"],
+            {"thinkingLevel": worker.DEFAULT_THINKING_LEVEL},
+        )
         self.assertNotIn("responseFormat", config)
         self.assertEqual(
             config["responseSchema"]["type"],
@@ -180,7 +284,7 @@ class GeminiPartSpecWorkerTests(unittest.TestCase):
                 variant["properties"]["dimensions_mm"],
             )
         self.assertEqual(captured["timeout"], worker.API_TIMEOUT_SECONDS)
-        self.assertEqual(config["maxOutputTokens"], 1024)
+        self.assertEqual(config["maxOutputTokens"], 2048)
         self.assertEqual(usage["total_tokens"], 80)
         self.assertEqual(usage["thinking_tokens"], 7)
         self.assertEqual(worker._validate_output(result)["status"], "draft_ready")
