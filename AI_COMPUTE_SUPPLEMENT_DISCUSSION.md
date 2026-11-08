@@ -1,6 +1,8 @@
 # AI Compute Supplement for CAD Assistant
 
-**Status:** The user wants Gemini API credentials stored in this project's Replit Secrets and used server-side. No key has been requested or configured, and no worker or interface has been built.
+**Status:** The user agreed to a Replit-Agent-manager / Gemini-worker process. Replit Agent prepares a focused prompt or task file, the user returns Gemini's work for review, and Replit Agent issues revisions or takes over if Gemini cannot meet the requirements. The user's preferred Gemini API credential is their own key in Replit Secrets if direct API integration is implemented. No key, worker, or interface has been configured or built.
+
+The system supports the user's broader engineering design work; the shaft is only a workflow test example. Do not design only for shafts.
 
 ## User-reported workflow milestone
 
@@ -24,16 +26,17 @@ References:
 - [Replit Secrets](https://docs.replit.com/core-concepts/project-editor/app-setup/secrets)
 - Project Gemini integration guidance: `.local/skills/ai-integrations-gemini/SKILL.md`
 
-## A possible division of work
+## Agreed division of work
 
-This is a proposal to discuss, not an approved change to the project's agent-first approach:
+The user approved this operating model:
 
-1. The user and Replit Agent establish the design contract, target CAD software, research scope, units, assumptions, and intended outputs.
-2. A small, server-side Gemini worker receives only the relevant contract, selected Skill guidance, and approved input files. It returns a constrained result such as a model-specification draft or a CAD-script draft.
-3. Existing deterministic generators and validators create/check the output. Replit Agent can use the project's Skills and files to coordinate the work, interpret failures, and review results.
-4. The user reviews the package and runs Fusion-native scripts inside Autodesk Fusion when required. Gemini does not automatically have access to Replit project files, Skills, or Agent tools; a deliberate, permission-limited bridge would be needed to provide context or actions.
+1. The user and Replit Agent agree on the task, requirements, target CAD software, research scope, assumptions, and intended outputs.
+2. Replit Agent creates a focused prompt or task file for Gemini using only the context needed for that assignment.
+3. Gemini performs the assigned work. The user returns its outputs to Replit Agent.
+4. Replit Agent checks the result against the agreed requirements and prepares a focused follow-up prompt/file when changes are needed.
+5. If Gemini cannot produce an acceptable result, Replit Agent takes over.
 
-Start by offloading one bounded, repeatable step, not by giving a model unrestricted shell or file access. A structured model specification is a safer first target than letting an LLM directly overwrite CAD source or final deliverables. Keep deterministic checks and human engineering review; a passing script or model response is not evidence of fit, strength, safety, or manufacturing readiness.
+The shaft is a tested workflow example, not the system's design scope. Keep assignments bounded and do not give a model unrestricted project or file access by default. A prompt/file handoff is the agreed workflow; direct Gemini API automation and a user-facing interface have not been built. If direct API integration is later implemented, keep the user's credential in Replit Secrets and server-side only. A passing model response or a file that opens is not evidence of fit, strength, safety, or manufacturing readiness.
 
 ## Recommended first pilot
 
@@ -46,14 +49,20 @@ Use the tested shaft workflow as a small end-to-end Gemini pilot:
 
 This is more useful than a free-form chatbot pilot: it exercises the real brief-to-deliverable path, reuses the 2D and 3D shaft work already reported as passing, and measures whether Gemini saves Agent effort. The narrow schema, existing validators, and limited one-part scope keep the cost and failure modes easier to control. Only after this passes should the worker expand to more complex CAD scripting.
 
-## Minimal platform question
+## Interface and automation scope
 
-The project charter currently prioritizes proving conversational engineering workflows before building a user-facing interface. A minimal workbench could be considered later, but it should initially be limited to submitting a design task, viewing status and costs, inspecting generated files, and approving or rejecting changes. Whether this should be a small interface or remain Replit Agent-led is still open.
+The initial agreed workflow is Replit-Agent-led with a prompt/task-file handoff and the user returning Gemini's result. The project charter prioritizes proving this process before building a user-facing interface. Whether to automate the Gemini call directly or add a workbench remains open; do not build either without a specific implementation request.
+
+## Context and test-cost preferences
+
+- Start with the project's `replit.md`, then read only the current task's contract, source files, and relevant Skill. Do not perform a broad repository review or repeat the full system summary for each task.
+- Do not run full test suites routinely. For generated CAD files, first let the user check the output in the target CAD application. If it fails to load/import, use focused diagnostics and tests for that failure. Follow task-specific safety or release checks recorded in the design contract.
+- Keep engineering claims evidence-based even when reducing routine test runs. Successful loading does not establish dimensional correctness, fit, strength, safety, or manufacturing readiness.
 
 ## Decisions to make before implementation
 
-- Should the first pilot remain callable from a Skill/script, or include a minimal workbench?
-- Should the user approve the shaft-to-spec pilot before implementation?
+- Should the agreed prompt/file workflow be automated through the Gemini API, or remain user-mediated?
+- Which actual design task should be the first worker assignment? The shaft may be reused as a test case but is not the product scope.
 - What per-task cost ceiling and usage reporting should the pilot have?
 - Which exact shaft-example tests passed, and did the 3D path run in Fusion and produce an archive that was opened and checked? Record the Fusion version and checks before updating the detailed evidence status.
 

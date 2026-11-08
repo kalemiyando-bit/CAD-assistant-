@@ -21,6 +21,19 @@ Do not skip ahead to a full assembly, powered test, or PCB layout to make the
 first workflow demonstration look more complete. A clearly labeled draft is
 useful; unsupported production claims are not.
 
+The shaft example has since been reported as producing both a 2D drawing and a
+3D model, with tests passing. It is a workflow demonstrator only; the engineering
+assistant is not limited to shafts.
+
+## Efficient verification
+
+Do not run a full test suite for every design iteration. For a generated CAD
+deliverable, first have the user inspect/import it in the target application.
+If it fails to load or import, run focused diagnostics and tests for that
+failure rather than repeating unrelated suites. Preserve task-specific safety
+or release checks agreed in the design contract. A successful import does not
+prove dimensional accuracy, fit, strength, safety, or manufacturing readiness.
+
 ## Start each design task
 
 1. Read `.agents/skills/engineering-design-coordinator/SKILL.md`, the current
@@ -83,7 +96,9 @@ useful; unsupported production claims are not.
 
 ### Checks and evidence
 
-Run the local drawing tests with:
+The local drawing tests are available when diagnosing a failed or malformed
+output, or when requested. Avoid rerunning the full suite during routine design
+iterations. If needed, run the focused local drawing tests with:
 
 ```sh
 python -m unittest discover -s Project_files_being_worked_on/wheel_drive_bench_demo/tests -v
