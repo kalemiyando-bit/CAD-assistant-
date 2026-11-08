@@ -16,13 +16,18 @@ CAD scripts, or manufacturing-ready designs.
 
 The local dry run and focused mocked API-contract checks pass. Live generation
 is still unverified: one provider response was rejected by the worker's
-exact-dimension check, and two later requests timed out (at 60 and 180 seconds).
-The provider schema has since been corrected to omit the unsupported
+exact-dimension check, three later structured requests timed out, and a minimal
+plain-text probe returned HTTP 503 with Google's high-demand message. The
+provider schema has since been corrected to omit the unsupported
 `additionalProperties` field; the worker still validates exact dimensions
 locally. Timeouts returned no usage metadata and may not prove the provider did
 no work. No valid model-spec file or Fusion output has been produced by Gemini
-yet. Check project usage in AI Studio before retrying; do not run unrelated CAD
-test suites for this issue.
+yet.
+
+The user shared this Free-tier quota snapshot for Gemini 3.8 Flash on
+2026-11-08: limits of 5 RPM, 250,000 input TPM, and 20 RPD; 28-day peak use of
+1 RPM, 568 input TPM, and 3 RPD. These limits can change; check the active AI
+Studio page before future API requests.
 
 ## Security and cost boundaries
 

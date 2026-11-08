@@ -1,6 +1,8 @@
 # AI Compute Supplement for CAD Assistant
 
-**Status:** The user approved direct Gemini API use with their own key in Replit Secrets. A local CLI worker drafts a single-component Fusion v1 model specification from an explicitly supplied brief and validates it with the existing Python validator. It makes no public billable endpoint and has no UI. The no-cost dry run and focused mocked API-contract checks pass. Live generation is not yet verified: one provider response failed local dimension validation, and after fixing the REST schema, two requests timed out (at 60 and 180 seconds). Timeouts returned no usage metadata and may not prove the provider did no work. No valid model-spec file or Fusion output was produced.
+**Status:** The user approved direct Gemini API use with their own key in Replit Secrets. A local CLI worker drafts a single-component Fusion v1 model specification from an explicitly supplied brief and validates it with the existing Python validator. It makes no public billable endpoint and has no UI. The no-cost dry run and focused mocked API-contract checks pass. Live generation is not yet verified: one provider response failed local dimension validation; three later structured requests timed out, and a minimal plain-text probe returned HTTP 503 with Google's high-demand message. No usage metadata came back for the timeouts, which may not prove the provider did no work. No valid model-spec file or Fusion output was produced.
+
+On 2026-11-08, the user shared the active Free-tier AI Studio quota row for Gemini 3.8 Flash: 5 RPM, 250,000 input TPM, and 20 RPD. Peak use over the displayed 28 days was 1 RPM, 568 input TPM, and 3 RPD. The 503 is a provider-capacity response, not a 429 rate-limit response; check the active page again before future requests.
 
 The system supports the user's broader engineering design work; the shaft is only a workflow test example. Do not design only for shafts.
 
