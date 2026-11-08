@@ -70,3 +70,17 @@ mtime_ms = 1794084960432
 storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:a43c77b9-0d73-46e7-b82c-258179bbb12f/54630d7b-c99c-42de-bb36-72efca3f4161/f3a1ae24-1c12-45b9-8e47-e542eac763f1"
 storage_version_token = "1794085003878170"
 content_type = "text/markdown"
+
+[[outputs]]
+id = "z9RVouYFjjTCRYUZ_4q7H"
+uri = "file://Project_files_being_worked_on/wheel_drive_bench_demo/shaft_2d_test/shaft_6x46_A0_R12_retry.dxf"
+type = "unspecified"
+title = "Preliminary shaft test — R12 DXF"
+description = "6 mm diameter × 46 mm long provisional shaft drawing in millimetres. This is a Fusion import retry; imported content will be sketch geometry, not a native drawing sheet."
+logical_id = "a0077381-acf0-4ba6-b3bb-53b6ab37018d"
+content_hash = "sha256:4e78d6526144336200ad08fb043b420add1405ad5c0f009d1679f41897cd18bc"
+size = 3255
+mtime_ms = 1794130742000
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:cd53aa10-c965-49a8-92bb-6547e5364a96/a0077381-acf0-4ba6-b3bb-53b6ab37018d/60933b7a-1ed5-40bb-8c54-1fa04bdf3926"
+storage_version_token = "1794131139051628"
+content_type = "application/octet-stream"
