@@ -1,0 +1,72 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "UkflascetPIRvQxlY-S1U"
+uri = "file://attached_assets/robot_box_solidworks_test/solidworks_box_test_downloads.html"
+type = "html"
+title = "SolidWorks Box Format Test"
+description = "Download a 100 × 60 × 40 mm test block as STEP, STL, 3MF, DXF, or a ZIP bundle, with import notes."
+logical_id = "d866a41c-5913-4911-bd8d-64b9ce4cb290"
+content_hash = "sha256:35f3c0d96cccac43f49032e3619fcdd51895116cd49f2031285fc652562d4762"
+size = 37431
+mtime_ms = 1793717615276
+storage_uri = "gcs://replit-rams-assets-riker/rams/assets/repl:b7852408-f9c5-4286-ac49-0715366cbe3f/d866a41c-5913-4911-bd8d-64b9ce4cb290/01c3f780-1b23-484c-87e7-26fbc028362b"
+storage_version_token = "1793717624971486"
+content_type = "text/html"
+
+[[outputs]]
+id = "ZDLZsiVemk4TrkFFGHAv6"
+uri = "file://attached_assets/robot_gear_wheel_shaft_methods_download.html"
+type = "html"
+title = "Gear, Wheel & Shaft CAD Package"
+description = "Download the organized comparison bundle: SolidWorks macro, STEP parts and assembly, STL/3MF meshes, DXF references, and parametric source. Each method folder includes a README."
+logical_id = "4453707d-6d85-42ed-8546-4fe4d345b4aa"
+content_hash = "sha256:9f49f227b2876c1b637a4c77fb2ce3326013c1e971b81082f38ed7ca0e0a7223"
+size = 973766
+mtime_ms = 1793718749796
+storage_uri = "gcs://replit-rams-assets-riker/rams/assets/repl:b7852408-f9c5-4286-ac49-0715366cbe3f/4453707d-6d85-42ed-8546-4fe4d345b4aa/9216e59e-991d-4e70-924b-977950084cae"
+storage_version_token = "1793718808496286"
+content_type = "text/html"
+
+[[outputs]]
+id = "zF7NoHYdQg_X_XaIIlQd1"
+uri = "file://Project_files_being_worked_on/ROBOT_V1_DESIGN/18_STEP_Only/Assemblies/RobotV1_Overall_Assembly.step"
+type = "unspecified"
+title = "Robot V1 Complete Assembly (STEP)"
+description = "Full assembled robot model, not the exploded concept. Units are millimetres."
+logical_id = "104ee017-0944-4dc0-a76f-a999572bcfde"
+content_hash = "sha256:6a0ef1bfb5f1b68f4482d7815be205b5ae7219c8807d49f3b061183f92ced338"
+size = 19213234
+mtime_ms = 1793733431664
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:2238df54-48c4-4fe4-aaff-5f4c99a16dc6/104ee017-0944-4dc0-a76f-a999572bcfde/2e874347-b77c-44e1-90c7-2d92ee0ec853"
+storage_version_token = "1793819040979344"
+content_type = "application/octet-stream"
+
+[[outputs]]
+id = "NmQU9vnMAwXQ1pFYA4Kij"
+uri = "file://Project_files_being_worked_on/wheel_drive_bench_demo/shaft_2d_test/shaft_6x46_A0_preview.html"
+type = "html"
+title = "Shaft Drawing — Fusion R12 Retry"
+description = "The updated preview downloads a simpler R12 ASCII DXF. It has not yet been verified in Fusion 2026."
+logical_id = "93a27490-d63a-41cb-812d-a9c0041442db"
+content_hash = "sha256:6b065d583daba73bcfb01f0270befc2e7b085a0347e0652a09e079bc70aaf333"
+size = 11793
+mtime_ms = 1794085969232
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:a43c77b9-0d73-46e7-b82c-258179bbb12f/93a27490-d63a-41cb-812d-a9c0041442db/0bcf2b5a-3f1f-4bd1-97fc-d231d3cbdf04"
+storage_version_token = "1794086008537682"
+content_type = "text/html"
+
+[[outputs]]
+id = "yS9sVoflSC4afkfriaIpj"
+uri = "file://ENGINEERING_WORKFLOW_PLAYBOOK.md"
+type = "text"
+title = "Engineering Workflow Playbook"
+description = "Project guide to the exact 2D DXF, Fusion 3D, assembly, safety/control, and PCB methods, including scripts, checks, and what has not yet been verified."
+logical_id = "54630d7b-c99c-42de-bb36-72efca3f4161"
+content_hash = "sha256:ca1e81b97a76d60a46b9668fad339d9c16db8224139607b90c310c6ba021bb31"
+size = 9165
+mtime_ms = 1794084960432
+storage_uri = "gcs://replit-rams-assets-picard/rams/assets/repl:a43c77b9-0d73-46e7-b82c-258179bbb12f/54630d7b-c99c-42de-bb36-72efca3f4161/f3a1ae24-1c12-45b9-8e47-e542eac763f1"
+storage_version_token = "1794085003878170"
+content_type = "text/markdown"
