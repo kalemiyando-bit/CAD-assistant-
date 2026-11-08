@@ -1,6 +1,6 @@
 # Wheel Drive Bench Demonstrator — Design Contract
 
-**Revision:** A0 / POC-02 3D-only handoff — preliminary concept; full-system Gate A is still open
+**Revision:** A0 / 3D-only handoff — preliminary concept; full-system Gate A is still open
 **Status:** An exploratory envelope model specification has been prepared. No dimensions, interfaces, component, geometry, PCB, or firmware is approved for manufacture, assembly, or powered use.
 
 ## Purpose and operating context
@@ -42,9 +42,9 @@ performance or safety ratings:
 - At the placeholder 80 mm wheel diameter, 300 rpm is approximately 1.26 m/s
   rim speed (calculated, not measured). This is not a safe operating limit.
 
-The earlier POC-01 DXF is retained as a prior handoff, not an active deliverable.
+The older shaft DXF is retained as a prior handoff, not an active deliverable.
 The current 3D-only shaft handoff is recorded in
-`shaft_3d_POC02/wheel_drive_shaft_POC02_brief.txt`.
+`shaft/shaft_design_brief.txt`.
 
 ## Preliminary component research
 
@@ -76,7 +76,7 @@ Autodesk's current documentation lists Fusion Electronics native files as `.fsch
 | O-01 | Which physical button, sensor, display, and controller parts will be used? | Determines interfaces and electrical behavior | GAS/BRAKE and a separate handbrake/emergency input are requested; hardware is unselected |
 | O-02 | What latching and braking/coasting behavior does the emergency control require? | Determines safe control state machine and stop response | Drive-disable request is proposed; actual stopping behavior remains unresolved |
 | O-03 | Is the Mabuchi motor candidate acceptable and obtainable, or should another small motor be selected? | Determines shaft mount, motor driver, speed, and torque | Candidate only |
-| O-04 | Wheel dimensions, shaft interfaces, bearing size/spacing, and coupling dimensions | Required to model interfaces and fit | User authorized sensible POC assumptions; current A0 values remain placeholders |
+| O-04 | Wheel dimensions, shaft interfaces, bearing size/spacing, and coupling dimensions | Required to model interfaces and fit | User authorized sensible preliminary assumptions; current A0 values remain placeholders |
 | O-05 | Motor supply and controller power source | Required for component ratings and PCB power design | Not specified |
 | O-06 | Exact Fusion version and whether the user can run the supplied script | Required to create and validate native Fusion files | Fusion on Windows; version unknown; user is willing to learn |
 | O-07 | 2D drawing output format | Needed only if the user later requests 2D work | No 2D outputs requested for the current phase |

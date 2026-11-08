@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-11-08T18:04:31.748344+00:00",
+  "files": [
+    {
+      "path": "README.txt",
+      "sha256": "1f86298a7ca8812d0c428b4a3ef1b9f3156d44d33ce948376e423222965415fe",
+      "size_bytes": 1557
+    },
+    {
+      "path": "shaft_design_brief.txt",
+      "sha256": "9e93f2244a954e3fe3015f993b0347d6db59777260d23ef923e375b60117f241",
+      "size_bytes": 3475
+    },
+    {
+      "path": "shaft_model_spec.json",
+      "sha256": "33691dd9844c20c47b7815defdd34ba553e45e53175742f0797e60ac611b49b4",
+      "size_bytes": 879
+    }
+  ],
+  "schema_version": 1
+}

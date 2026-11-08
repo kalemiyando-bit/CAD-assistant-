@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "design_name": "Wheel Rim",
+  "design_status": "PRELIMINARY_CONCEPT",
+  "units": "mm",
+  "coordinate_system": "right-handed-z-up",
+  "assumptions": [
+    "This is one simple wheel-rim placeholder for a bench-only proof of concept; it is not approved for manufacture, assembly, or powered testing.",
+    "The 80 mm outside diameter, 6 mm nominal bore, and 24 mm width are carried forward from the parent exploratory envelope and are not approved interface dimensions.",
+    "The 6 mm bore does not define a fit, tolerance, shaft engagement, or retention method.",
+    "The part is a plain annular cylinder with no tread, spokes, hub, fasteners, or other wheel features.",
+    "The part axis is global +Y in a right-handed Z-up coordinate system; the center of the base annular face is at the origin."
+  ],
+  "components": [
+    {
+      "name": "Wheel Rim Placeholder",
+      "type": "annular_cylinder",
+      "axis": "y",
+      "origin_mm": [0, 0, 0],
+      "dimensions_mm": {
+        "outer_diameter": 80,
+        "inner_diameter": 6,
+        "height": 24
+      }
+    }
+  ]
+}

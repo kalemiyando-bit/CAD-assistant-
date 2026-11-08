@@ -1,0 +1,16 @@
+{
+  "created_at": "2026-11-08T18:04:34.654022+00:00",
+  "files": [
+    {
+      "path": "shaft_2d_brief.txt",
+      "sha256": "dec9625733309ce2a9981a03cb29fcc8ce89a6b74f42a1167d6f9ab5ea12f151",
+      "size_bytes": 6977
+    },
+    {
+      "path": "shaft_6x46_previous_profile.dxf",
+      "sha256": "1ea4454351bdb3e96f78244f3de2e0ac74338ddd09d525207ffe3801b7c518d4",
+      "size_bytes": 154
+    }
+  ],
+  "schema_version": 1
+}

@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-11-08T18:04:33.376673+00:00",
+  "files": [
+    {
+      "path": "DESIGN_CONTRACT.md",
+      "sha256": "ea5d5901c717f0791acdf9ac0e5d4621e9cd2867ab4c48686d61fe248f2aace4",
+      "size_bytes": 4119
+    },
+    {
+      "path": "README.txt",
+      "sha256": "f50019fd88d27e7fee892398861decdd6587039ceaa06f5a059977b763d8e0a8",
+      "size_bytes": 784
+    },
+    {
+      "path": "bearing_support_model_spec.json",
+      "sha256": "11d61f511a754373a3c061062c12683dace42f8928e34f966f96f90ff71c5d6d",
+      "size_bytes": 1070
+    }
+  ],
+  "schema_version": 1
+}

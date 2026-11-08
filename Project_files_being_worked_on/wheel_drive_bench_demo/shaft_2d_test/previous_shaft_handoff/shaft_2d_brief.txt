@@ -1,0 +1,136 @@
+WHEEL DRIVE BENCH DEMONSTRATOR
+PROOF-OF-CONCEPT DESIGN BRIEF
+
+Revision: Archived preliminary handoff
+Status: Preliminary concept only; not approved for manufacture or powered testing.
+Purpose: Record the current user brief, project context, and reversible assumptions
+before creating design outputs.
+
+1. USER'S GOAL
+
+The user is testing whether CAD Assistant can turn a conversational description
+into a useful, simple engineering design draft that the user can open and edit
+in Autodesk Fusion. Exact dimensions and component specifications are not
+available. Choose reasonable preliminary values, keep the design simple, and
+make the work in stages: prepare individual parts one at a time, then create an
+assembly only after the parts have been reviewed. Do not start with a full
+assembly, PCB, firmware, or manufacturing package.
+
+2. SYSTEM CONCEPT
+
+A small, bench-only, direct-drive wheel module:
+- A wheel and hub are carried by a horizontal wheel shaft.
+- A bearing and support hold the wheel shaft.
+- A small brushed DC motor drives the wheel through a coupling between the
+  wheel-side shaft and motor-side shaft.
+- No external gear reduction is intended.
+- The user describes a separate motor-side shaft; its need and dimensions
+  depend on the motor ultimately selected.
+- The user wants the wheel's rotational speed to be measurable.
+- This is a proof of concept, not a vehicle or passenger-carrying design.
+
+3. USER-DESCRIBED CONTROL INTENT
+
+- A GAS button increases the speed target.
+- One tap on GAS raises the target by one speed level.
+- Holding GAS raises the target gradually at a steady, gentle rate.
+- A BRAKE button reduces the target.
+- One tap on BRAKE lowers the target by one speed level.
+- Holding BRAKE gradually reduces the target to zero.
+- Include a separate handbrake/emergency-stop control.
+- Show or otherwise measure wheel speed.
+- Do not include reverse.
+
+Preliminary control values proposed for this proof of concept (assumptions, not
+validated ratings):
+- Maximum commanded wheel speed: 300 rpm.
+- One tap: change the target by 25 rpm (12 levels from zero to the cap).
+- Hold: ramp the target at 30 rpm per second, limited by the 300 rpm cap or zero.
+- Speed feedback: measure wheel rpm and present it to the user.
+- Emergency control: treat it as a latched drive-disable request pending selection
+  of a motor driver and confirmation of its actual stopping behavior.
+
+At the existing 80 mm wheel envelope, 300 rpm corresponds to a calculated rim
+speed of approximately 1.26 m/s (4.52 km/h). This is a geometric calculation,
+not measured performance and not a safety rating. The speed targets and control
+rates must be checked against the selected motor, controller, sensor, and test
+setup before implementation.
+
+4. SOFTWARE, UNITS, AND COORDINATES
+
+- Target CAD software: Autodesk Fusion on Windows; exact Fusion version unknown.
+- The Replit environment cannot run the user's desktop Fusion application.
+- The first handoff is an editable R12 DXF model-building sketch, plus dimensions
+  and Fusion instructions. DXF sketch text is not a native Fusion dimension.
+- Units: millimetres.
+- Model frame: right-handed, Z-up; wheel/motor axis along +Y; +Z is vertical.
+- The first shaft profile lies in XZ and is intended to extrude along +Y.
+
+5. CURRENT A0 ENVELOPES AND STATUS
+
+The project supplied these A0 envelopes:
+- Wheel rim: 80 mm outside diameter x 24 mm wide, 6 mm bore.
+- Hub: 30 mm outside diameter x 8 mm projection, 6 mm bore.
+- Wheel-side shaft: 6 mm diameter x 46 mm long.
+- Bearing envelope: 12 mm outside diameter x 6 mm inside diameter x 4 mm wide.
+- Bearing support plate: 30 x 30 x 4 mm with a 12 mm center bore.
+- Coupling envelope: 10 mm diameter x 10 mm long.
+- Candidate motor envelope: Mabuchi FF-130SH-14230, approximately
+  20.4 x 15.4 x 25.1 mm. It is not selected.
+
+These are preliminary placeholder envelopes, not approved interface dimensions.
+Fits, clearances, retention, materials, loads, component ratings, motor/coupling
+interfaces, and manufacturing methods remain unresolved. No particular bearing,
+wheel, coupling, motor, controller, or sensor is selected.
+
+The supplied project brief records a 7,400 rpm no-load speed for the motor
+candidate. Combined with an 80 mm wheel, that implies about 31 m/s at the rim.
+This is a calculation from a candidate specification, not measured operation.
+Do not use the candidate as if selected or suitable.
+
+6. FIRST DELIVERABLE AND SEQUENCE
+
+First deliverable:
+- One-part model-building profile for the wheel-side shaft, using the existing
+  A0 placeholder envelope of diameter 6 mm and length 46 mm, axis +Y.
+- The profile contains only a Ø6 mm circle. The 46 mm extrusion length is stated
+  separately; it is not drawn into the 2D profile.
+- This choice reuses the smallest, simplest project workflow example to test the
+  design handoff. It is not a claim that the shaft is mechanically adequate.
+- The user can insert the DXF into an XZ sketch in Fusion, confirm millimetres
+  and the Ø6 profile, then extrude 46 mm along +Y.
+
+After the user reviews the first part, continue with the corresponding 3D shaft
+handoff and then other individual parts. Candidate later parts include the wheel,
+hub, motor-side shaft if required, coupling, bearing support, bearing envelope,
+and motor envelope. Their order and interfaces must be resolved as the design
+develops. Create the assembly only after individual parts have been reviewed.
+Treat PCB, firmware, and powered testing as later work.
+
+7. SAFETY, RESEARCH, AND LIMITATIONS
+
+- Research scope: user-supplied sources only. Do not browse or widen the scope
+  without asking.
+- Provide a physical wheel guard and a current-limited test procedure before any
+  powered test is recommended.
+- Define and test the stop behavior with the actual motor and controller before
+  powered use. A drive-disable command alone does not prove that the wheel stops
+  quickly or is held.
+- The 300 rpm control cap, tap step, and ramp rate are preliminary design targets,
+  not a safety limit or evidence that the motor can meet them.
+- The first shaft sketch is a concept handoff only. No fit, strength, balance,
+  retention, thermal, electrical, safety, manufacturing, or Fusion import claim
+  is made by producing the file.
+- Record unavailable target-application checks as not run until the user opens
+  and inspects the file in Fusion.
+
+8. OPEN ITEMS FOR LATER STAGES
+
+- Confirm the actual wheel, motor, bearing, coupling, controller, and sensor.
+- Determine whether the motor's own shaft serves as the motor-side shaft.
+- Set actual shaft interfaces, bearing support geometry, fits, retention, and
+  material from chosen components and intended loads.
+- Confirm the physical guard, current limit, emergency stop behavior, and safe
+  powered-test procedure before considering powered operation.
+- Confirm the Fusion version and inspect scale, profile, orientation, and later
+  3D model dimensions in the user's Fusion installation.

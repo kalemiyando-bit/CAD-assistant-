@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-11-08T18:04:33.831655+00:00",
+  "files": [
+    {
+      "path": "DESIGN_CONTRACT.md",
+      "sha256": "d30ccb6ba38eab0641ff0a1776f2680ee32e597d7405d86e4d3349d160a2bbe9",
+      "size_bytes": 3605
+    },
+    {
+      "path": "README.txt",
+      "sha256": "5465a688bd14d1fa41de49a902cae235ad82aa0b8d2bb95b93abd949c4a4c1f8",
+      "size_bytes": 613
+    },
+    {
+      "path": "coupling_model_spec.json",
+      "sha256": "1eb719a8b34b78a1987a6a545f43ca7596a64ed502efacb1c6fc03f014dad4a6",
+      "size_bytes": 995
+    }
+  ],
+  "schema_version": 1
+}

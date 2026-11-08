@@ -80,31 +80,31 @@ class FusionModelSpecTests(unittest.TestCase):
         wheel_drive_dir = PILOT_DIR.parent / "wheel_drive_bench_demo"
         expected_parts = [
             (
-                "shaft_3d_POC02/wheel_drive_shaft_POC02_model_spec.json",
+                "shaft/shaft_model_spec.json",
                 "cylinder",
                 {"diameter": 6.0, "height": 46.0},
                 [6.0, 46.0, 6.0],
             ),
             (
-                "wheel_rim_3d_POC03/wheel_rim_POC03_model_spec.json",
+                "wheel_rim/wheel_rim_model_spec.json",
                 "annular_cylinder",
                 {"outer_diameter": 80.0, "inner_diameter": 6.0, "height": 24.0},
                 [80.0, 24.0, 80.0],
             ),
             (
-                "hub_3d_POC04/hub_POC04_model_spec.json",
+                "hub/hub_model_spec.json",
                 "annular_cylinder",
                 {"outer_diameter": 30.0, "inner_diameter": 6.0, "height": 8.0},
                 [30.0, 8.0, 30.0],
             ),
             (
-                "bearing_3d_POC05/bearing_POC05_model_spec.json",
+                "bearing/bearing_model_spec.json",
                 "annular_cylinder",
                 {"outer_diameter": 12.0, "inner_diameter": 6.0, "height": 4.0},
                 [12.0, 4.0, 12.0],
             ),
             (
-                "bearing_support_3d_POC06/bearing_support_POC06_model_spec.json",
+                "bearing_support/bearing_support_model_spec.json",
                 "plate_with_bore",
                 {
                     "length": 30.0,
@@ -115,13 +115,13 @@ class FusionModelSpecTests(unittest.TestCase):
                 [30.0, 4.0, 30.0],
             ),
             (
-                "coupling_3d_POC07/coupling_POC07_model_spec.json",
+                "coupling/coupling_model_spec.json",
                 "cylinder",
                 {"diameter": 10.0, "height": 10.0},
                 [10.0, 10.0, 10.0],
             ),
             (
-                "motor_3d_POC08/motor_POC08_model_spec.json",
+                "motor/motor_model_spec.json",
                 "box",
                 {"length": 20.4, "width": 15.4, "height": 25.1},
                 [20.4, 25.1, 15.4],

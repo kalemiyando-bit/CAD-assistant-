@@ -1,15 +1,25 @@
 {
-  "created_at": "2026-11-07T20:25:34.319265+00:00",
+  "created_at": "2026-11-08T18:04:35.156657+00:00",
   "files": [
     {
       "path": "DESIGN_CONTRACT.md",
-      "sha256": "62127193a635a889f24bd29a68a2311b3150c8555c2bef54268b554a93cebacf",
-      "size_bytes": 7480
+      "sha256": "7a79c36dabc61c9694e495e3297501196350dbcea1d6ba1efd5d23e191f0f75d",
+      "size_bytes": 10208
+    },
+    {
+      "path": "GENERATE_PARTS_IN_FUSION.md",
+      "sha256": "2f94ab4994c56ea49ddb554a2e1f4cd0b4aace30b8b44cb06c12e6cbf6146ed2",
+      "size_bytes": 4257
+    },
+    {
+      "path": "PARTS_REVIEW.md",
+      "sha256": "ebfc65054d90823ec52366e929c4417db5921f5469956020a3d70e5482905177",
+      "size_bytes": 3437
     },
     {
       "path": "PRELIMINARY_CONCEPT.md",
-      "sha256": "2912f5b7a17fff983b68468c8a0a99300e521743adde5129c19100eb3dff1760",
-      "size_bytes": 4955
+      "sha256": "8fbb3b4f2e538bc3e1b4d81f0f0a4f8953f6338a87c8fcb13d7b949d33a71de8",
+      "size_bytes": 5147
     },
     {
       "path": "REVIEW_A0.md",
@@ -17,9 +27,229 @@
       "size_bytes": 4195
     },
     {
+      "path": "bearing/DESIGN_CONTRACT.md",
+      "sha256": "e86d3cf6857d90446e9c1718389fdcbd54a3b5042faaaf03bfbdf98f83b75abf",
+      "size_bytes": 5441
+    },
+    {
+      "path": "bearing/README.txt",
+      "sha256": "cb1eecb4c58e213096c58173e5bbbdea7fc62f4e9a1bae65011af5817a270d4f",
+      "size_bytes": 988
+    },
+    {
+      "path": "bearing/RELEASE-MANIFEST.json",
+      "sha256": "f7dd17fa997b92163f56da52513b0cc2b86b93a4e2ca16ab69e075bf54de1d18",
+      "size_bytes": 565
+    },
+    {
+      "path": "bearing/bearing_model_spec.json",
+      "sha256": "3efd46355e19c9479e478781da024fd67d5cc6ce52d4f938df5e2a0a0a114c1f",
+      "size_bytes": 1246
+    },
+    {
+      "path": "bearing_support/DESIGN_CONTRACT.md",
+      "sha256": "ea5d5901c717f0791acdf9ac0e5d4621e9cd2867ab4c48686d61fe248f2aace4",
+      "size_bytes": 4119
+    },
+    {
+      "path": "bearing_support/README.txt",
+      "sha256": "f50019fd88d27e7fee892398861decdd6587039ceaa06f5a059977b763d8e0a8",
+      "size_bytes": 784
+    },
+    {
+      "path": "bearing_support/RELEASE-MANIFEST.json",
+      "sha256": "ffe040843d4cde5ac0c719eaf201df4ce2341c49389bf6a03dbef184cf4723bf",
+      "size_bytes": 573
+    },
+    {
+      "path": "bearing_support/bearing_support_model_spec.json",
+      "sha256": "11d61f511a754373a3c061062c12683dace42f8928e34f966f96f90ff71c5d6d",
+      "size_bytes": 1070
+    },
+    {
+      "path": "coupling/DESIGN_CONTRACT.md",
+      "sha256": "d30ccb6ba38eab0641ff0a1776f2680ee32e597d7405d86e4d3349d160a2bbe9",
+      "size_bytes": 3605
+    },
+    {
+      "path": "coupling/README.txt",
+      "sha256": "5465a688bd14d1fa41de49a902cae235ad82aa0b8d2bb95b93abd949c4a4c1f8",
+      "size_bytes": 613
+    },
+    {
+      "path": "coupling/RELEASE-MANIFEST.json",
+      "sha256": "757b8c0ebd48ef1a32a5fa02a3615d0bbdd56ef243ac62e918b1e135f3e694a5",
+      "size_bytes": 565
+    },
+    {
+      "path": "coupling/coupling_model_spec.json",
+      "sha256": "1eb719a8b34b78a1987a6a545f43ca7596a64ed502efacb1c6fc03f014dad4a6",
+      "size_bytes": 995
+    },
+    {
+      "path": "generate_preliminary_dxf.py",
+      "sha256": "d174c35e29aa2eb6a7b40d06b1492e4d257c61b4dac9696882b6a256b2134edc",
+      "size_bytes": 14144
+    },
+    {
+      "path": "hub/DESIGN_CONTRACT.md",
+      "sha256": "dd66dafd4227f4fb9d1ad627efe785e879b8a3422553ad67dc207d46e8cd2415",
+      "size_bytes": 5726
+    },
+    {
+      "path": "hub/README.txt",
+      "sha256": "652bba02ccf41bc27b5314dad2946c03ceaf3bd3bd5c82508df616f8429bd035",
+      "size_bytes": 1745
+    },
+    {
+      "path": "hub/RELEASE-MANIFEST.json",
+      "sha256": "240197d7cd4a8976139345d5239dce3c1fe9239ba67338b28035f00f05d854b9",
+      "size_bytes": 562
+    },
+    {
+      "path": "hub/hub_model_spec.json",
+      "sha256": "2cb8ecf1361cdeae0c0ecc799259b41b1901f925ff05d3e0e8d79338e84946df",
+      "size_bytes": 1236
+    },
+    {
+      "path": "motor/DESIGN_CONTRACT.md",
+      "sha256": "29ec51cc0f835422b57e6ea180def924f3eae5db3a2646fabe07cfeb56288e03",
+      "size_bytes": 4125
+    },
+    {
+      "path": "motor/README.txt",
+      "sha256": "4cefc9a3753580dd1e44a13fbcafbda17ab74ca66e526d41418bcb03b1a188ff",
+      "size_bytes": 670
+    },
+    {
+      "path": "motor/RELEASE-MANIFEST.json",
+      "sha256": "50c4b3d21f7f7a5770a7602840f6cd39573d509148f225ea40597ee6a5447e5f",
+      "size_bytes": 563
+    },
+    {
+      "path": "motor/motor_model_spec.json",
+      "sha256": "33cd706699f7607b560a31d814d26797aa76d56653d8a5e2062fb6d8b5072ebd",
+      "size_bytes": 1095
+    },
+    {
       "path": "preliminary_wheel_drive_spec.json",
       "sha256": "a7b6701e34c3648d72464dc3e9cb5daaaf9a0d79d3fbc63cbdff003ea2daf8af",
       "size_bytes": 2828
+    },
+    {
+      "path": "shaft/README.txt",
+      "sha256": "1f86298a7ca8812d0c428b4a3ef1b9f3156d44d33ce948376e423222965415fe",
+      "size_bytes": 1557
+    },
+    {
+      "path": "shaft/RELEASE-MANIFEST.json",
+      "sha256": "551bc7df07c81fd498ace6b997d02cdf899fd3590cbb84d78114f4908d172a6c",
+      "size_bytes": 567
+    },
+    {
+      "path": "shaft/shaft_design_brief.txt",
+      "sha256": "9e93f2244a954e3fe3015f993b0347d6db59777260d23ef923e375b60117f241",
+      "size_bytes": 3475
+    },
+    {
+      "path": "shaft/shaft_model_spec.json",
+      "sha256": "33691dd9844c20c47b7815defdd34ba553e45e53175742f0797e60ac611b49b4",
+      "size_bytes": 879
+    },
+    {
+      "path": "shaft_2d_test/README.md",
+      "sha256": "e4a5d4988106175aa601d791d1e874a1f2cd59684037bf6edb27e1278c6b441d",
+      "size_bytes": 3637
+    },
+    {
+      "path": "shaft_2d_test/generate_shaft_drawing.py",
+      "sha256": "2d7fc9802e179ff27f62f6412d8ab422d3c474aa9d7a821f104ca70092e10345",
+      "size_bytes": 12721
+    },
+    {
+      "path": "shaft_2d_test/previous_shaft_handoff/RELEASE-MANIFEST.json",
+      "sha256": "f2578e371bc816aaa296218e371e26cead21e668b3dd60949b5011a171903e61",
+      "size_bytes": 423
+    },
+    {
+      "path": "shaft_2d_test/previous_shaft_handoff/shaft_2d_brief.txt",
+      "sha256": "dec9625733309ce2a9981a03cb29fcc8ce89a6b74f42a1167d6f9ab5ea12f151",
+      "size_bytes": 6977
+    },
+    {
+      "path": "shaft_2d_test/previous_shaft_handoff/shaft_6x46_previous_profile.dxf",
+      "sha256": "1ea4454351bdb3e96f78244f3de2e0ac74338ddd09d525207ffe3801b7c518d4",
+      "size_bytes": 154
+    },
+    {
+      "path": "shaft_2d_test/shaft_6x46_A0.dxf",
+      "sha256": "fc0db0926a9962f05a9c949add6b649b65c3048e9cb6b64ca205642fb3b22e8e",
+      "size_bytes": 3979
+    },
+    {
+      "path": "shaft_2d_test/shaft_6x46_A0_R12_retry.dxf",
+      "sha256": "4e78d6526144336200ad08fb043b420add1405ad5c0f009d1679f41897cd18bc",
+      "size_bytes": 3255
+    },
+    {
+      "path": "shaft_2d_test/shaft_6x46_A0_fusion_native_bundle.zip",
+      "sha256": "fa0d19dc75b837946133e5fa51b752b22bfbdcfbab1ab58ddb6199df55738f13",
+      "size_bytes": 12564
+    },
+    {
+      "path": "shaft_2d_test/shaft_6x46_A0_model_profile_R12.dxf",
+      "sha256": "1ea4454351bdb3e96f78244f3de2e0ac74338ddd09d525207ffe3801b7c518d4",
+      "size_bytes": 154
+    },
+    {
+      "path": "shaft_2d_test/shaft_6x46_A0_model_spec.json",
+      "sha256": "29c034e6567cd9bc6a8602df1461974b155b3a61c7df086b55ef9395d51d3dde",
+      "size_bytes": 811
+    },
+    {
+      "path": "shaft_2d_test/shaft_6x46_A0_preview.html",
+      "sha256": "6b065d583daba73bcfb01f0270befc2e7b085a0347e0652a09e079bc70aaf333",
+      "size_bytes": 11793
+    },
+    {
+      "path": "tests/test_preliminary_dxf.py",
+      "sha256": "0d795a3e785fb073edec02f8880c4ff06da3837fdd5c24726a4749e4409ae7cd",
+      "size_bytes": 2336
+    },
+    {
+      "path": "tests/test_shaft_drawing.py",
+      "sha256": "3a73c2f511231e095590a9e550624e5d7342ca87e357df8e970a851a3e40cd0f",
+      "size_bytes": 2319
+    },
+    {
+      "path": "wheel_drive_parts_A0.dxf",
+      "sha256": "854043f48b75ba64098d770f9351645ff6aab6f44e287d8e23390797e2254f05",
+      "size_bytes": 12361
+    },
+    {
+      "path": "wheel_rim/DESIGN_CONTRACT.md",
+      "sha256": "8781d598c4c4ac80b4b4f47e397551c6d7ba235a121af2edecf61a8f26da5b25",
+      "size_bytes": 5761
+    },
+    {
+      "path": "wheel_rim/README.txt",
+      "sha256": "6dc8acfe3e6d8549efddafdc1f8b49ba98a1af7c3ba3f6ebd823ce7c94b63bc6",
+      "size_bytes": 1969
+    },
+    {
+      "path": "wheel_rim/RELEASE-MANIFEST.json",
+      "sha256": "c287acfa3faa81662facd46d62ce236e9ed9a4f13d2be5dab1322c942fc4888c",
+      "size_bytes": 727
+    },
+    {
+      "path": "wheel_rim/wheel_rim_model_spec.json",
+      "sha256": "4c7bb5ed3689fa951a5549700074a001824b9d3619bfed75b56847d52e5036f1",
+      "size_bytes": 1103
+    },
+    {
+      "path": "wheel_rim/wheel_rim_review.md",
+      "sha256": "f0846f0d5f0cef75eb0b9f337d6a43852f137c6f5c2fe4c6962be7b644c55808",
+      "size_bytes": 2682
     }
   ],
   "schema_version": 1

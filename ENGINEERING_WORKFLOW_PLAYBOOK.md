@@ -123,11 +123,11 @@ smoke-tested. Do not describe the current DXF as a native drawing.
 
 ## 3D mechanical handoff — multi-spec generator updated; Fusion checks pending
 
-For the wheel-drive user's current Fusion setup and the three available
-part-level specifications, see
-`Project_files_being_worked_on/wheel_drive_bench_demo/GENERATE_EXISTING_DESIGNS.md`.
-The combined local review for POC-02 through POC-08 is recorded in
-`Project_files_being_worked_on/wheel_drive_bench_demo/REVIEW_POC02-08_LOCAL.md`.
+For the wheel-drive user's current Fusion setup and the seven part-level
+specifications, see
+`Project_files_being_worked_on/wheel_drive_bench_demo/GENERATE_PARTS_IN_FUSION.md`.
+The combined local review is recorded in
+`Project_files_being_worked_on/wheel_drive_bench_demo/PARTS_REVIEW.md`.
 
 ### Simple native Fusion geometry
 

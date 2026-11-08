@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-11-08T18:04:32.573639+00:00",
+  "files": [
+    {
+      "path": "DESIGN_CONTRACT.md",
+      "sha256": "dd66dafd4227f4fb9d1ad627efe785e879b8a3422553ad67dc207d46e8cd2415",
+      "size_bytes": 5726
+    },
+    {
+      "path": "README.txt",
+      "sha256": "652bba02ccf41bc27b5314dad2946c03ceaf3bd3bd5c82508df616f8429bd035",
+      "size_bytes": 1745
+    },
+    {
+      "path": "hub_model_spec.json",
+      "sha256": "2cb8ecf1361cdeae0c0ecc799259b41b1901f925ff05d3e0e8d79338e84946df",
+      "size_bytes": 1236
+    }
+  ],
+  "schema_version": 1
+}

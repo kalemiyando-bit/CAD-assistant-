@@ -1,0 +1,26 @@
+{
+  "created_at": "2026-11-08T18:04:32.170336+00:00",
+  "files": [
+    {
+      "path": "DESIGN_CONTRACT.md",
+      "sha256": "8781d598c4c4ac80b4b4f47e397551c6d7ba235a121af2edecf61a8f26da5b25",
+      "size_bytes": 5761
+    },
+    {
+      "path": "README.txt",
+      "sha256": "6dc8acfe3e6d8549efddafdc1f8b49ba98a1af7c3ba3f6ebd823ce7c94b63bc6",
+      "size_bytes": 1969
+    },
+    {
+      "path": "wheel_rim_model_spec.json",
+      "sha256": "4c7bb5ed3689fa951a5549700074a001824b9d3619bfed75b56847d52e5036f1",
+      "size_bytes": 1103
+    },
+    {
+      "path": "wheel_rim_review.md",
+      "sha256": "f0846f0d5f0cef75eb0b9f337d6a43852f137c6f5c2fe4c6962be7b644c55808",
+      "size_bytes": 2682
+    }
+  ],
+  "schema_version": 1
+}
